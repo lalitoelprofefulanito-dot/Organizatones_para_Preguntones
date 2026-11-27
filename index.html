@@ -903,6 +903,25 @@ html[data-tema="oscuro"] .aviso-espacio{background:#3A1418;color:#FFD9DC}
 .plg>.box,.plg>.quiz{border:0;margin:0;background:transparent}
 .plg>.box>b.l:first-child{display:none}
 .moms .momtg{display:none}
+/* v15: en celular, herramientas y momentos se contraen solos */
+.tlb15,.mtg15{display:none}
+.pl15{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:9px;background:#ECEFF1;color:#37474F;font-size:12.5px;font-weight:bold}
+html[data-tema="oscuro"] .pl15{background:#26324F;color:#E6EBF7}
+@media (max-width:899px){
+ .tlb15{display:inline-flex}
+ .tools.rec15{padding:4px 6px}
+ .tools.rec15>*:not(.tlb15):not(.svst){display:none!important}
+ .tools.rec15 .svst{display:inline-flex;align-items:center;margin-left:6px}
+ .mtg15{width:100%;border:0;border-bottom:2px solid var(--ink);background:#F4F6FA;padding:5px 10px;align-items:center;gap:8px;font:inherit;font-size:15px;text-align:left;cursor:pointer;color:inherit}
+ .mtg15 .mn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--c);color:#fff;font-size:13px;font-weight:bold;flex:none}
+ .mtg15 b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+ .mtg15 .sp{flex:1}
+ .mtg15 .cb15{flex:none;color:var(--c);font-weight:bold;font-size:14px}
+ .side.rec15 .mtg15{display:flex}
+ .side.rec15 .moms,.side.rec15 #etps{display:none!important}
+ #pane .nav2{padding-right:64px}
+ html[data-tema="oscuro"] .mtg15{background:#101A33;color:#E6EBF7}
+}
 html[data-tema="oscuro"] .plg{background:#16213F;border-color:#3A4A72}
 @media (max-width:899px){
  .moms{grid-template-columns:repeat(4,minmax(0,1fr)) 46px}
@@ -3106,14 +3125,14 @@ function openOrg(n){const o=ORGS[n-1];if(!o)return home();SV={st:'',err:false};S
  S.mom=S.meta.mom??0;S.et=S.meta.et??0;S.ri=0;
  const fc=COL[FAM[o.fam].c],x=OY[o.n];
  $('#app').innerHTML=`<div class="bld" style="--c:${fc}"><header class="bh"><a class="tb" href="${S.back||'#'}" aria-label="Volver">←<span class="hide-s"> Volver</span></a><span class="nb">${pad(o.n)}</span><div class="bt"><b>${o.name}</b><small>${FAM[o.fam].n.toUpperCase()} · ${o.cat}${x&&!GEN?` · se introduce en ${x.grado}.º`:''}</small></div><span style="flex:1"></span>${SCH?`<button class="tb sm ctxb" data-z="ctxdlg" title="Grupo con el que se trabaja">👥 ${ctxTxt()}</button>`:''}${GEN||CTX?'':`<label class="hide-s" style="font-weight:bold">Grado <select class="gsel" id="gsel" aria-label="Grado">${[1,2,3,4,5,6].map(g=>`<option value="${g}" ${g===GR?'selected':''}>${g}.º</option>`).join('')}</select></label><button class="tb sm hide-s ${DOC?'on':''}" data-docm="1" title="Notas para el docente">Docente</button>`}${GEN?temaBtns():''}<button class="tb sm" data-z="decir" title="Leer en voz alta el panel" aria-label="Leer en voz alta">🔊</button>${SCH?'<button class="tb sm hide-s" data-z="sorteo" title="Sorteo de número de lista" aria-label="Sorteo">🎲</button><button class="tb sm hide-s" data-z="proy" title="Modo proyector (letra grande, pantalla completa)" aria-label="Modo proyector">📽</button>':''}<button class="tb only-m" data-z="bhmas" aria-label="Más opciones" title="Más opciones">⋯</button><button class="tb" id="tgl" title="Muestra u oculta el panel para tener más tablero">Ocultar panel</button></header>
- <aside class="side" id="side"><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}<button class="momtg" id="momtg" data-z="panel" aria-expanded="true" aria-label="Ocultar las explicaciones para ver más tablero" title="Ocultar las explicaciones">▾</button></nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
- <main class="work"><div class="tools"><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas-opciones"><summary class="tb">Más ▾</summary><span class="mas-opciones-lista"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
+ <aside class="side" id="side"><button class="mtg15" data-z="mtg15" aria-expanded="false" aria-label="Ver los momentos"></button><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}<button class="momtg" id="momtg" data-z="panel" aria-expanded="true" aria-label="Ocultar las explicaciones para ver más tablero" title="Ocultar las explicaciones">▾</button></nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
+ <main class="work"><div class="tools"><button class="tb tlb15" data-z="tlb15" aria-expanded="false">🛠 Herramientas ▸</button><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas-opciones"><summary class="tb">Más ▾</summary><span class="mas-opciones-lista"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
  <div class="hint" id="hint"></div><div class="wrap" id="wrap"><svg id="bd" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"></svg></div><div class="selbar" id="selbar" hidden></div></main></div>`;
  setWF();bindBoard();setMom(S.mom,S.et);fitZoom();render()}
 function setMom(i,e){S.mom=i;if(e!=null)S.et=e;S.meta.mom=i;S.meta.et=S.et;S.meta.momv=S.meta.momv||[];if(!S.meta.momv.includes(i))S.meta.momv.push(i);if(i===2){S.meta.etv=S.meta.etv||[];if(!S.meta.etv.includes(S.et))S.meta.etv.push(S.et)}save();
  document.querySelectorAll('.moms button').forEach(b=>b.classList.toggle('on',+b.dataset.mo===i));
  const ep=$('#etps');ep.hidden=i!==2;if(i===2)ep.innerHTML=ETAPAS.map((t,k)=>`<button data-et="${k}" class="${k===S.et?'on':''} ${(S.meta.etv||[]).includes(k)?'vis':''}" title="${k+1}. ${t}">${k+1}<span class="en">. ${t}</span></button>`).join('');
- const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);plegarPane(pn);pn.scrollTop=0;panelOculto(false);const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop')}const t=$('#tgl');if(t)t.textContent='Ocultar panel';
+ const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);plegarPane(pn);pn.scrollTop=0;panelOculto(false);ui15();const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop')}const t=$('#tgl');if(t)t.textContent='Ocultar panel';
  {const k=$('#lecd');if(k&&Date.now()-LECT0>800&&!k.classList.contains('min')){k.classList.add('min');const b=k.querySelector('[data-z="lecmin"]');if(b)b.textContent='▴ Abrir'}lecTop()}
  proyBarra()}
 function quiz(q,tag){if(!q)return'';return`<div class="quiz"><b>${esc(q.texto)}</b>${q.opciones.map((p,i)=>`<button class="opt" data-qz="${tag}:${i}">${esc(p.t)}</button>`).join('')}<div id="qf-${tag}"></div></div>`}
@@ -3122,7 +3141,7 @@ function recupera(x){const L=(x.recupera||[]).map(id=>OYID[id]).filter(Boolean);
 function paneReconocer(o){const x=OY[o.n];if(!x)return`<h3>¿Qué es?</h3><p>${o.que}</p>`;const r=x.reconocer;return`<h3>¿Qué es?</h3>${sayRow(tx(r.queEs))}
  <h3>¿Para qué sirve?</h3>${sayRow(tx(r.paraQue))}
  <div class="box ej9" style="--c:var(--K)"><b class="l">Un ejemplo terminado</b>Míralo en el tablero. ${GR<=2?'¿Qué ves en él?':'¿Cómo está acomodada la información?'}<div class="row" style="margin-top:6px"><button class="tb sm" data-loadex="0">Volver a ver el ejemplo</button><button class="tb sm" data-z="bdgrande">🔍 Verlo en grande</button></div></div>
- ${quiz(r.pregunta,'r')}<details class="ver-mas"><summary>Ver más</summary>${recupera(x)}<p><b>También se conoce como:</b> ${esc(o.alias)}.</p>${LECT[o.n]?`<p>📖 Hay una lectura de ejemplo para practicar en <b>Construye › 3. Preparo</b>.</p>`:''}</details>${nd(x.docente&&x.docente.reconocer)}${nextBtns(null,['mo',1,'Comprende'])}`}
+ ${quiz(r.pregunta,'r')}<details class="ver-mas"><summary>Ver más</summary><p><b>También se conoce como:</b> ${esc(o.alias)}.</p>${LECT[o.n]?`<p>📖 Hay una lectura de ejemplo para practicar en <b>Construye › 3. Preparo</b>.</p>`:''}</details>${nd(x.docente&&x.docente.reconocer)}${nextBtns(null,['mo',1,'Comprende'])}`}
 function paneComprender(o){const x=OY[o.n];const c=x&&x.comprender;return`${sayRow(GR<=2?'Toca cada parte para saber qué es.':'Toca cada parte para descubrir para qué sirve. Después, búscala en el ejemplo del tablero.')}
  ${c?c.partes.map(p=>`<details class="parte"><summary data-say="${esc(p.nombre+'. '+p.desc)}">${esc(p.nombre)}</summary><p>${esc(p.desc)}</p></details>`).join(''):''}
  ${quiz(c&&c.pregunta,'c')}
@@ -3528,6 +3547,7 @@ function nlLee(c){const t=nlTxt(c.R);if(/^(la )?pregunta$/.test(t)){const b=visi
 function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#bd');
  if(/^(otra vez|de nuevo|repite|repitelo|repite eso|lo mismo)$/.test(nrm(t))||(v==='repite'&&!R.length)){if(VZ.ultOrden){oirLimpia(VZ.ultOrden,true)}return true}
  if(/^(deshaz|deshacer)|^(regresa|devuelve|quita) (lo ultimo|eso|el ultimo cambio)$|^(me equivoque|ups|eso no|asi no|control z)$/.test(s)){if(enTablero)undo();toast('Deshecho');return true}
+ if(nlMenu(s))return true;
  if(nlResponde(s))return true;
  if(nlSesion(s))return true;
  if(/^(sortea|haz un sorteo|un sorteo|sorteo|saca un numero|elige un numero|quien sigue|quien participa|otro numero|otro alumno)$/.test(s)||(v==='sortea')){if(!$('#sorn'))sorteoDlg();setTimeout(sortear,250);return true}
@@ -3702,7 +3722,7 @@ function sesBar(){proyBarra();let b=$('#sesbar');document.body.classList.toggle(
 function sesListDlg(){const P=sesPasos();dialog(GEN?(SES.tipo===30?'Aprender: los pasos':'Practicar: los pasos'):`Sesión de ${SES.tipo} minutos`,`<ol class="pasos-lista">${P.map((p,k)=>`<li class="${k===SES.paso?'on':''} ${k<SES.max?'vis':''}"><button data-z="sgo" data-v="${k}"><b>${GEN?'':p[0]+'–'+p[1]+' min · '}${esc(p[2])}</b><span>${esc(p[3])}</span></button></li>`).join('')}</ol><p style="font-size:14px;color:var(--mut)">${GEN?'Avanza a tu ritmo; puedes dejarlo y seguir otro día.':'Los tiempos son de referencia: adapte el ritmo al grupo. No es necesario terminar en una sola sesión.'}</p>`,null,{ok:false})}
 
 /* ---------- plan por semanas ---------- */
-function planDe(g){const L=ORGS.filter(o=>OY[o.n]&&OY[o.n].grado<=g).sort((a,b)=>OY[a.n].grado-OY[b.n].grado||a.n-b.n);const W=[];let k=0;L.forEach(o=>{W.push({n:o.n,nuevo:OY[o.n].grado===g});k++;if(k%3===0)W.push({elegir:1,prev:W.filter(w=>w.n).slice(-3).map(w=>w.n)})});if(k%3)W.push({elegir:1,prev:W.filter(w=>w.n).slice(-3).map(w=>w.n)});return W}
+function planDeG(g){const L=ORGS.filter(o=>OY[o.n]&&OY[o.n].grado<=g).sort((a,b)=>OY[a.n].grado-OY[b.n].grado||a.n-b.n);const W=[];let k=0;L.forEach(o=>{W.push({n:o.n,nuevo:OY[o.n].grado===g});k++;if(k%3===0)W.push({elegir:1,prev:W.filter(w=>w.n).slice(-3).map(w=>w.n)})});if(k%3)W.push({elegir:1,prev:W.filter(w=>w.n).slice(-3).map(w=>w.n)});return W}
 function vistos(gr,gp){const R={};bitDe(gr,gp).forEach(e=>{const r=R[e.n]=R[e.n]||{};if(e.ses&&e.ses.t30&&(!r.p||e.d<r.p))r.p=e.d;if(((e.ses&&e.ses.t60)||e.propio)&&(!r.c||e.d<r.c))r.c=e.d});return R}
 
 /* ---------- página «Clases» (escuela) / «Estudio» (NoteKiebres) ---------- */
@@ -3728,7 +3748,7 @@ function clasesView(){const g=CTX?CTX.gr:GR,V=SCH?(CTX?vistos(CTX.gr,CTX.gp):{})
  <div class="row">${SCH?'<button class="tb" data-z="plan60">🖨 Planeación de esta sesión</button>':''}<button class="tb pri" data-z="ini60" style="--c:var(--B)" ${SCH&&!CTX?'disabled title="Primero elija el grupo"':''}>${GEN?'▶ Empezar':'▶ Empezar la sesión de 60 min'}</button></div>
  <p style="font-size:14.5px;color:var(--mut)">${GEN?'Si la lectura tiene varios organizadores posibles, al llegar a «Propósito de lectura» elegirás cuál conviene y por qué.':'Sugerencia: imprima la lectura antes de la clase (dos copias por hoja, en media carta) para que la peguen en el cuaderno. Si la lectura tiene varios organizadores marcados, en «Propósito de lectura» el grupo elegirá cuál conviene y por qué.'}</p></section>
  <section class="sec" style="--c:var(--G)"><h2>${GEN?'Tu ruta':'Plan por semanas'+(CTX?' · '+ctxTxt():'')}</h2><p style="font-size:15px">${GEN?'Del organizador más sencillo al más complejo, a tu ritmo. Cada tres organizadores hay una pausa para practicar a elegir entre los que ya conoces. Se marca solo lo que vas haciendo.':'Primero los organizadores de grados anteriores (se recuperan con más exigencia) y los nuevos de este grado (★). Cada cuatro semanas, una sesión para elegir entre los ya conocidos. Se marca solo lo que ya trabajó este grupo.'}</p>
- ${rutaChain(SCH?(CTX?CTX.gr:0):0,SCH&&CTX?CTX.gp:'',GEN?6:g)}${SCH&&!CTX?'':`<details class="doc" ${SCH?'open':''}><summary style="font-size:17px">${GEN?'Ver la ruta completa, paso por paso':'Tabla del plan por semanas'}</summary><div class="scroll"><table class="evt tabla-plan"><tr><th>${GEN?'Paso':'Semana'}</th><th>Organizador</th><th>${GEN?'Aprendido':'30 min'}</th><th>${GEN?'Practicado':'60 min'}</th><th></th></tr>${PL.map((w,i)=>w.elegir?`<tr class="eleccion-op"><td>${i+1}</td><td colspan="3"><b>${GEN?'Pausa para elegir':'Semana de elegir'}:</b> una lectura y ${w.prev.map(n=>esc(ORGS[n-1].name)).join(', ')}. ¿Cuál conviene?</td><td><a class="tb sm" href="#elegir">Elegir</a></td></tr>`:`<tr><td>${i+1}</td><td><a href="#org-${pad(w.n)}" style="color:${COL[FAM[ORGS[w.n-1].fam].c]}"><b>${pad(w.n)} · ${esc(ORGS[w.n-1].name)}</b></a>${SCH&&w.nuevo?' ★':''}</td><td>${V[w.n]&&V[w.n].p?'✓ '+fFecha(V[w.n].p+'T12:00'):'—'}</td><td>${V[w.n]&&V[w.n].c?'✓ '+fFecha(V[w.n].c+'T12:00'):'—'}</td><td><button class="tb sm" data-z="prep" data-v="${w.n}">Preparar</button></td></tr>`).join('')}</table></div></details>`}</section>`);
+ ${rutaChain(SCH?(CTX?CTX.gr:0):0,SCH&&CTX?CTX.gp:'',GEN?6:g)}${SCH&&!CTX?'':`<details class="doc" ${SCH?'open':''}><summary style="font-size:17px">${GEN?'Ver la ruta completa, paso por paso':'Tabla del plan por semanas'}</summary><div class="scroll"><table class="evt tabla-plan"><tr><th>${GEN?'Paso':'Semana'}</th><th>Organizador</th><th>${GEN?'Aprendido':'30 min'}</th><th>${GEN?'Practicado':'60 min'}</th><th></th></tr>${PL.map((w,i)=>w.elegir?`<tr class="eleccion-op"><td>${i+1}</td><td colspan="3"><b>${GEN?'Pausa para elegir':'Semana de elegir'}:</b> una lectura y ${w.prev.map(n=>esc(ORGS[n-1].name)).join(', ')}. ¿Cuál conviene?</td><td><a class="tb sm" href="#elegir">Elegir</a></td></tr>`:`<tr><td>${i+1}</td><td><a href="#org-${pad(w.n)}" style="color:${COL[FAM[ORGS[w.n-1].fam].c]}"><b>${pad(w.n)} · ${esc(ORGS[w.n-1].name)}</b></a>${SCH&&w.nuevo?' ★':''}${w.adel?' <span class="pl15">⇡ adelanto sencillo</span>':''}${w.rep?` <span class="pl15">↻ repaso · los demás grados ven ${esc(ORGS[w.de-1].name)}</span>`:''}</td><td>${V[w.n]&&V[w.n].p?'✓ '+fFecha(V[w.n].p+'T12:00'):'—'}</td><td>${V[w.n]&&V[w.n].c?'✓ '+fFecha(V[w.n].c+'T12:00'):'—'}</td><td><button class="tb sm" data-z="prep" data-v="${w.n}">Preparar</button></td></tr>`).join('')}</table></div></details>`}</section>`);
  const fill=()=>{const n=+$('#s60a').value,sl=$('#s60l');const L=lecsPara(n),otras=LECS().filter(l=>!(l.orgs||[]).includes(n));sl.innerHTML=(L.length?L.map(l=>`<option value="${l.id}">${esc(l.titulo)}${l.ej?' (ejemplo)':''}</option>`).join(''):'')+(otras.length?`<optgroup label="Otras lecturas">${otras.map(l=>`<option value="${l.id}">${esc(l.titulo)}</option>`).join('')}</optgroup>`:'')+`<option value="">— Otro texto (sin cargarlo) —</option>`};
  $('#s60a').addEventListener('change',fill);fill();
  if(PEND60){const v=PEND60;PEND60=null;setTimeout(()=>usar60(v),60)}}
@@ -6319,14 +6339,57 @@ function lecDock(){const m=$('#modal'),d=m.querySelector('.dlg'),side=$('#side')
 let LECT0=0;
 /* ---------- recuadros plegables del panel ---------- */
 const esCel=()=>matchMedia('(max-width:899px)').matches;
-const PLGK=()=>'oya:plg-'+(esCel()?'m':'d');
+const PLGK=()=>'oya:plg15-'+(esCel()?'m':'d');
+/* ---------- v15: celular, barras que se contraen solas a los 5 segundos ---------- */
+const T15={};
+function rec15(k,fn){clearTimeout(T15[k]);T15[k]=setTimeout(fn,5000)}
+function tlsSet(abre){const t=$('.tools');if(!t)return;t.classList.toggle('rec15',!abre);const b=t.querySelector('.tlb15');if(b){b.textContent=abre?'🛠 Ocultar ◂':'🛠 Herramientas ▸';b.setAttribute('aria-expanded',String(abre))}
+ if(!abre){const dm=t.querySelector('details.mas-opciones');if(dm&&dm.open)dm.open=false}
+ if(abre)rec15('tls',()=>tlsSet(false));else clearTimeout(T15.tls);setTimeout(()=>{try{lecTop()}catch(e){}},30)}
+function momSet(abre){const sd=$('#side');if(!sd)return;sd.classList.toggle('rec15',!abre);const b=sd.querySelector('.mtg15');if(b)b.setAttribute('aria-expanded',String(abre));
+ if(abre)rec15('mom',()=>momSet(false));else clearTimeout(T15.mom);setTimeout(()=>{try{lecTop()}catch(e){}},30)}
+function ui15(){const sd=$('#side'),tl=$('.tools');if(!sd||!S.org)return;const b=sd.querySelector('.mtg15');
+ if(b)b.innerHTML=`<span class="mn">${S.mom+1}</span><b>${esc(MOMS[S.mom][0])}${S.mom===2?' · '+(S.et+1)+'. '+esc(ETAPAS[S.et]):''}</b><span class="sp"></span><span class="cb15">Cambiar ▾</span>`;
+ if(!sd.dataset.u15){sd.dataset.u15='1';sd.classList.add('rec15')}else if(!sd.classList.contains('rec15'))rec15('mom',()=>momSet(false));
+ if(tl&&!tl.dataset.u15){tl.dataset.u15='1';tl.classList.add('rec15')}}
+/* cualquier toque dentro de una barra abierta vuelve a contar los 5 segundos */
+['pointerdown','keydown','scroll','input','change'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target&&e.target.closest?e.target:null;if(!t)return;
+ const tl=t.closest('.tools');if(tl&&!tl.classList.contains('rec15'))rec15('tls',()=>tlsSet(false));
+ if(t.closest('.moms,#etps')&&$('#side')&&!$('#side').classList.contains('rec15'))rec15('mom',()=>momSet(false))},true));
+
+/* ---------- v15: voz, salir al menú y botones del inicio ---------- */
+const NAV15=/^(abre|abrir|abreme|ve a|ve al|vete a|vete al|ir a|ir al|vamos a|vamos al|llevame a|llevame al|lleva me a|muestra|muestrame|entra a|entra al|entrar a|quiero ver|quiero ir a|ensename|pasa a|pasa al|cambia a|toca|regresa a|regresa al|vuelve a|vuelve al)\b/;
+const MENU15=[[/^(explorar|explorar ideas|explorar y describir|explorar ideas y comprender)\b/,'#familia-explorar'],[/^(comparar|comparar y registrar|comparar y clasificar)\b/,'#familia-comparar'],[/^(ordenar|ordenar hechos|ordenar y secuenciar)\b/,'#familia-ordenar'],[/^(explicar|explicar y decidir|explicar y relacionar)\b/,'#familia-explicar'],[/^(estudiar|estudiar y comunicar|estudiar y resumir)\b/,'#familia-estudiar'],
+ [/^(clases|clase|la clase|mi plan|estudio|plan de estudio)$/,'#clases'],[/^(familias|cuaderno|cuaderno de (las )?familias|cuaderno en vivo|mi cuaderno)$/,'#cuaderno'],[/^(metodo|el metodo|metodo de 5 pasos|metodo de cinco pasos)$/,'#metodo'],
+ [/^(elegir|elige|cual uso|que organizador uso)$/,'#elegir'],[/^(juego|jugar|el juego|a jugar)$/,'#juego'],[/^(retos|reto)$/,'#retos'],[/^(evaluador|evaluacion|mi avance|avance|rubrica)$/,'#evaluador'],[/^(organizadores|todos los organizadores|los organizadores|lista de organizadores)$/,'#organizadores'],[/^(banco de lecturas|lecturas)$/,'#lecturas']];
+function nlMenu(s){
+ if(/\b(menu|inicio|principal|portada|pantalla principal)\b/.test(s)&&(/^(sal|salir|salte|salgamos|regresa|regresar|regresame|vuelve|volver|ve|vete|ir|vamos|llevame|lleva me|abre|muestra|muestrame|quiero|pasa|cambia|cierra y)\b/.test(s)||/^(al |el |a )?(menu|inicio|portada)( principal| de inicio)?$/.test(s))){location.hash='#';toast('Menú de inicio');return true}
+ const conVerbo=NAV15.test(s);if(S.org&&!conVerbo)return false;
+ const r=s.replace(NAV15,'').trim().replace(/^(el|la|los|las|al|a la|a|mi|mis)\s+/,'').replace(/^(boton|seccion|pagina|apartado)( de| del)?\s+/,'').replace(/^(el|la|los|las)\s+/,'').trim();
+ if(!r)return false;
+ for(const[re,h]of MENU15)if(re.test(r)){if(h==='#lecturas'&&!SCH)continue;if(h==='#elegir'&&S.org&&/^eli/.test(r))return false;if(location.hash!==h)location.hash=h;else route();return true}
+ return false}
+
+/* ---------- v15: orden común; todos los grados ven el mismo organizador la misma semana ----------
+   Cada semana se toma el siguiente organizador de la secuencia general (de 1.º a 6.º).
+   Si es de su grado o de uno anterior, el grupo lo trabaja tal cual; si es del grado siguiente, lo ve como
+   «adelanto sencillo»; si es de más adelante, repasa uno que ya conoce de la misma familia. */
+function planDe(g){if(GEN||g>=6)return planDeG(g);const M=ORGS.filter(o=>OY[o.n]).sort((a,b)=>OY[a.n].grado-OY[b.n].grado||a.n-b.n);const cnt={},W=[];let k=0;
+ const conoce=M.filter(o=>OY[o.n].grado<=g);
+ M.forEach(o=>{const gr=OY[o.n].grado;let w;
+  if(gr<=g)w={n:o.n,nuevo:gr===g};
+  else if(gr===g+1)w={n:o.n,adel:1};
+  else{const ya=new Set(W.filter(x=>x.n).map(x=>x.n));let L=conoce.filter(c=>c.fam===o.fam&&ya.has(c.n));if(!L.length)L=conoce.filter(c=>ya.has(c.n));if(!L.length)L=conoce;L=L.slice().sort((a,b)=>(cnt[a.n]||0)-(cnt[b.n]||0)||a.n-b.n);const r=L[0];cnt[r.n]=(cnt[r.n]||0)+1;w={n:r.n,rep:1,de:o.n}}
+  W.push(w);k++;if(k%3===0)W.push({elegir:1,prev:[...new Set(W.filter(x=>x.n).slice(-3).map(x=>x.n))]})});
+ if(k%3)W.push({elegir:1,prev:[...new Set(W.filter(x=>x.n).slice(-3).map(x=>x.n))]});return W}
 function plgLee(){try{return JSON.parse(lsGet(PLGK())||'{}')||{}}catch(e){return{}}}
 /* Agrupa el panel en recuadros <details>: cada título h3 con lo que le sigue, cada .box o .quiz por separado,
    y lo que va antes del primer título bajo el nombre del momento (p. ej. «Sus partes»).
-   En computadora empiezan abiertos; en celular, cerrados para dejarle espacio al tablero.
+   En «Reconoce» y en las preguntas para comprobar empiezan cerrados; en lo demás, abiertos en computadora
+   y cerrados en celular para dejarle espacio al tablero.
    Lo que la persona abre o cierra se recuerda por título. */
 function plegarPane(pn){const G=plgLee();let grupo=null;
- const nuevo=(titulo,antes)=>{const d=document.createElement('details');d.className='plg';d.dataset.k=titulo;const k=G[titulo];d.open=k!=null?k:!esCel();d.dataset.ini=String(d.open);const sm=document.createElement('summary');d.appendChild(sm);pn.insertBefore(d,antes);return d};
+ const nuevo=(titulo,antes)=>{const d=document.createElement('details');d.className='plg';d.dataset.k=titulo;const k=G[titulo];d.open=k!=null?k:(S.mom===0||/^Pregunta para comprobar/.test(titulo))?false:!esCel();d.dataset.ini=String(d.open);const sm=document.createElement('summary');d.appendChild(sm);pn.insertBefore(d,antes);return d};
  [...pn.children].forEach((el,i)=>{
   if(el.tagName==='H3'){grupo=nuevo(el.textContent.trim(),el);grupo.firstChild.appendChild(el);return}
   if(el.matches('.box,.quiz')){const l=el.querySelector(':scope>b.l');const d=nuevo(l?l.textContent.trim():'Pregunta para comprobar',el);d.firstChild.textContent=d.dataset.k;d.appendChild(el);grupo=null;return}
@@ -6415,6 +6478,8 @@ function accion(e){const t=e.target.closest('[data-z]');if(!t||t.disabled)return
  if(z==='resprint'){const r=$('#resmes');if(r)imprimirHTML([`<div class="resumen-mes-imp"><h1>Resumen mensual</h1>${r.querySelector('.rm8w').innerHTML}</div>`]);return}
  if(z==='instalar'&&INSTP){INSTP.prompt();INSTP.userChoice.finally(()=>{INSTP=null;const b=$('#instb');if(b)b.remove()});return}
  if(z==='panel')return panelOculto(!$('#side').classList.contains('closed'));
+ if(z==='tlb15')return tlsSet($('.tools').classList.contains('rec15'));
+ if(z==='mtg15')return momSet(true);
 if(z==='lecx')return lecDockX();
  if(z==='lecmin'){const k=$('#lecd');if(!k)return;k.classList.toggle('min');t.textContent=k.classList.contains('min')?'▴ Abrir':'▾ Minimizar';lecTop();return}
  if(z==='bdgrande')return bdGrande();if(z==='vgm')return bdGrande.z&&bdGrande.z(1/1.25);if(z==='vgp')return bdGrande.z&&bdGrande.z(1.25);

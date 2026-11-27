@@ -45,6 +45,15 @@ CASOS=[ # (app, ruta inicial, frase, qué comprobar)
  ('op','', 'segundo grado', "location.hash=='#grado-2'"),
  ('op','', 'abre la clasificación', "location.hash=='#org-05'"),
  ('nk','', 'tengo una tarea y no sé qué organizador usar', "location.hash=='#elegir'"),
+ ('op','#org-05','guardar',"document.body.innerText.includes('Guardado')"),
+ ('op','#org-05','salir al menú',"location.hash==''||location.hash=='#'"),
+ ('op','#org-05','regresa al menú principal',"location.hash==''||location.hash=='#'"),
+ ('op','','abre primer grado',"location.hash=='#grado-1'"),
+ ('op','','oye abre el primer grado por favor',"location.hash=='#grado-1'"),
+ ('op','','abre explorar y describir',"location.hash=='#familia-explorar'"),
+ ('op','','abre el juego',"location.hash=='#juego'"),
+ ('op','','abre organizadores',"location.hash=='#organizadores'"),
+ ('nk','#org-05','salir al menú',"location.hash==''||location.hash=='#'"),
 ]
 URL={'op':'Organizatones_para_Preguntones/index.html','nk':'NoteKiebres/index.html'}
 async def main():
