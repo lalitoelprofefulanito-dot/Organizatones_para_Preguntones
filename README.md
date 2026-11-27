@@ -10,6 +10,8 @@ En clase: horario de la biblioteca con «Ahora toca» (🗓, cada bloque con su 
 
 En el organizador, cada recuadro del panel (¿Qué es?, Un ejemplo terminado, Pista para elegirlo…) se pliega y se despliega tocando su título; la aplicación recuerda cuáles se dejaron abiertos. En el celular empiezan plegados, el botón ▾ junto a los momentos oculta el panel y el tablero llena el alto disponible (se recorre deslizándolo con el dedo; «Completo» lo muestra entero).
 
+Micrófono (🎤): cualquier botón, enlace, pestaña o recuadro visible se abre diciendo su nombre, con o sin verbo: «selecciona cuarto grado», «abre Familias», «ve a Clases», «toca 4.º A», «abre pregunta para comprobar», «cierra qué es». Los números se entienden en palabra o en cifra («cuarto», «4», «4.º», «4to»). Di «ayuda» para ver ejemplos.
+
 La computadora de la biblioteca sube sola lo trabajado en clase a la carpeta `datos/` (el trabajo de cada grupo, sin nombres de alumnos):
 
 - Lo que se escribe en los tableros **sí se publica**; la aplicación lo recuerda en pantalla para que no se escriban nombres ni datos personales.
@@ -35,6 +37,7 @@ El script escribe `index.html`, `por-colores.html` y, si el repositorio NoteKieb
   python3 fuente/herramientas/visual.py capturar despues/ carpeta_con_las_apps/
   python3 fuente/herramientas/visual.py comparar antes/ despues/
   ```
+- `voz.py`: prueba de órdenes de voz. Simula el micrófono y comprueba 37 frases en computadora y celular («selecciona cuarto grado», «abre Familias», «toca 4.º A», «cierra qué es», «ver más»…).
 - `css_limpia.py`: quita del motor los estilos que no tienen efecto (selectores de clases que ya no existen y declaraciones que otra regla igual anula después). Siempre se comprueba con `visual.py`.
 
 Autor: Eduardo Kantún Martínez, Promotor de Lecturas. Desarrollado con apoyo de IA (Claude), con dirección y revisión del autor. Incluye qrcode-generator (Kazuhiko Arase, licencia MIT).
