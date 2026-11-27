@@ -11,7 +11,9 @@ Uso (desde la carpeta del repositorio):
 Todo cambio se hace en fuente/motor.html y después se corre este script.
 Nunca edite a mano los archivos generados: el siguiente armado los reemplaza.
 """
+import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -46,8 +48,11 @@ APPS = [
          config=[('OYA_MODO', 'familia'), ('OYA_DENSIDAD', 'compacta'), ('OYA_PUBLICO', 'escolar')]),
     dict(nombre='NoteKiebres', salida=NK / 'index.html', titulo='NoteKiebres',
          config=[('OYA_MODO', 'familia'), ('OYA_DENSIDAD', 'normal'), ('OYA_PUBLICO', 'general')],
-         textos=TEXTOS_NOTEKIEBRES, cabeza=CABEZA_NOTEKIEBRES),
+         textos=TEXTOS_NOTEKIEBRES, cabeza=CABEZA_NOTEKIEBRES, cache=True),
 ]
+
+AVISO_GENERADO = ('<!DOCTYPE html>\n<!-- ARCHIVO GENERADO por fuente/construir.py desde fuente/motor.html '
+                  '(repositorio Organizatones_para_Preguntones). No se edita a mano: los cambios se hacen en el motor. -->\n')
 
 
 def falla(msg):
@@ -71,5 +76,16 @@ for app in APPS:
         html = html.replace(viejo, nuevo)
     if app.get('cabeza'):
         html = html.replace('<meta name="author"', app['cabeza'] + '<meta name="author"', 1)
+    html = html.replace('<!DOCTYPE html>\n', AVISO_GENERADO, 1)
     app['salida'].write_text(html, encoding='utf-8')
     print(f'{app["nombre"]}: {app["salida"]} ({len(html.encode("utf-8")) // 1024} KB)')
+    if app.get('cache'):
+        # la copia sin internet se renueva sola cuando cambia la aplicación
+        sw = app['salida'].parent / 'sw.js'
+        version = hashlib.sha1(html.encode('utf-8')).hexdigest()[:10]
+        texto = sw.read_text(encoding='utf-8')
+        nuevo, n = re.subn(r"const C='notekiebres-[^']*'", f"const C='notekiebres-{version}'", texto)
+        if n != 1:
+            falla('no se encontró el nombre de la caché en sw.js')
+        sw.write_text(nuevo, encoding='utf-8')
+        print(f'  sw.js: caché notekiebres-{version}')
