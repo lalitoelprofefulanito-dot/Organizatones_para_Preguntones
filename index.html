@@ -2835,6 +2835,7 @@ const oyCap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const oySirve=x=>/^(las|los) /.test(oyCorto(x))?'sirven':'sirve';
 const conocido=x=>x.grado<=GR;
 let DOC=!GEN&&lsGet('oya:docente')==='1',LETRA=0;
+function setLetra(n){LETRA=Math.max(0,Math.min(2,n));lsSet('oya:letra',LETRA);prefs();document.querySelectorAll('[data-letra]').forEach(b=>b.classList.toggle('on',!!LETRA));toast(['Letra normal','Letra grande','Letra muy grande'][LETRA]);for(const k in thumbCache)delete thumbCache[k];if(S.org){render();setTimeout(fitZoom,50)}}
 function prefs(){document.body.classList.toggle('doc',DOC);document.body.classList.remove('z1','z2');if(LETRA)document.body.classList.add('z'+LETRA)}
 function say(t){try{const s=speechSynthesis;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-MX';u.rate=.92;s.speak(u)}catch(e){toast('Esta computadora no puede leer en voz alta.')}}
 const sayRow=t=>`<div class="sayrow"><p>${esc(t)}</p><button class="say" data-say="${esc(t)}" aria-label="Escuchar" title="Escuchar">▶</button></div>`;
@@ -3307,7 +3308,7 @@ document.addEventListener('click',e=>{const sl=e.target.closest('a[href^="#"]');
  if(d.fo!==undefined&&S.org){const p=S.P.find(q=>q.id===S.sel);if(p)mut(()=>{if(+d.fo===(S.meta.font||0))delete p.fo;else p.fo=+d.fo});return}
  if(d.vz){if(d.vz==='off')return micOff();if(d.vz==='listo')return finDictado();if(d.vz==='ayuda')return vzAyuda();if(d.vz==='cerrar'){$('#modal').classList.remove('show');return}}
  if(d.gr){GR=+d.gr;lsSet('oya:grado',GR);toast('Grado: '+GR+'.º');return rerender()}
- if(d.letra){LETRA=(LETRA+1)%3;lsSet('oya:letra',LETRA);prefs();document.querySelectorAll('[data-letra]').forEach(b=>b.classList.toggle('on',!!LETRA));toast(['Letra normal','Letra grande','Letra muy grande'][LETRA]);for(const k in thumbCache)delete thumbCache[k];if(S.org){render();setTimeout(fitZoom,50)}return}
+ if(d.letra)return setLetra((LETRA+1)%3);
  if(d.docm){DOC=!DOC;lsSet('oya:docente',DOC?'1':'0');prefs();document.querySelectorAll('[data-docm]').forEach(b=>b.classList.toggle('on',DOC));toast(DOC?'Notas para el docente: visibles':'Notas para el docente: ocultas');return}
  if(d.rq)return rutaRes(d.rq);
  if(d.say!==undefined)return say(d.say);
@@ -3367,10 +3368,24 @@ function micToggle(){if(VZ.on)return micOff();if(!SR)return dialogG('El micrófo
  VZ.rec=r;VZ.on=true;VZ.modo='orden';VZ.txt='';try{r.start()}catch(e){}vzBar();toast('Micrófono encendido. Di una orden.')}
 function micOff(){VZ.on=false;clearTimeout(VZ.tm);if(VZ.modo==='dictado')finDictado();try{VZ.rec&&VZ.rec.stop()}catch(e){}VZ.rec=null;VZ.modo='orden';vzBar()}
 function dialogG(t,b){const m=$('#modal');m.style.setProperty('--c',COL.P);m.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><h3>${esc(t)}</h3>${b}<div class="acts"><button class="tb pri" data-vz="cerrar">Entendido</button></div></div>`;m.classList.add('show')}
-function vzAyuda(){dialogG('Órdenes de voz',`<p>Toca 🎤 y di, por ejemplo:</p><ul style="line-height:1.6"><li><b>«Escribe en el tema»</b> → después de una pausa, dicta el texto. Di <b>«listo»</b> al terminar.</li><li><b>«Escribe en la idea 3»</b>, <b>«escribe en la fila 2 columna 1»</b> (en tablas).</li><li><b>«Agrega una idea»</b>, <b>«agrega un paso»</b>, <b>«quita la idea 2»</b>.</li><li><b>«Selecciona el tema»</b> y luego <b>«escribe»</b>.</li><li><b>Cualquier botón por su nombre</b>, en cualquier pantalla: <b>«selecciona cuarto grado»</b>, <b>«abre Familias»</b>, <b>«ve a Clases»</b>, <b>«toca 4.º A»</b>, <b>«toca plantilla en blanco»</b>, <b>«presiona revisar mi organizador»</b>. También sin verbo: <b>«Evaluador»</b>, <b>«Retos»</b>.</li><li><b>«Escribe en mi pregunta»</b>, <b>«escribe en tema»</b>: los espacios para escribir del panel.</li><li><b>«Reconoce»</b>, <b>«Comprende»</b>, <b>«Construye»</b>, <b>«Elige»</b>, <b>«etapa 4»</b>, <b>«siguiente»</b>, <b>«anterior»</b>.</li><li><b>«Deshacer»</b>, <b>«acercar»</b>, <b>«alejar»</b>, <b>«ajustar»</b>, <b>«leer»</b>, <b>«inicio»</b>, <b>«abre línea del tiempo»</b>.</li><li><b>«Apaga el micrófono»</b>.</li></ul><p style="font-size:15px">Usa el reconocimiento de voz del navegador (Chrome o Edge): necesita internet y permiso para el micrófono.</p>`)}
+function vzAyuda(){const g=(t,L)=>`<li><b>${t}:</b> ${L.map(x=>`«${x}»`).join(', ')}.</li>`;dialogG('Órdenes de voz',`<p>Toca 🎤 y habla como le hablarías a una persona. Puedes decir «por favor», encadenar órdenes con «y luego» y usar «lo» o «la» para lo que está seleccionado.</p><ul style="line-height:1.55">
+ ${g('Moverte',['abre cuarto grado y luego clases','muéstrame las familias','llévame al inicio','regresa','baja'])}
+ ${g('Escribir',['escribe en el tema los animales del mar','escribe Los peces en la idea 2','cambia el criterio por ¿qué comen?','escribe en la fila 2 columna 1 manzana'])}
+ <li><b>Dictar largo:</b> «escribe en el tema», habla con calma y di «listo» al terminar.</li>
+ ${g('Piezas',['agrega otra idea','quita la idea 2','duplica el tema','resalta la idea 3','pinta el tema de azul','la idea 2 en rojo','mueve el tema a la derecha','sube un poco la idea 1'])}
+ ${g('Flechas',['une el tema con la idea 2','pon una flecha del tema a la idea 3','quita la flecha entre el tema y la idea 3'])}
+ ${g('Tablas y formas',['agrega una fila','quita una columna','pon tres círculos','más espinas'])}
+ ${g('Letra',['letra más grande','letra normal','ponle letra escolar'])}
+ ${g('Responder',['la respuesta es la segunda','elijo la b','creo que es separa las cosas en grupos'])}
+ ${SCH?g('En clase',['empieza la sesión','siguiente paso','pausa','termina la sesión','haz un sorteo','otro número']):g('Tu plan',['empieza la sesión','siguiente paso','termina la sesión'])}
+ ${g('Tablero',['acerca','aleja','ver todo','oculta el panel','muestra el panel','reconoce','etapa 4'])}
+ ${g('Cualquier botón por su nombre',['toca registrar horario','abre Familias','Evaluador'])}
+ ${g('Corregir',['deshaz','me equivoqué','otra vez','apaga el micrófono'])}</ul><p style="font-size:15px">Usa el reconocimiento de voz del navegador (Chrome o Edge): necesita internet y permiso para el micrófono.</p>`)}
 function visibles(sel){return[...document.querySelectorAll(sel)].filter(e=>{if(e.closest('[hidden]'))return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0})}
-function piezaPor(q){if(!S.org)return null;const n=numIn(q);let best=null,bs=0;const grupos={};S.P.forEach(p=>{const K=kd(p);(grupos[p.k]=grupos[p.k]||[]).push(p);const sc=Math.max(score(q,K.l+' '+(K.tag||'')+' '+p.k),score(q,p.text||'')*0.9);if(sc>bs){bs=sc;best=p}});if(!best||bs<0.5)return null;const L=grupos[best.k];if(n&&L.length>1){L.sort((a,b)=>a.num&&b.num?a.num-b.num:(a.y-b.y)||(a.x-b.x));return L[Math.min(n,L.length)-1]}return best}
-function campoPor(q){let best=null,bs=0;visibles('#pane input.big,#pane textarea.big,.dlg input.big,.dlg textarea.big,#sitbox textarea,.box textarea').forEach(el=>{const lab=el.id&&document.querySelector(`label[for="${el.id}"]`);const prev=el.previousElementSibling;const t=[el.placeholder,lab&&lab.textContent,prev&&/LABEL|P|B/.test(prev.tagName)?prev.textContent:''].join(' ');const sc=score(q,t);if(sc>bs){bs=sc;best=el}});return bs>=0.5?best:null}
+function piezaYPuntaje(q){if(!S.org)return null;const n=numIn(q);let best=null,bs=0;const grupos={};S.P.forEach(p=>{const K=kd(p);(grupos[p.k]=grupos[p.k]||[]).push(p);const sc=Math.max(score(q,K.l+' '+(K.tag||'')+' '+p.k),score(q,p.text||'')*0.9);if(sc>bs){bs=sc;best=p}});if(!best||bs<0.5)return null;const L=grupos[best.k];if(n&&L.length>1){L.sort((a,b)=>a.num&&b.num?a.num-b.num:(a.y-b.y)||(a.x-b.x));return{p:L[Math.min(n,L.length)-1],sc:bs}}return{p:best,sc:bs}}
+function piezaPor(q){const r=piezaYPuntaje(q);return r&&r.p}
+function campoPor(q){const r=campoYPuntaje(q);return r&&r.el}
+function campoYPuntaje(q){let best=null,bs=0;visibles('#pane input.big,#pane textarea.big,.dlg input.big,.dlg textarea.big,#sitbox textarea,.box textarea').forEach(el=>{const lab=el.id&&document.querySelector(`label[for="${el.id}"]`);const prev=el.previousElementSibling;const t=[el.placeholder,lab&&lab.textContent,prev&&/LABEL|P|B/.test(prev.tagName)?prev.textContent:''].join(' ');const sc=score(q,t);if(sc>bs){bs=sc;best=el}});return bs>=0.5?{el:best,sc:bs}:null}
 /* ---------- buscar cualquier control visible por su nombre ---------- */
 const VERBOS=/^(?:(?:ver|verlo|abre|abrir|abra|abreme|cierra|cerrar|oculta|ocultar|ve a|ve al|ir a|ir al|vamos a|vamos al|entra a|entra al|entrar a|muestra|muestrame|muestra me|ensename|selecciona|seleccionar|elige|elegir|escoge|toca|tocar|presiona|presionar|pulsa|oprime|aprieta|da clic en|dale clic a|dale clic en|haz clic en|clic en|click en|activa|el boton|boton|la opcion|opcion|la pestana|pestana)\s+)+/;
 const SINON={elige:'elegir',escoge:'elegir',escoger:'elegir'};
@@ -3390,7 +3405,7 @@ function controlPor(q,min){const Q=canon(q);if(!Q.length)return null;const zona=
   .forEach(el=>{const t=el.getAttribute('aria-label')||el.title||el.textContent;const sc=parecido(Q,canon(t));if(sc>bs){bs=sc;best=el}});return bs>(min||0)?best:null}
 function dictarEn(dest,nombre){VZ.modo='dictado';VZ.dest=dest;VZ.destN=nombre;VZ.txt='';clearTimeout(VZ.tm);vzBar();if(dest.el){dest.el.focus();dest.el.scrollIntoView({block:'center'})}}
 function finDictado(){clearTimeout(VZ.tm);const d=VZ.dest,t=VZ.txt.trim();VZ.modo='orden';VZ.dest=null;VZ.txt='';if(d&&t){if(d.el){d.el.value=(d.el.value?d.el.value.trim()+' ':'')+t;d.el.dispatchEvent(new Event('input',{bubbles:true}))}else if(S.org){const p=S.P.find(q=>q.id===d.id);if(p)mut(()=>{if(d.cell){const c=d.cell;p.t.cells[c.r][c.c]=t}else p.text=t;S.sel=p.id})}toast('Escrito: «'+t+'»')}vzBar()}
-function oir(t){const s=nrm(t);
+function oirUna(t,s0){const s=s0||nrm(t);
  if(VZ.modo==='dictado'){if(/^(listo|ya|terminar|termine|fin del dictado|ya termine)$/.test(s)||/ (listo|ya termine)$/.test(s)){const resto=t.replace(/\s*(listo|ya terminé|ya termine)\.?\s*$/i,'');if(resto&&!/^(listo|ya|terminar|termine)$/.test(s))VZ.txt+=' '+resto;return finDictado()}if(/^(cancela|cancelar|borra eso)$/.test(s)){VZ.txt='';VZ.modo='orden';VZ.dest=null;toast('Dictado cancelado.');return vzBar()}VZ.txt=(VZ.txt+' '+t.trim()).trim();VZ.txt=VZ.txt.charAt(0).toUpperCase()+VZ.txt.slice(1);vzBar();clearTimeout(VZ.tm);VZ.tm=setTimeout(finDictado,3500);return}
  VZ.txt=t;vzBar();
  if(/^(apaga|apagar|detener|deten|para|cierra)( el)? microfono/.test(s)||s==='apagar microfono')return micOff();
@@ -3422,6 +3437,135 @@ function oir(t){const s=nrm(t);
  if(/^(anterior|atras|regresa)$/.test(s)){const b=visibles('.nav2 .tb:not(.pri)')[0];if(b)return b.click()}
  {const b=controlPor(s,0.84)||controlPor(sinVerbo(s));if(b){activar(b,s);return toast('Toqué: '+(b.getAttribute('aria-label')||b.textContent).trim().replace(/\s+/g,' ').slice(0,40))}}
  toast('No entendí «'+t+'». Di «ayuda» para ver ejemplos.',3500)}
+
+/* =====================================================================
+   LENGUAJE NATURAL DEL MICRÓFONO
+   Antes de interpretar: quita cortesías («por favor», «oye», «¿puedes…?»),
+   lleva cada verbo a una forma base (anótale, añade, bórralo, pásame…),
+   entiende pronombres («escríbelo», «píntala de azul» = lo seleccionado)
+   y separa órdenes en cadena («abre cuarto grado y luego clases»).
+   ===================================================================== */
+const NLQ=['hazme el favor de','haz el favor de','me haces el favor de','me puedes','me podrias','me gustaria que','me gustaria','quiero que','necesito que','quisiera que','ayudame a','vamos a','voy a','hay que','trata de','tienes que','puedes','podrias','podras','quieres','quisieras','quiero','necesito','quisiera','intenta','por favor','porfavor','porfa','a ver','ahora si','oye','ok','okay','bueno','este','ahora','ahorita','entonces','dale','ya','y','pues','si'];
+const NLF=['por favor','porfavor','porfa','gracias','please','si','ok','ya','ahora','ahorita','rapido'];
+const NLV={};[['escribe','escribe escribir escriba escriban anota anotar anote apunta apuntar apunte redacta redactar coloca colocar dicta dictar teclea teclear'],['pon','pon poner ponga pongas'],
+ ['agrega','agrega agregar agregue anade anadir anada crea crear cree inserta insertar mete meter suma sumar'],['quita','quita quitar quite borra borrar borre elimina eliminar elimine saca sacar suprime suprimir remueve remover desaparece'],
+ ['abre','abre abrir abra muestra mostrar muestre ensena ensenar despliega desplegar llevame lleva llevar'],['cierra','cierra cerrar cierre oculta ocultar esconde esconder pliega plegar minimiza minimizar'],
+ ['toca','toca tocar toque presiona presionar pulsa pulsar oprime oprimir aprieta apretar'],['cambia','cambia cambiar cambie modifica modificar corrige corregir reemplaza reemplazar sustituye sustituir edita editar renombra renombrar'],
+ ['pinta','pinta pintar colorea colorear'],['mueve','mueve mover mueva recorre recorrer desplaza desplazar arrastra arrastrar corre correr'],['sube','sube subir'],['baja','baja bajar'],
+ ['une','une unir conecta conectar enlaza enlazar relaciona relacionar junta juntar'],['duplica','duplica duplicar copia copiar clona clonar'],['resalta','resalta resaltar destaca destacar subraya subrayar'],
+ ['selecciona','selecciona seleccionar escoge escoger agarra agarrar'],['lee','lee leer lea leeme'],['deshaz','deshaz deshacer anula anular revierte revertir'],['imprime','imprime imprimir imprima'],
+ ['sortea','sortea sortear rifa rifar'],['empieza','empieza empezar inicia iniciar comienza comenzar arranca arrancar'],['termina','termina terminar finaliza finalizar acaba acabar concluye concluir'],['repite','repite repetir']]
+ .forEach(([c,l])=>l.split(' ').forEach(w=>NLV[w]=c));
+const COLORES={rojo:'R',roja:'R',azul:'B',verde:'G',naranja:'O',anaranjado:'O',anaranjada:'O',morado:'P',morada:'P',violeta:'P',lila:'P',purpura:'P',turquesa:'T',cian:'T',aqua:'T',amarillo:'Y',amarilla:'Y',mostaza:'Y',cafe:'Y',marron:'Y',gris:'K',negro:'K',negra:'K',rosa:'N',rosado:'N',rosada:'N',fucsia:'N',magenta:'N'};
+const NLNOMC={R:'rojo',B:'azul',G:'verde',O:'naranja',P:'morado',T:'turquesa',Y:'mostaza',K:'gris',N:'rosa'};
+const ORDINAL={primera:1,primero:1,segunda:2,segundo:2,tercera:3,tercero:3,cuarta:4,cuarto:4,quinta:5,quinto:5,sexta:6,sexto:6,ultima:-1,ultimo:-1};
+/* una orden hablada como lista de palabras: n = normalizada, o = como se dijo (para escribir el texto tal cual) */
+function nlTokens(t){return String(t).split(/\s+/).map(o=>({o:o.replace(/^[«"“'¿¡(]+|[»"”'?!.,;:)]+$/g,''),n:nrm(o)})).filter(w=>w.n)}
+const nlTxt=R=>R.map(w=>w.n).join(' '),nlOrig=R=>R.map(w=>w.o).join(' ');
+function nlQuitaFrase(R,lista,alInicio){let cambio=true;while(cambio&&R.length){cambio=false;for(const f of lista){const k=f.split(' ');const seg=alInicio?R.slice(0,k.length):R.slice(-k.length);if(seg.length===k.length&&seg.every((w,i)=>w.n===k[i])){R=alInicio?R.slice(k.length):R.slice(0,-k.length);cambio=true;break}}}return R}
+function nlLimpia(t){let R=nlQuitaFrase(nlQuitaFrase(nlTokens(t),NLQ,true),NLF,false);let v=null,pron=false;
+ if(R.length){const w=R[0].n;if(NLV[w])v=NLV[w];else{const m=w.match(/^(.+?)(selo|sela|melo|mela|telo|tela|le|les|lo|la|los|las|me)$/);if(m&&NLV[m[1]]){v=NLV[m[1]];pron=/lo|la/.test(m[2])}else if(m&&NLV[m[1]+'r']){v=NLV[m[1]+'r'];pron=true}}}
+ if(!v&&R.length>1&&/^(regresa|regresar|vuelve|volver)$/.test(R[0].n))v='abre';const raw=nlTxt(R);if(v)R=R.slice(1);return{v,pron,R,raw,s:(v?v+' ':'')+nlTxt(R)}}
+/* ¿a qué pieza, casilla o espacio se refiere? */
+const PRON=/^(lo|la|eso|esto|este|esta|ese|esa|ahi|aqui|el seleccionado|la seleccionada|lo seleccionado|la pieza seleccionada)$/;
+function nlSel(){return S.org?S.P.find(p=>p.id===S.sel)||S.P.find(p=>p.id===VZ.ult):null}
+function objetivo(q){q=String(q||'').trim();if(!q)return null;if(PRON.test(q)){const p=nlSel();return p?{p,sc:1}:null}
+ if(S.org&&$('#bd')){const fm=q.match(/^(?:(.*?)\s)?fila (\S+)(?: (?:y )?columna (\S+))?$/);if(fm){const tq=fm[1]?piezaPor(fm[1]):null;const p=(tq&&tq.t)?tq:S.P.find(x=>x.t);if(p){const r=numIn(fm[2])||+fm[2]||1,c=(fm[3]?(numIn(fm[3])||+fm[3]):1)-1;if(r<=p.t.rows&&c<p.t.cols)return{p,cell:{r,c},sc:1}}}
+  const a=piezaYPuntaje(q);const b=campoYPuntaje(q);if(a&&(!b||a.sc>=b.sc))return a;if(b)return b}else{const b=campoYPuntaje(q);if(b)return b}return null}
+function nlEscribe(o,texto,reemplaza){if(o.el){o.el.value=reemplaza||!o.el.value.trim()?texto:o.el.value.trim()+' '+texto;o.el.dispatchEvent(new Event('input',{bubbles:true}));return toast('Escrito: «'+texto+'»')}
+ const p=o.p;mut(()=>{if(o.cell)p.t.cells[o.cell.r][o.cell.c]=texto;else p.text=texto;S.sel=p.id});VZ.ult=p.id;toast('Escrito en '+kd(p).l.toLowerCase()+': «'+texto+'»')}
+function nlPartes(R,ini){while(R.length&&ini.includes(R[0].n))R=R.slice(1);return R}
+/* «escribe en el tema los animales», «escribe los animales en el tema», «pon en la idea 2 que…», «cambia el tema por…», «ponle de título…» */
+function nlEscribir(c){const R=c.R;let best=null;/* ante un empate gana el nombre de pieza más largo («conjunto general» antes que «conjunto»), contando solo palabras con significado */
+ const cand=(o,T,largo)=>{if(T.length&&['que','diga','dice','por','a','con','como','de'].includes(T[0].n))T=T.slice(1);if(!T.length)return;if(!best||o.sc>best.o.sc||(o.sc===best.o.sc&&largo>best.largo))best={o,T,largo}};
+ for(let i=1;i<=R.length;i++){const tq=nlPartes(R.slice(0,i),['en','a','al','el','la','los','las','de','del','sobre','dentro','texto','titulo']);const o=tq.length&&objetivo(nlTxt(tq));if(o&&o.sc>=0.5)cand(o,R.slice(i),tq.filter(w=>!RELL.has(w.n)).length);
+  if(i<R.length&&['en','a','al','como','para','dentro'].includes(R[i].n)){const o2=objetivo(nlTxt(nlPartes(R.slice(i+1),['en','a','al','el','la','los','las','de','del'])));if(o2&&o2.sc>=0.6)cand(o2,R.slice(0,i),R.slice(i+1).filter(w=>!RELL.has(w.n)).length)}}
+ if(best){nlEscribe(best.o,nlOrig(best.T),c.v==='cambia');return true}
+ const sel=nlSel(),f=document.activeElement;if(R.length&&(c.pron||(c.v!=='cambia'&&(sel||(f&&/INPUT|TEXTAREA/.test(f.tagName)))))){const T=nlPartes(R,['que','diga','dice','esto','lo','siguiente']);if(!T.length)return false;if(f&&/INPUT|TEXTAREA/.test(f.tagName)&&!sel)nlEscribe({el:f},nlOrig(T),false);else if(sel)nlEscribe({p:sel},nlOrig(T),true);else return false;return true}
+ return false}
+function nlColor(c){const i=c.R.findIndex(w=>COLORES[w.n]);if(i<0)return false;const tieneColor=c.R.some(w=>w.n==='color');
+ if(!(c.v==='pinta'||tieneColor||([null,'cambia','pon'].includes(c.v)&&i===c.R.length-1&&['a','de','en','al','por'].includes((c.R[i-1]||{}).n))))return false;
+ const col=COLORES[c.R[i].n];const T=c.R.filter((w,k)=>k!==i&&!['color','de','del','a','en','al','el','la','los','las','con','pon','ponle','su','un','una'].includes(w.n));const o=T.length?objetivo(nlTxt(T)):{p:nlSel(),sc:1};
+ if(!o||!o.p)return toast('¿De qué pieza cambio el color? Por ejemplo: «pinta el tema de azul».',3500),true;
+ mut(()=>{o.p.c=col});VZ.ult=o.p.id;toast(kd(o.p).l+' en '+NLNOMC[col]);return true}
+function nlMover(c){const R=c.R;let dir=c.v==='sube'?'arriba':c.v==='baja'?'abajo':null;const D={derecha:[1,0],izquierda:[-1,0],arriba:[0,-1],abajo:[0,1]};R.forEach(w=>{if(D[w.n])dir=w.n});
+ if(!dir)return false;const t=nlTxt(R);const paso=/un poco|poquito|poquitito|tantito|ligeramente/.test(t)?20:/mucho|bastante|hasta el fondo|todo/.test(t)?160:60;
+ const T=R.filter(w=>!D[w.n]&&!['a','la','el','hacia','para','un','poco','poquito','poquitito','tantito','mucho','bastante','mas','ligeramente','lado','del','de'].includes(w.n));
+ if(S.org&&$('#bd')){const o=T.length?objetivo(nlTxt(T)):{p:nlSel(),sc:1};if(o&&o.p){const[dx,dy]=D[dir];mut(()=>{o.p.x+=dx*paso;o.p.y+=dy*paso;clampP(o.p)});VZ.ult=o.p.id;S.sel=o.p.id;render();return true}}
+ if(!T.length&&(dir==='arriba'||dir==='abajo')){const z=$('#pane')&&S.org?$('#pane'):null;const dy=(dir==='abajo'?1:-1)*innerHeight*0.6;if(z)z.scrollBy({top:dy,behavior:'smooth'});else scrollBy({top:dy,behavior:'smooth'});return true}
+ return false}
+function nlUnir(c){const R=c.R.filter(w=>!['una','un','flecha','linea','conexion','union','desde'].includes(w.n));let best=null;
+ for(let i=1;i<R.length-1;i++){if(!['con','y','a','hacia','hasta','al','e'].includes(R[i].n))continue;const a=objetivo(nlTxt(nlPartes(R.slice(0,i),['de','del','el','la']))),b=objetivo(nlTxt(nlPartes(R.slice(i+1),['el','la','los','las'])));if(a&&b&&a.p&&b.p&&a.p!==b.p&&(!best||a.sc+b.sc>best.sc))best={a:a.p,b:b.p,sc:a.sc+b.sc}}
+ if(!best)return false;S.from=best.a.id;linkTap(best.b);VZ.ult=best.b.id;toast('Unidos: '+kd(best.a).l.toLowerCase()+' → '+kd(best.b).l.toLowerCase());return true}
+function nlQuitaFlecha(c){const R=c.R.filter(w=>!['la','el','flecha','linea','conexion','union','entre','de','que','va'].includes(w.n));let cn=null;
+ for(let i=1;i<R.length-1;i++){if(!['y','con','a','hacia','e'].includes(R[i].n))continue;const a=objetivo(nlTxt(R.slice(0,i))),b=objetivo(nlTxt(R.slice(i+1)));if(a&&b&&a.p&&b.p){cn=S.C.find(x=>(x.a===a.p.id&&x.b===b.p.id)||(x.a===b.p.id&&x.b===a.p.id));if(cn)break}}
+ if(!cn&&!R.length)cn=S.C.find(x=>x.id===S.selC)||S.C[S.C.length-1];if(!cn)return toast('No encontré esa flecha.'),true;mut(()=>{S.C=S.C.filter(x=>x!==cn);S.selC=null});toast('Flecha quitada');return true}
+function nlForma(forma,act){const sel=nlSel();const p=sel&&kd(sel).shape===forma?sel:S.P.find(x=>kd(x).shape===forma);if(!p)return toast('Este organizador no tiene esa forma.'),true;S.sel=p.id;selAct(act);return true}
+function nlTabla(act){const p=nlSel()&&nlSel().t?nlSel():S.P.find(x=>x.t);if(!p)return toast('Este organizador no tiene tabla.'),true;S.sel=p.id;selAct(act);return true}
+/* respuestas: «la respuesta es la segunda», «elijo la b», «opción 3», «creo que es separa las cosas en grupos» */
+function nlResponde(s){const L=visibles('.opt,.jgop,.rq').filter(b=>!b.disabled);if(!L.length)return false;
+ const m=s.match(/^(?:la respuesta es|mi respuesta es|respuesta|respondo|contesto|elijo|escojo|creo que es|yo digo|es la|es el|opcion|la opcion|el inciso|inciso)\s*(?:la |el |opcion |inciso )?(.*)$/)||(s.match(/^(?:la |el )?(primera|primero|segunda|segundo|tercera|tercero|cuarta|cuarto|ultima|ultimo|[abcd])$/)?[s,s.replace(/^(la|el) /,'')]:null);if(!m)return false;
+ const x=m[1].trim();let b=null;const k=ORDINAL[x]||(/^[abcd]$/.test(x)?' abcd'.indexOf(x):0)||numIn(x);
+ if(k)b=k===-1?L[L.length-1]:L[k-1];else{let bs=0;L.forEach(e=>{const sc=parecido(canon(x),canon(e.textContent));if(sc>bs){bs=sc;b=e}})}
+ if(!b)return false;b.click();return true}
+function nlSesion(s){
+ if(/^(empieza|inicia|comienza)( la| una)? (sesion|clase)/.test(s)){const t=/60|sesenta|lectura/.test(s)?'60':'30';const b=visibles(`[data-z="go${t}"],[data-z="ini${t}"]`)[0];if(b)return b.click(),true;location.hash='#clases';return toast('Abrí Clases: elige el grupo y vuelve a decir «empieza la sesión».',3500),true}
+ if(!SES)return false;const q=z=>{const b=document.querySelector(`#sesbar [data-z="${z}"]`);if(b){b.click();return true}return false};
+ if(/^(termina|finaliza|acaba|cierra)( la)? sesion$|^terminar$/.test(s))return q('sfin');
+ if(/^(pausa|pausar|pon pausa|deten la sesion|deten el tiempo|para el tiempo)$/.test(s))return SES.pausa?true:q('spausa');
+ if(/^(continua|continuar|reanuda|reanudar|sigue la sesion|quita la pausa)$/.test(s))return SES.pausa?q('spausa'):true;
+ if(/^(siguiente paso|paso siguiente|avanza|siguiente|adelante|continua con el siguiente paso)$/.test(s))return q('snext');
+ if(/^(paso anterior|anterior|retrocede|regresa un paso|atras)$/.test(s))return q('sprev');
+ if(/^(que paso sigue|en que paso vamos|lee el paso|di el paso)$/.test(s))return q('sdecir');
+ return false}
+function nlLetra(s){if(!/\b(letra|letras|fuente)\b/.test(s)||/^escribe /.test(s))return false;
+ const F=FONTS.findIndex(f=>s.includes(nrm(f[0])));if(F>=0&&S.org&&$('#bd')){const p=nlSel();if(!p)return toast('Primero selecciona la pieza: «selecciona el tema».',3500),true;mut(()=>{p.fo=F});return toast('Letra '+FONTS[F][0].toLowerCase()),true}
+ if(/muy grande|enorme|grandota|mas grande todavia/.test(s))return setLetra(2),true;if(/(agranda|aumenta|sube|mas grande)/.test(s))return setLetra(LETRA+1),true;
+ if(/(achica|reduce|disminuye|baja|mas chica|mas pequena)/.test(s))return setLetra(LETRA-1),true;if(/normal|chica|pequena|mediana|como estaba/.test(s))return setLetra(0),true;if(/grande/.test(s))return setLetra(1),true;return false}
+function nlLee(c){const t=nlTxt(c.R);if(/^(la )?pregunta$/.test(t)){const b=visibles('.quiz>b')[0];if(b)return say(b.textContent),true}
+ if(!t||/^(esto|eso|el panel|las instrucciones|la explicacion|en voz alta|la pantalla|todo)$/.test(t))return decirPane(),true;const o=objetivo(t);if(o&&o.p){say((o.p.text||kd(o.p).l)+(o.p.t?'. '+o.p.t.cells.map(r=>r.join(', ')).join('. '):''));return true}return false}
+/* la orden completa: ¿la entiende la capa natural? si no, la pasa al intérprete anterior */
+function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#bd');
+ if(/^(otra vez|de nuevo|repite|repitelo|repite eso|lo mismo)$/.test(nrm(t))||(v==='repite'&&!R.length)){if(VZ.ultOrden){oirLimpia(VZ.ultOrden,true)}return true}
+ if(/^(deshaz|deshacer)|^(regresa|devuelve|quita) (lo ultimo|eso|el ultimo cambio)$|^(me equivoque|ups|eso no|asi no|control z)$/.test(s)){if(enTablero)undo();toast('Deshecho');return true}
+ if(nlResponde(s))return true;
+ if(nlSesion(s))return true;
+ if(/^(sortea|haz un sorteo|un sorteo|sorteo|saca un numero|elige un numero|quien sigue|quien participa|otro numero|otro alumno)$/.test(s)||(v==='sortea')){if(!$('#sorn'))sorteoDlg();setTimeout(sortear,250);return true}
+ if(nlLetra(s))return true;
+ if(/(oculta|cierra|esconde|quita) (el |los |las )?(panel|explicaciones|instrucciones|recuadros)/.test(s)||/^(mas tablero|tablero grande|solo el tablero)$/.test(s)){if(enTablero){if(esCel())panelOculto(true);else if(!$('.bld').classList.contains('nop'))$('#tgl').click()}return true}
+ if(/(muestra|abre|ensena|ver) (el |los |las )?(panel|explicaciones|instrucciones)/.test(s)){if(enTablero){if(esCel())panelOculto(false);else if($('.bld').classList.contains('nop'))$('#tgl').click()}return true}
+ if(v==='lee'&&nlLee(c))return true;
+ if(enTablero){
+  if(v==='quita'&&/\b(flecha|linea|conexion|union)\b/.test(tx))return nlQuitaFlecha(c);
+  if((v==='une')||(/\b(flecha|linea)\b/.test(tx)&&['pon','agrega','une',null].includes(v)))if(nlUnir(c))return true;
+  if(/^(agrega|pon)( una| otra| un| otro)? fila/.test(s))return nlTabla('row+');if(/^quita( una| la| esa| ultima)? fila/.test(s))return nlTabla('row-');
+  if(/^(agrega|pon)( una| otra| un| otro)? columna/.test(s))return nlTabla('col+');if(/^quita( una| la| esa| ultima)? columna/.test(s))return nlTabla('col-');
+  if(/^(agrega|pon)( una| la)? conclusion|^quita( la)? conclusion/.test(s))return nlTabla('foot');
+  if(/(tres|3) circulos/.test(s))return nlForma('venn','v3');if(/(dos|2) circulos/.test(s))return nlForma('venn','v2');
+  if(/(mas|agrega|otra|otras|pon) espinas?/.test(s))return nlForma('fish','f+');if(/(menos|quita) espinas?/.test(s))return nlForma('fish','f-');
+  if(nlColor(c))return true;
+  if(['mueve','sube','baja'].includes(v)&&nlMover(c))return true;
+  if(v==='duplica'){const o=tx?objetivo(tx):{p:nlSel()};if(o&&o.p){S.sel=o.p.id;selAct('dup');return toast('Duplicado'),true}}
+  if(v==='resalta'||/^(quita|quitale)( el)? (resaltado|estrella)/.test(s)){const T=R.filter(w=>!['el','resaltado','estrella','de','la','a','con'].includes(w.n));const o=T.length?objetivo(nlTxt(T)):{p:nlSel()};if(o&&o.p){const on=v==='resalta';mut(()=>{o.p.hl=on});VZ.ult=o.p.id;return toast(on?'Resaltado':'Sin resaltar'),true}}
+  if(/^(trae|pon|manda|lleva)( al| hasta el| hasta adelante|) frente|al frente$/.test(s)){const p=nlSel();if(p){S.sel=p.id;selAct('front');return true}}
+  if(/^(manda|pon|lleva)( para| hacia| hasta)? atras|al fondo$/.test(s)){const p=nlSel();if(p){S.sel=p.id;selAct('back');return true}}
+  if(/^(deselecciona|suelta|sueltalo|ninguno|nada seleccionado|quita la seleccion)$/.test(s)){S.sel=S.selC=null;S.cell=null;render();return true}
+  if(/^(acerca|acercar|zoom|mas cerca|agranda el tablero|tablero mas grande)$/.test(s))return $('#zi').click(),true;
+  if(/^(aleja|alejar|mas lejos|achica el tablero|tablero mas chico|tablero mas pequeno)$/.test(s))return $('#zo').click(),true;
+  if(/^(ver todo|todo el tablero|ver completo|completo|ajusta|ajustar|que se vea todo)$/.test(s)){S.todo=true;fitZoom();return true}}
+ if(['escribe','pon','cambia'].includes(v)&&R.length&&!/^(otra|otro|una|un) /.test(tx)&&nlEscribir(c))return true;
+ if(['mueve','sube','baja'].includes(v)&&nlMover(c))return true;
+ if(/^(regresa|vuelve|volver|atras)$/.test(s)&&!visibles('.nav2 .tb:not(.pri)').length&&!SES){history.back();return true}
+ return false}
+/* recibe lo que dijo la persona: separa órdenes en cadena y las hace una por una */
+function oir(t){if(VZ.modo==='dictado')return oirUna(t);
+ const partes=String(t).split(/\s+(?:y luego|y después|y despues|luego|después|despues|y también|y tambien|además|ademas|y enseguida|enseguida)\s+/i).filter(x=>x.trim());
+ partes.forEach((p,i)=>setTimeout(()=>oirLimpia(p),i*450))}
+function oirLimpia(t,repetida){const c=nlLimpia(t);if(!c.R.length&&!c.v)return oirUna(t);if(!repetida&&!/^(otra vez|de nuevo|repite)/.test(nrm(t)))VZ.ultOrden=t;
+ VZ.txt=t;vzBar();if(natural(c,t))return;
+ const verbo={pon:/^(otra|otro|una|un) /.test(nlTxt(c.R))?'agrega':'escribe',sube:'mueve',baja:'mueve'}[c.v]||c.v;
+ /* una sola palabra («sí», «cerrar», «anterior») pasa tal cual; si hubo verbo y algo más, pasa ya normalizada */
+ oirUna(t,c.v&&c.R.length?verbo+' '+nlTxt(c.R):c.raw||nrm(t))}
 
 /* ---------- RUTAS ---------- */
 function route(){document.body.classList.remove('peval');const h=location.hash.slice(1),m=h.match(/^org-(\d\d)$/);TAMANO.disconnect();$('#modal').classList.remove('show');let g;
