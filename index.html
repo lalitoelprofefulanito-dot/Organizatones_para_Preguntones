@@ -892,6 +892,31 @@ html[data-tema="oscuro"] .aviso-espacio{background:#3A1418;color:#FFD9DC}
 @media print{
  .nkgo,.aviso-nota,.aviso-espacio,.clase-hoy{display:none}
 }
+/* recuadros plegables del panel */
+.plg{border:2px solid #D5DBE7;border-radius:10px;margin:6px 0;background:#fff}
+.plg>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:38px;padding:2px 10px;color:var(--c)}
+.plg>summary::-webkit-details-marker{display:none}
+.plg>summary::before{content:"▸";font-size:16px;width:14px;flex:none}
+.plg[open]>summary::before{content:"▾"}
+.plg>summary,.plg>summary h3{font-family:"Baloo 2",Arial,sans-serif;font-size:17px;font-weight:800}
+.plg>summary h3{margin:0;color:inherit}
+.plg[open]>summary{border-bottom:1px dashed #D5DBE7}
+.plg>:not(summary){margin:6px 10px}
+.plg>.box,.plg>.quiz{border:0;margin:0;background:transparent}
+.plg>.box>b.l:first-child{display:none}
+.moms .momtg{display:none}
+html[data-tema="oscuro"] .plg{background:#16213F;border-color:#3A4A72}
+@media (max-width:899px){
+ .moms{grid-template-columns:repeat(4,minmax(0,1fr)) 46px}
+ .moms .momtg{display:block;border:0;background:#fff;font-size:22px;font-weight:bold;color:var(--c)}
+ html[data-tema="oscuro"] .moms .momtg{background:#16213F}
+ body:has(#side.closed) .micf{bottom:66px!important}
+ #zf{min-width:5.9em}
+}
+@media print{
+ .plg{border:0}
+ .plg>summary{display:none}
+}
 </style>
 </head>
 <body>
@@ -3082,14 +3107,14 @@ function openOrg(n){const o=ORGS[n-1];if(!o)return home();SV={st:'',err:false};S
  S.mom=S.meta.mom??0;S.et=S.meta.et??0;S.ri=0;
  const fc=COL[FAM[o.fam].c],x=OY[o.n];
  $('#app').innerHTML=`<div class="bld" style="--c:${fc}"><header class="bh"><a class="tb" href="${S.back||'#'}" aria-label="Volver">←<span class="hide-s"> Volver</span></a><span class="nb">${pad(o.n)}</span><div class="bt"><b>${o.name}</b><small>${FAM[o.fam].n.toUpperCase()} · ${o.cat}${x&&!GEN?` · se introduce en ${x.grado}.º`:''}</small></div><span style="flex:1"></span>${SCH?`<button class="tb sm ctxb" data-z="ctxdlg" title="Grupo con el que se trabaja">👥 ${ctxTxt()}</button>`:''}${GEN||CTX?'':`<label class="hide-s" style="font-weight:bold">Grado <select class="gsel" id="gsel" aria-label="Grado">${[1,2,3,4,5,6].map(g=>`<option value="${g}" ${g===GR?'selected':''}>${g}.º</option>`).join('')}</select></label><button class="tb sm hide-s ${DOC?'on':''}" data-docm="1" title="Notas para el docente">Docente</button>`}${GEN?temaBtns():''}<button class="tb sm" data-z="decir" title="Leer en voz alta el panel" aria-label="Leer en voz alta">🔊</button>${SCH?'<button class="tb sm hide-s" data-z="sorteo" title="Sorteo de número de lista" aria-label="Sorteo">🎲</button><button class="tb sm hide-s" data-z="proy" title="Modo proyector (letra grande, pantalla completa)" aria-label="Modo proyector">📽</button>':''}<button class="tb only-m" data-z="bhmas" aria-label="Más opciones" title="Más opciones">⋯</button><button class="tb" id="tgl" title="Muestra u oculta el panel para tener más tablero">Ocultar panel</button></header>
- <aside class="side" id="side"><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}</nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
+ <aside class="side" id="side"><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}<button class="momtg" id="momtg" data-z="panel" aria-expanded="true" aria-label="Ocultar las explicaciones para ver más tablero" title="Ocultar las explicaciones">▾</button></nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
  <main class="work"><div class="tools"><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas-opciones"><summary class="tb">Más ▾</summary><span class="mas-opciones-lista"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
  <div class="hint" id="hint"></div><div class="wrap" id="wrap"><svg id="bd" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"></svg></div><div class="selbar" id="selbar" hidden></div></main></div>`;
  setWF();bindBoard();setMom(S.mom,S.et);fitZoom();render()}
 function setMom(i,e){S.mom=i;if(e!=null)S.et=e;S.meta.mom=i;S.meta.et=S.et;S.meta.momv=S.meta.momv||[];if(!S.meta.momv.includes(i))S.meta.momv.push(i);if(i===2){S.meta.etv=S.meta.etv||[];if(!S.meta.etv.includes(S.et))S.meta.etv.push(S.et)}save();
  document.querySelectorAll('.moms button').forEach(b=>b.classList.toggle('on',+b.dataset.mo===i));
  const ep=$('#etps');ep.hidden=i!==2;if(i===2)ep.innerHTML=ETAPAS.map((t,k)=>`<button data-et="${k}" class="${k===S.et?'on':''} ${(S.meta.etv||[]).includes(k)?'vis':''}" title="${k+1}. ${t}">${k+1}<span class="en">. ${t}</span></button>`).join('');
- const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);pn.scrollTop=0;$('#side').classList.remove('closed');const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop');setTimeout(fitZoom,50)}const t=$('#tgl');if(t)t.textContent='Ocultar panel';
+ const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);plegarPane(pn);pn.scrollTop=0;panelOculto(false);const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop')}const t=$('#tgl');if(t)t.textContent='Ocultar panel';
  {const k=$('#lecd');if(k&&Date.now()-LECT0>800&&!k.classList.contains('min')){k.classList.add('min');const b=k.querySelector('[data-z="lecmin"]');if(b)b.textContent='▴ Abrir'}lecTop()}
  proyBarra()}
 function quiz(q,tag){if(!q)return'';return`<div class="quiz"><b>${esc(q.texto)}</b>${q.opciones.map((p,i)=>`<button class="opt" data-qz="${tag}:${i}">${esc(p.t)}</button>`).join('')}<div id="qf-${tag}"></div></div>`}
@@ -3135,7 +3160,11 @@ function updCounts(){if(!document.querySelector('.pal'))return;const K=Object.as
 function render(){RORG=S.org;const bd=$('#bd');if(!bd)return;bd.innerHTML=boardInner(S.P,S.C,false,false);selbar();updCounts();hint()}
 function quickConns(){const l=$('#lyC');if(l)l.innerHTML=connsSVG(S.P,S.C,false,false)}
 function hint(){const h=$('#hint');if(!h)return;if(S.link){h.innerHTML=`<span>${S.from?'Ahora toca la pieza de <b>llegada</b>.':'Toca la pieza de <b>salida</b> de la flecha.'}</span><button class="tb" id="lnkoff">Terminar</button>`;h.classList.add('show')}else h.classList.remove('show');$('#lnk').classList.toggle('on',S.link)}
-function fitZoom(){const w=$('#wrap');if(!w)return;const fw=(w.clientWidth-14)/W,fh=(w.clientHeight-14)/H;S.z=Math.max(0.12,Math.min(fw,fh));applyZoom();w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0}
+function fitZoom(){const w=$('#wrap');if(!w)return;const fw=(w.clientWidth-14)/W,fh=(w.clientHeight-14)/H,cel=esCel(),
+ /* la decisión usa la altura total (con o sin barra de desplazamiento) para que no oscile */
+ alto=(w.offsetHeight-30)/H,llenar=cel&&!S.todo&&alto>fw*1.15;S.z=Math.max(0.12,llenar?alto:Math.min(fw,fh));applyZoom();w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0;
+ const b=$('#zf');if(b)b.textContent=!cel?'Ajustar':llenar?'Completo':'Ampliar';
+ if(llenar&&!lsGet('oya:pista-tablero')){lsSet('oya:pista-tablero','1');setTimeout(()=>toast('Desliza el tablero con el dedo para recorrerlo. «Completo» lo muestra entero.',2600,1),600)}}
 function applyZoom(){const bd=$('#bd');bd.style.width=(W*S.z)+'px';bd.style.height=(H*S.z)+'px'}
 function zoomBy(f){const w=$('#wrap'),cx=(w.scrollLeft+w.clientWidth/2)/S.z,cy=(w.scrollTop+w.clientHeight/2)/S.z;S.z=Math.max(0.25,Math.min(2.5,S.z*f));applyZoom();w.scrollLeft=cx*S.z-w.clientWidth/2;w.scrollTop=cy*S.z-w.clientHeight/2}
 
@@ -3189,8 +3218,9 @@ function bindBoard(){const bd=$('#bd'),wrap=$('#wrap');
   if(g.m==='mv'){const p=g.p,K=kd(p),now=Date.now();if(S.sel===p.id||(lastTap.id===p.id&&now-lastTap.t<450)){if(K.shape==='table'){const cell=cellAt(p,g.pt);if(S.cell&&S.cell.id===p.id&&S.cell.r===cell.r&&S.cell.c===cell.c){openEdit(p,cell)}else{S.cell=Object.assign({id:p.id},cell);render()}}else openEdit(p,null)}else{S.sel=p.id;S.selC=null;S.cell=K.shape==='table'?Object.assign({id:p.id},cellAt(p,g.pt)):null;render()}lastTap={id:p.id,t:now}}};
  bd.addEventListener('pointerup',end);bd.addEventListener('pointercancel',()=>{if(G&&G.mv){render();save()}G=null});
  bd.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();zoomBy(e.deltaY<0?1.1:0.9)}},{passive:false});
- addEventListener('resize',onResize)}
-const onResize=()=>{if($('#bd'))fitZoom()};
+ TAMANO.disconnect();TAMANO.observe(wrap)}
+/* el tablero se reajusta cuando cambia el espacio que tiene (ventana, panel, proyector, pantalla completa) */
+const TAMANO=new ResizeObserver(()=>{if($('#bd')&&!matchMedia('print').matches)fitZoom()});
 function autoScroll(e){const w=$('#wrap'),r=w.getBoundingClientRect(),m=40;if(e.clientX<r.left+m)w.scrollLeft-=12;else if(e.clientX>r.right-m)w.scrollLeft+=12;if(e.clientY<r.top+m)w.scrollTop-=12;else if(e.clientY>r.bottom-m)w.scrollTop+=12}
 function cellAt(p,pt){const g=tGeom(p),lx=pt.x-p.x,ly=pt.y-p.y+p.h/2;if(p.t.foot&&ly>p.h-g.ft)return{r:'foot',c:0};let r=ly<g.hd?0:1+Math.floor((ly-g.hd)/g.rh);r=Math.max(0,Math.min(p.t.rows,r));let c=0;for(let i=0;i<p.t.cols;i++)if(lx>=g.xs[i])c=i;return{r,c}}
 function linkTap(p){if(!S.from){S.from=p.id;render();return}if(S.from===p.id){S.from=null;render();return}const a=S.from;let c;mut(()=>{c={id:nid('c'),a,b:p.id,l:'',st:S.org.cs||'arrow'};if(c.st==='thick'&&kd(S.P.find(q=>q.id===a)).shape!=='circle')c.st='line';S.C.push(c);S.from=null});const A=S.P.find(q=>q.id===a);if(S.org.needLabel||S.org.n===19||kd(A).shape==='diamond'){S.selC=c.id;render();editConn(c)}}
@@ -3296,17 +3326,17 @@ document.addEventListener('click',e=>{const sl=e.target.closest('a[href^="#"]');
  if(d.qz){const[tag,i]=d.qz.split(':'),x=OY[S.org.n],q=tag==='r'?x.reconocer.pregunta:x.comprender.pregunta,op=q.opciones[+i];t.parentNode.querySelectorAll('.opt').forEach(b=>b.classList.remove('ok','bad'));t.classList.add(op.ok?'ok':'bad');$('#qf-'+tag).innerHTML=`<div class="rt ${op.ok?'ok':'bad'}">${op.ok?'¡Muy bien! ':'Piensa un poquito más. '}${esc(op.ok?q.explicacion:'Vuelve a mirar el ejemplo del tablero.')}</div>`;return}
  if(d.pista){S.meta.pv=(S.meta.pv??[99,1,0][banda()-1])+1;save();return setMom(2,3)}
  if(d.modelo){$('#modelo').hidden=false;return}
- if(t.id==='read2')return readOut();if(t.id==='img2')return exportImg();if(t.id==='prn'){fitZoom();return setTimeout(()=>print(),100)}
+ if(t.id==='read2')return readOut();if(t.id==='img2')return exportImg();if(t.id==='prn'){const td=S.todo;S.todo=true;fitZoom();S.todo=td;return setTimeout(()=>print(),100)}
  if(t.id==='jsave')return saveJSON();if(t.id==='jopen')return $('#jfile').click();
  if(t.id==='fresh')return dialog('¿Empezar uno nuevo?','<p>Se vacía el tablero y se borran tus respuestas de este organizador. Su evaluación queda en «Trabajos anteriores». Si quieres conservar el tablero, primero usa «Guardar copia en archivo».</p>',()=>{archivar();const b=buildForm(S.org,0,true);snap();S.P=b.P;S.C=b.C;S.form='A';S.meta={mom:2,et:2,etv:[0,1,2],font:S.meta.font};S.et=2;save();render();setMom(2,2);fitZoom();toast('Plantilla en blanco lista.')});
- if(t.id==='tgl'){const s=$('#side');if(matchMedia('(max-width:899px)').matches){s.classList.toggle('closed');t.textContent=s.classList.contains('closed')?'Ver panel':'Ocultar panel'}else{const b=$('.bld');b.classList.toggle('nop');t.textContent=b.classList.contains('nop')?'Ver panel':'Ocultar panel'}setTimeout(fitZoom,50);return}
+ if(t.id==='tgl'){const s=$('#side');if(esCel()){panelOculto(!s.classList.contains('closed'))}else{const b=$('.bld');b.classList.toggle('nop');t.textContent=b.classList.contains('nop')?'Ver panel':'Ocultar panel'}return}
  if(t.id==='undo')return undo();
  if(t.id==='lnk'||t.id==='lnkoff'){S.link=t.id==='lnk'?!S.link:false;S.from=null;if(S.link){S.sel=S.selC=null}render();return}
- if(t.id==='zi')return zoomBy(1.2);if(t.id==='zo')return zoomBy(1/1.2);if(t.id==='zf')return fitZoom();
+ if(t.id==='zi')return zoomBy(1.2);if(t.id==='zo')return zoomBy(1/1.2);if(t.id==='zf'){if(esCel())S.todo=!S.todo;return fitZoom()}
  if(t.id==='read')return readOut();if(t.id==='img')return exportImg();
  if(t.id==='clr')return dialog('¿Vaciar el tablero?','<p>Se quitarán todas las piezas. Puedes recuperarlas con «Deshacer».</p>',()=>{mut(()=>{S.P=[];S.C=[];S.sel=S.selC=null})});
  if(t.id==='rev'){const R=review();$('#revout').innerHTML=R.map(([k2,m])=>`<li style="color:${k2===2?'var(--G)':k2===1?'var(--Y)':'var(--R)'};font-weight:bold">${k2===2?'✔':k2===1?'●':'!'} ${esc(m)}</li>`).join('');return}
- if(d.form!==undefined){const fi=+d.form,bl=d.blank==='1',doIt=()=>{mut(()=>{const b=buildForm(S.org,fi,bl);S.P=b.P;S.C=b.C;S.sel=S.selC=null;S.cell=null;S.form='ABC'[fi];S.meta.propio=bl?1:0});fitZoom();if(S.mom===2&&S.et===3)setMom(2,3);toast(bl?'Plantilla en blanco lista: toca cada pieza dos veces para escribir.':'Ejemplo cargado. Cámbialo con tus propias ideas.',3500);if(matchMedia('(max-width:899px)').matches){$('#side').classList.add('closed');$('#tgl').textContent='Ver panel';setTimeout(fitZoom,50)}};if(S.P.length)dialog('¿Cambiar de forma?','<p>Esto reemplaza lo que hay en el tablero. Si te equivocas, usa «Deshacer».</p>',()=>{doIt()});else doIt();return}
+ if(d.form!==undefined){const fi=+d.form,bl=d.blank==='1',doIt=()=>{mut(()=>{const b=buildForm(S.org,fi,bl);S.P=b.P;S.C=b.C;S.sel=S.selC=null;S.cell=null;S.form='ABC'[fi];S.meta.propio=bl?1:0});fitZoom();if(S.mom===2&&S.et===3)setMom(2,3);toast(bl?'Plantilla en blanco lista: toca cada pieza dos veces para escribir.':'Ejemplo cargado. Cámbialo con tus propias ideas.',3500);if(esCel())panelOculto(true)};if(S.P.length)dialog('¿Cambiar de forma?','<p>Esto reemplaza lo que hay en el tablero. Si te equivocas, usa «Deshacer».</p>',()=>{doIt()});else doIt();return}
  if(d.loadex!==undefined){mut(()=>{const b=buildForm(S.org,0,false);S.P=b.P;S.C=b.C;S.sel=S.selC=null;S.form='A';S.meta.propio=0});fitZoom();return}
  if(d.purp){touch();S.meta.purp=d.purp;document.querySelectorAll('[data-purp]').forEach(b=>b.classList.toggle('on',b===t));$('#pfb').innerHTML=purpFb(S.org,d.purp);save();return}
  if(d.rub){touch();const[ri,ni]=d.rub.split(':').map(Number);S.meta.rub=S.meta.rub||{};S.meta.rub[ri]=ni;document.querySelectorAll(`[data-rub^="${ri}:"]`).forEach(b=>b.classList.toggle('on',b===t));$('#rubd'+ri).textContent=RUB[ri][ni+1];save();return}
@@ -3380,7 +3410,7 @@ function oir(t){const s=nrm(t);
  toast('No entendí «'+t+'». Di «ayuda» para ver ejemplos.',3500)}
 
 /* ---------- RUTAS ---------- */
-function route(){document.body.classList.remove('peval');const h=location.hash.slice(1),m=h.match(/^org-(\d\d)$/);removeEventListener('resize',onResize);$('#modal').classList.remove('show');let g;
+function route(){document.body.classList.remove('peval');const h=location.hash.slice(1),m=h.match(/^org-(\d\d)$/);TAMANO.disconnect();$('#modal').classList.remove('show');let g;
  if(m)return openOrg(+m[1]);S.back='#'+h;
  if(h==='retos')return retosView();if(h==='clases'||h==='estudio')return clasesView();{const q=h.match(/^cuaderno-(\d)(.+)$/);if(q){CUAD.gr=+q[1];CUAD.gp=decodeURIComponent(q[2]);CUAD.rem=null;return cuadView()}}if(h==='juego')return juegoView();if(h==='lecturas')return lecturasView();if(h==='cuaderno'||h==='familias')return cuadView();if(h==='elegir')return elegirView();if(h==='organizadores')return todosView();if(h==='docente'||h==='docentes'||h==='evaluador')return evalView();if(h==='metodo')return metodoView();
  if((g=h.match(/^grado-([1-6])$/)))return gradoView(+g[1]);if((g=h.match(/^familia-(\w+)$/)))return familiaView(g[1]);S.back='#';home()}
@@ -6068,7 +6098,7 @@ function sortear(){const st=sorLee();st.n=Math.max(2,Math.min(60,+($('#sortot')|
 /* ---------- modo proyector y teclado (flechas o control) ---------- */
 let PROY=lsGet('oya:proy')==='1';
 function proyAplica(){document.body.classList.toggle('proy',PROY&&SCH);proyBarra()}
-function proyToggle(){PROY=!PROY;lsSet('oya:proy',PROY?'1':'0');proyAplica();try{if(PROY&&document.documentElement.requestFullscreen&&!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});if(!PROY&&document.fullscreenElement)document.exitFullscreen().catch(()=>{})}catch(e){}toast(PROY?'Modo proyector: letra grande. Avance con → o con el control; retroceda con ←.':'Modo proyector apagado.',3500);setTimeout(()=>{if(S.org&&$('#bd'))fitZoom()},350)}
+function proyToggle(){PROY=!PROY;lsSet('oya:proy',PROY?'1':'0');proyAplica();try{if(PROY&&document.documentElement.requestFullscreen&&!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});if(!PROY&&document.fullscreenElement)document.exitFullscreen().catch(()=>{})}catch(e){}toast(PROY?'Modo proyector: letra grande. Avance con → o con el control; retroceda con ←.':'Modo proyector apagado.',3500)}
 function pasoMas(d){if(SES){return sesGo(SES.paso+d)}if(!S.org||!$('#bd'))return;if(S.mom===2){const e=S.et+d;if(e>=0&&e<=6)return setMom(2,e);if(e>6)return setMom(3);return setMom(1)}const m=S.mom+d;if(m<0||m>3)return;setMom(m,m===2?(d>0?0:6):null)}
 function teclasPaso(e){const t=e.target,tag=(t&&t.tagName)||'';if(/INPUT|TEXTAREA|SELECT/.test(tag)||(t&&t.isContentEditable))return;if($('#modal').classList.contains('show'))return;
  const nx=e.key==='PageDown'||(PROY&&e.key==='ArrowRight'&&!S.sel),pv=e.key==='PageUp'||(PROY&&e.key==='ArrowLeft'&&!S.sel);if(!nx&&!pv)return;if(!SES&&!(S.org&&$('#bd')))return;e.preventDefault();pasoMas(nx?1:-1)}
@@ -6127,8 +6157,28 @@ function lecDock(){const m=$('#modal'),d=m.querySelector('.dlg'),side=$('#side')
  k.innerHTML=`<div class="lecdh"><b>📖 Lectura</b><span class="sp"></span><button class="tb sm" data-z="lecmin" aria-label="Minimizar la lectura">▾ Minimizar</button><button class="tb sm" data-z="lecx" aria-label="Cerrar la lectura">✕</button></div><div class="lecdb">${d.innerHTML}${acts?`<div class="acts lecda">${acts.innerHTML}</div>`:''}</div>`;
  k.querySelectorAll('[data-lecx]').forEach(b=>b.remove());
  m.classList.remove('show');m.innerHTML='';side.classList.remove('closed');side.classList.add('conlec');
- const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel';setTimeout(fitZoom,50)}}
+ const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel'}}
 let LECT0=0;
+/* ---------- recuadros plegables del panel ---------- */
+const esCel=()=>matchMedia('(max-width:899px)').matches;
+const PLGK=()=>'oya:plg-'+(esCel()?'m':'d');
+function plgLee(){try{return JSON.parse(lsGet(PLGK())||'{}')||{}}catch(e){return{}}}
+/* Agrupa el panel en recuadros <details>: cada título h3 con lo que le sigue, cada .box o .quiz por separado,
+   y lo que va antes del primer título bajo el nombre del momento (p. ej. «Sus partes»).
+   En computadora empiezan abiertos; en celular, cerrados para dejarle espacio al tablero.
+   Lo que la persona abre o cierra se recuerda por título. */
+function plegarPane(pn){const G=plgLee();let grupo=null;
+ const nuevo=(titulo,antes)=>{const d=document.createElement('details');d.className='plg';d.dataset.k=titulo;const k=G[titulo];d.open=k!=null?k:!esCel();d.dataset.ini=String(d.open);const sm=document.createElement('summary');d.appendChild(sm);pn.insertBefore(d,antes);return d};
+ [...pn.children].forEach((el,i)=>{
+  if(el.tagName==='H3'){grupo=nuevo(el.textContent.trim(),el);grupo.firstChild.appendChild(el);return}
+  if(el.matches('.box,.quiz')){const l=el.querySelector(':scope>b.l');const d=nuevo(l?l.textContent.trim():'Pregunta para comprobar',el);d.firstChild.textContent=d.dataset.k;d.appendChild(el);grupo=null;return}
+  if(el.matches('details.ver-mas,.nav2')){grupo=null;return}
+  if(!grupo&&i===0){grupo=nuevo(MOMS[S.mom][1],el);grupo.firstChild.textContent=grupo.dataset.k}
+  if(grupo)grupo.appendChild(el)})}
+function panelOculto(on){const s=$('#side'),b=$('#momtg'),t=$('#tgl');if(!s)return;s.classList.toggle('closed',on);
+ if(b){b.textContent=on?'▴':'▾';b.setAttribute('aria-expanded',String(!on));const lb=on?'Ver las explicaciones':'Ocultar las explicaciones';b.title=lb;b.setAttribute('aria-label',lb)}
+ if(t&&esCel())t.textContent=on?'Ver panel':'Ocultar panel'}
+function plgCambio(e){const d=e.target;if(!d.classList||!d.classList.contains('plg'))return;if(!d.dataset.u&&d.dataset.ini===String(d.open))return;d.dataset.u='1';const G=plgLee();G[d.dataset.k]=d.open;lsSet(PLGK(),JSON.stringify(G))}
 function lecTop(){const k=$('#lecd'),pn=$('#pane');if(k&&pn&&!k.classList.contains('min'))k.style.top=pn.offsetTop+'px';else if(k)k.style.top=''}
 function lecDockX(){const k=$('#lecd');if(k)k.remove();const s=$('#side');if(s)s.classList.remove('conlec')}
 
@@ -6147,9 +6197,9 @@ function proyPaso(){if(!SES&&!S.org)return'';if(SES){const p=sesPasos()[SES.paso
  const mo=MOMS[S.mom]?MOMS[S.mom][0]:'';const et=S.mom===2?' · '+(S.et+1)+'. '+ETAPAS[S.et]:'';const sr=$('#pane .sayrow p');return`<b>${esc(mo+et)}</b>${sr?`<span>${esc(sr.textContent)}</span>`:''}`}
 /* barra del proyector: se actualiza cuando cambia el momento, el paso o el modo */
 function proyBarra(){const on=document.body.classList.contains('proy'),bl=$('.bld'),w=$('#wrap');let b=$('#proyb');
- if(!on||!bl||!w){if(b){b.remove();if(bl)setTimeout(fitZoom,30)}if(bl&&bl.dataset.pn){delete bl.dataset.pn;bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel';setTimeout(fitZoom,30)}return}
- if(!bl.classList.contains('nop')){bl.classList.add('nop');bl.dataset.pn='1';const t=$('#tgl');if(t)t.textContent='Ver panel';setTimeout(fitZoom,30)}
- if(!b){b=document.createElement('div');b.id='proyb';w.parentNode.insertBefore(b,w);proyPrev='';setTimeout(fitZoom,30)}
+ if(!on||!bl||!w){if(b)b.remove();if(bl&&bl.dataset.pn){delete bl.dataset.pn;bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel'}return}
+ if(!bl.classList.contains('nop')){bl.classList.add('nop');bl.dataset.pn='1';const t=$('#tgl');if(t)t.textContent='Ver panel'}
+ if(!b){b=document.createElement('div');b.id='proyb';w.parentNode.insertBefore(b,w);proyPrev=''}
  const h=proyPaso();if(h!==proyPrev){b.innerHTML=h;proyPrev=h}}
 
 /* ---------- eventos ---------- */
@@ -6206,7 +6256,8 @@ function accion(e){const t=e.target.closest('[data-z]');if(!t||t.disabled)return
  if(z==='qrtodos'){const G=grupos(),L=[];for(let g=1;g<=6;g++)G[g].forEach(gp=>L.push([g,gp]));return qrHoja(L)}
  if(z==='resprint'){const r=$('#resmes');if(r)imprimirHTML([`<div class="resumen-mes-imp"><h1>Resumen mensual</h1>${r.querySelector('.rm8w').innerHTML}</div>`]);return}
  if(z==='instalar'&&INSTP){INSTP.prompt();INSTP.userChoice.finally(()=>{INSTP=null;const b=$('#instb');if(b)b.remove()});return}
- if(z==='lecx')return lecDockX();
+ if(z==='panel')return panelOculto(!$('#side').classList.contains('closed'));
+if(z==='lecx')return lecDockX();
  if(z==='lecmin'){const k=$('#lecd');if(!k)return;k.classList.toggle('min');t.textContent=k.classList.contains('min')?'▴ Abrir':'▾ Minimizar';lecTop();return}
  if(z==='bdgrande')return bdGrande();if(z==='vgm')return bdGrande.z&&bdGrande.z(1/1.25);if(z==='vgp')return bdGrande.z&&bdGrande.z(1.25);
  if(z==='pzver')return pzVer();
@@ -6215,6 +6266,7 @@ function accion(e){const t=e.target.closest('[data-z]');if(!t||t.disabled)return
 }
 document.addEventListener('click',accion);
 document.addEventListener('keydown',e=>{teclasTablero(e);teclasPaso(e)});
+document.addEventListener('toggle',plgCambio,true);
 document.addEventListener('toggle',e=>{const d=e.target;if(d.classList&&d.classList.contains('mas-opciones')){const t=d.closest('.tools');if(t)t.classList.toggle('mas-opciones-abierto',d.open)}},true);
 
 prefs();route();vzBar();

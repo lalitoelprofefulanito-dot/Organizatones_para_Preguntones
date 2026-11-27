@@ -8,6 +8,8 @@ Aplicación de la **Biblioteca Viva** para aprender a pensar con los 26 organiza
 
 En clase: horario de la biblioteca con «Ahora toca» (🗓, cada bloque con su duración real: 20, 30 o 60 min), tarjeta «Empezar con…» con el siguiente organizador del grupo, modo proyector (📽, se avanza con las flechas o con un control de presentaciones), lectura al lado del tablero y «Ver en grande», sorteo de número de lista (🎲), lectura en voz alta (🔊), banco de lecturas con buscador (`#lecturas`), planeación imprimible, juego «¿Qué organizador uso?», ruta de avance y sellos por grupo, y resumen mensual en el Evaluador.
 
+En el organizador, cada recuadro del panel (¿Qué es?, Un ejemplo terminado, Pista para elegirlo…) se pliega y se despliega tocando su título; la aplicación recuerda cuáles se dejaron abiertos. En el celular empiezan plegados, el botón ▾ junto a los momentos oculta el panel y el tablero llena el alto disponible (se recorre deslizándolo con el dedo; «Completo» lo muestra entero).
+
 La computadora de la biblioteca sube sola lo trabajado en clase a la carpeta `datos/` (el trabajo de cada grupo, sin nombres de alumnos):
 
 - Lo que se escribe en los tableros **sí se publica**; la aplicación lo recuerda en pantalla para que no se escriban nombres ni datos personales.
