@@ -586,6 +586,117 @@ html[data-tema="oscuro"] .ch8 .tk8{fill:#C9D1E6}html[data-tema="oscuro"] .ch8 .g
 html[data-tema="oscuro"] .sr8 th,html[data-tema="oscuro"] .sr8 td{border-color:#3A4A72}
 @media (max-width:460px){.brand{font-size:20px}}
 @media (max-width:350px){.brand{font-size:17px}}
+/* ---- v9: tablero ajustado a la pantalla ---- */
+@media(min-width:900px){.bld{grid-template-columns:330px minmax(0,1fr)}.bld.nop{grid-template-columns:0 minmax(0,1fr)}}
+.pane{font-size:15px;padding:8px 10px 18px}
+.pane h3{font-size:18px;margin:10px 0 3px}
+.sayrow{font-size:15.5px;padding:7px 10px;margin:4px 0 8px}
+.pane .tb{min-height:34px;font-size:14px;padding:3px 10px}
+.pane .box{padding:8px 10px;margin:8px 0}
+.pane .quiz{padding:8px 10px;margin:10px 0}
+.pane .quiz>b{font-size:16px}
+.pane .opt{font-size:15px;padding:6px 10px}
+.pane .pista{font-size:15px}
+details.parte summary{font-size:15.5px;padding:7px 10px}
+details.parte summary::before{width:24px;height:24px}
+.moms button{min-height:40px;font-size:14px}
+.etps button{min-height:30px;font-size:13px}
+.bh .bt{font-size:19px}
+.bh .tb{min-height:36px}
+.tools .tb{min-height:34px;font-size:14px;padding:3px 9px}
+/* «Ver más» y notas para el docente */
+details.vm9{margin:12px 0 8px;border:2px solid var(--c);border-radius:12px;background:#fff}
+details.vm9>summary{cursor:pointer;padding:7px 10px;font-weight:bold;color:var(--c);list-style:none}
+details.vm9>summary::before{content:'▸ '}details.vm9[open]>summary::before{content:'▾ '}
+details.vm9>*:not(summary){margin-left:10px;margin-right:10px}
+details.vm9[open]{padding-bottom:8px}
+details.nd9{margin:10px 0;border:2px dashed #78909C;border-radius:12px;background:#ECEFF1;font-size:14.5px}
+details.nd9>summary{cursor:pointer;padding:6px 10px;font-weight:bold;color:#455A64;list-style:none}
+details.nd9>summary::before{content:'👩‍🏫 '}
+details.nd9>div{padding:0 10px 8px}
+body.proy details.nd9{display:none}
+/* lectura al lado del tablero */
+.side{position:relative}
+#lecd{position:absolute;left:0;right:0;top:0;bottom:0;z-index:6;display:flex;flex-direction:column;background:#fff;border-top:4px solid var(--c)}
+.lecdh{display:flex;gap:6px;align-items:center;padding:5px 8px;background:var(--soft);border-bottom:2px solid var(--ink)}
+.lecdh .sp{flex:1}
+.lecdb{overflow:auto;flex:1;padding:6px 12px 16px;font-size:15px;-webkit-overflow-scrolling:touch}
+.lecdb p:first-child{margin-top:0}
+.lecdb h3{font-size:19px;margin:2px 0 6px}
+.lecdb .lect{font-size:16px;line-height:1.5;padding:4px 10px}
+.lecdb .lect p{margin:6px 0}
+.lecdb .box{padding:6px 10px;margin:8px 0;font-size:14.5px}
+.lecda{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lecda .tb{min-height:34px;font-size:14px;padding:3px 10px}
+#lecd.min{top:auto}
+#lecd.min .lecdb{display:none}
+/* ver en grande */
+.dlg.big9{width:96vw;max-width:96vw}
+.vg9t{font-size:14px;margin:0 0 6px}
+.vg9{overflow:auto;max-height:68vh;max-height:68dvh;border:2px solid #CFD8DC;border-radius:8px;background:#fff;-webkit-overflow-scrolling:touch}
+.vg9 svg{display:block}
+.pz9{font-size:26px;line-height:1.35;padding:10px 14px;border:3px solid var(--c);border-radius:12px;word-break:break-word}
+.pz9t{border-collapse:collapse;font-size:19px;width:100%}.pz9t th,.pz9t td{border:1.5px solid #90A4AE;padding:4px 8px;text-align:left;vertical-align:top}.pz9t th{background:#ECEFF1}
+/* herramientas: «Más» */
+details.mas9{display:inline-flex;align-items:center;flex:none}
+details.mas9>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center}
+details.mas9>summary::-webkit-details-marker{display:none}
+.mas9m{display:inline-flex;gap:5px;align-items:center;margin-left:5px}
+.tools.mas9o{flex-wrap:wrap}
+/* barra de la sesión: una línea delgada arriba */
+#sesbar{top:0;bottom:auto!important;left:0!important;right:0!important;border-radius:0!important;border-width:0 0 3px!important;box-shadow:0 2px 8px rgba(0,0,0,.12)!important;padding:3px 8px!important;flex-wrap:nowrap!important;gap:6px!important;min-height:46px;box-sizing:border-box}
+#sesbar .sb7t{font-size:14px;white-space:nowrap}
+#sesbar .sb7t small,#sesbar .sb7p small{display:none}
+#sesbar .sb7p{flex:1 1 auto;min-width:0;padding:2px 8px;order:0!important}
+#sesbar .sb7p b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sesbar .tb.sm{min-height:32px;padding:2px 8px;font-size:14px}
+#sesbar .sb7c{font-size:15px}
+.sb9m{display:none!important}
+body.conses{padding-top:46px}
+body.conses .bld{height:calc(100vh - 46px)!important;height:calc(100dvh - 46px)!important}
+body.conses .wrapw{padding-bottom:0!important}
+body.conses .bld .selbar{bottom:6px!important}
+/* micrófono: siempre en la esquina inferior derecha */
+.micf{right:12px!important;bottom:12px!important;width:54px;height:54px;z-index:76}
+/* avisos: breves y arriba, sin tapar botones */
+.toast{top:118px;bottom:auto!important;max-width:min(560px,90vw);font-size:15px;padding:9px 14px}
+body.conses .toast{top:164px}
+/* proyector enfocado */
+#proyb{background:var(--c);color:#fff;padding:8px 18px;display:flex;flex-direction:column;gap:2px;font-size:26px;line-height:1.2}
+#proyb b{font-family:'Baloo 2',Arial,sans-serif}
+#proyb span{font-size:19px}
+@media(max-width:899px){
+ .bh{gap:5px;padding:5px 6px}
+ .bh .bt{min-width:0;flex:1 1 auto}
+ .bh .bt b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:17px}
+ .bh .nb{display:none}
+ .bh .tb{min-height:38px;padding:3px 8px;font-size:14px}
+ .bh .temas{display:none}
+ .bh.mas9{flex-wrap:wrap}
+ .bh.mas9 .hide-s{display:inline-flex}
+ .bh.mas9 .temas{display:inline-flex}
+ .bh.mas9 .bt{flex-basis:100%;order:-1}
+ #tgl{font-size:13px}
+ .side{max-height:52dvh}
+ .side.conlec{max-height:52dvh}
+ .toast{top:132px}
+}
+@media(max-width:700px){
+ #sesbar .sb7t,#sesbar [data-z=sdecir],#sesbar [data-z=sorteo],#sesbar [data-z=proy],#sesbar [data-z=spausa],#sesbar [data-z=sotro],#sesbar [data-z=sfin]{display:none}
+ .sb9m{display:inline-flex!important}
+ #sesbar.abierto{flex-wrap:wrap!important}
+ #sesbar.abierto .sb7t,#sesbar.abierto .tb{display:inline-flex}
+ #sesbar .sb7p{flex:1 1 0!important}
+ body.conses .bld{height:calc(100dvh - 46px)!important}
+ .micf{width:50px;height:50px}
+}
+html[data-tema="oscuro"] :is(#lecd,details.vm9,.vg9){background:#16213F;color:#E6EBF7}
+html[data-tema="oscuro"] .lecdh{background:#101A33}
+html[data-tema="oscuro"] details.nd9{background:#1B2747;color:#E6EBF7}
+html[data-tema="oscuro"] .vg9{background:#fff}
+body.conses .bh [data-z=sorteo],body.conses .bh [data-z=proy]{display:none}
+#lecd.min .lecdh{padding-right:74px}
+@media(max-width:899px){.bh .ctxb{display:none}.bh.mas9 .ctxb{display:inline-flex}}
 </style>
 </head>
 <body>
@@ -2507,7 +2618,7 @@ function prefs(){document.body.classList.toggle('doc',DOC);document.body.classLi
 function say(t){try{const s=speechSynthesis;s.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-MX';u.rate=.92;s.speak(u)}catch(e){toast('Esta computadora no puede leer en voz alta.')}}
 const sayRow=t=>`<div class="sayrow"><p>${esc(t)}</p><button class="say" data-say="${esc(t)}" aria-label="Escuchar" title="Escuchar">▶</button></div>`;
 const TXS=()=>(window.OYA_DENSIDAD==='compacta'?[1.2,1.38,1.56]:[1.32,1.5,1.7])[LETRA]||1.3;
-const nd=t=>t?`<div class="nd">${esc(t)}</div>`:'';
+const nd=t=>t&&!GEN?`<details class="nd9"><summary>Para el docente</summary><div>${esc(t)}</div></details>`:'';
 const gradeChips=()=>[1,2,3,4,5,6].map(g=>`<button class="chip ${GR===g?'on':''}" data-gr="${g}" style="--c:var(--G)">${g}.º</button>`).join('');
 
 /* ---------- MEDIDA DE TEXTO ---------- */
@@ -2615,7 +2726,7 @@ function save(){if(!S.org)return;clearTimeout(saveT);svSet('Guardando…');const
 function snap(){S.undo.push(JSON.stringify({P:S.P,C:S.C}));if(S.undo.length>60)S.undo.shift();const u=$('#undo');if(u)u.disabled=false}
 function undo(){const s=S.undo.pop();if(!s)return;const o=JSON.parse(s);S.P=o.P;S.C=o.C;S.sel=S.selC=null;S.cell=null;render();save();$('#undo').disabled=!S.undo.length}
 function mut(fn){snap();if(S.meta&&S.org)S.meta.propio=1;fn();if(S.meta&&S.meta.propio)touch();render();save()}
-const toast=(m,ms=2600)=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),ms)};
+const toast=(m,ms=2600)=>{ms=Math.min(ms,2600);const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),ms)};
 
 /* ---------- FOQUITO ---------- */
 const FOQ=`<svg viewBox="0 0 140 150" aria-hidden="true"><g stroke-width="6" stroke-linecap="round"><path d="M70 8v14" stroke="#7B1FA2"/><path d="M30 22l9 11" stroke="#F57C00"/><path d="M110 22l-9 11" stroke="#2E7D32"/><path d="M10 58h14" stroke="#C62828"/><path d="M116 58h14" stroke="#1565C0"/><path d="M16 92l12-6" stroke="#00838F"/><path d="M124 92l-12-6" stroke="#6D4C41"/></g><path d="M70 30c-24 0-42 18-42 41 0 15 8 25 16 33 5 5 7 10 7 16h38c0-6 2-11 7-16 8-8 16-18 16-33 0-23-18-41-42-41Z" fill="#FFD43B" stroke="#151515" stroke-width="4"/><rect x="50" y="120" width="40" height="22" rx="6" fill="#455A64" stroke="#151515" stroke-width="4"/><path d="M52 128h36M52 135h36" stroke="#fff" stroke-width="2.5"/><circle cx="56" cy="68" r="11" fill="#fff" stroke="#151515" stroke-width="4"/><circle cx="84" cy="68" r="11" fill="#fff" stroke="#151515" stroke-width="4"/><path d="M67 68h6" stroke="#151515" stroke-width="4"/><circle cx="57" cy="69" r="4.5" fill="#151515"/><circle cx="85" cy="69" r="4.5" fill="#151515"/><circle cx="46" cy="88" r="6" fill="#EC407A"/><circle cx="94" cy="88" r="6" fill="#EC407A"/><path d="M58 90q12 12 24 0" fill="none" stroke="#151515" stroke-width="4" stroke-linecap="round"/></svg>`;
@@ -2760,7 +2871,7 @@ function printHalfV6(){const o=S.org;if(!o)return;RORG=o;const L=LECT[o.n],m=S.m
  let z=$('#printz');if(!z){z=document.createElement('div');z.id='printz';document.body.appendChild(z)}z.innerHTML=`<div class="ph">${izq}</div><div class="ph">${der}</div>`;
  z.classList.add('meas');const ph=z.querySelector('.ph'),pt=ph.querySelector('.pt');pt.style.fontSize='15pt';let fs=15;while(fs>7&&ph.scrollHeight>ph.clientHeight+1){fs-=0.5;pt.style.fontSize=fs+'pt'}z.classList.remove('meas');
  $('#modal').classList.remove('show');document.body.classList.add('phalf');const off=()=>{document.body.classList.remove('phalf');removeEventListener('afterprint',off)};addEventListener('afterprint',off);setTimeout(()=>print(),60)}
-function lecturaDlg(n,enOrg){const L=LECT[n];if(!L)return;const o=ORGS[n-1];const m=$('#modal');m.style.setProperty('--c',COL[FAM[o.fam].c]);m.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><p style="margin:0;font-weight:bold;color:var(--c)">Lectura de ejemplo · ${esc(o.name)}${GEN?'':' · '+esc(L.grado)}</p><h3>${esc(L.titulo)}</h3><div class="lect">${L.texto.split('\n').map(t=>`<p>${esc(t)}</p>`).join('')}</div><div class="box tip"><b class="l">Qué hacer con el organizador</b>${esc(L.consigna)}</div><div class="acts"><button class="tb" data-say="${esc(L.titulo+'. '+L.texto.replace(/\n/g,' '))}">▶ Escuchar</button>${enOrg?`<button class="tb pri" data-uselec="${n}">Usar esta lectura</button><button class="tb" data-phalf="1">🖨 Imprimir en media carta</button>`:`<a class="tb pri" href="#org-${pad(n)}" data-lecgo="1">Abrir el organizador</a>`}<button class="tb" data-z="plec" data-v="e${n}">🖨 Para el cuaderno</button><button class="tb" data-lecx="1">Cerrar</button></div></div>`;m.classList.add('show')}
+function lecturaDlgV8(n,enOrg){const L=LECT[n];if(!L)return;const o=ORGS[n-1];const m=$('#modal');m.style.setProperty('--c',COL[FAM[o.fam].c]);m.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><p style="margin:0;font-weight:bold;color:var(--c)">Lectura de ejemplo · ${esc(o.name)}${GEN?'':' · '+esc(L.grado)}</p><h3>${esc(L.titulo)}</h3><div class="lect">${L.texto.split('\n').map(t=>`<p>${esc(t)}</p>`).join('')}</div><div class="box tip"><b class="l">Qué hacer con el organizador</b>${esc(L.consigna)}</div><div class="acts"><button class="tb" data-say="${esc(L.titulo+'. '+L.texto.replace(/\n/g,' '))}">▶ Escuchar</button>${enOrg?`<button class="tb pri" data-uselec="${n}">Usar esta lectura</button><button class="tb" data-phalf="1">🖨 Imprimir en media carta</button>`:`<a class="tb pri" href="#org-${pad(n)}" data-lecgo="1">Abrir el organizador</a>`}<button class="tb" data-z="plec" data-v="e${n}">🖨 Para el cuaderno</button><button class="tb" data-lecx="1">Cerrar</button></div></div>`;m.classList.add('show')}
 function rutaRes(id){const r=D.ruta.find(q=>q.id===id);if(!r)return;document.querySelectorAll('[data-rq]').forEach(b=>b.classList.toggle('on',b.dataset.rq===id));const ns=r.pruebaCon.map(nOf).filter(Boolean),el=$('#rres');
  const dd=D.dudas.filter(d=>Object.keys(d.opciones).some(k=>r.pruebaCon.includes(k)));
  el.classList.add('show');el.innerHTML=`<p style="font-size:19px"><b>${esc(r.pregunta)}</b> ${esc(r.respuesta)} <b>Prueba con:</b></p><div class="cards">${ns.map(n=>card(ORGS[n-1])).join('')}</div>${ns.map(n=>{const o=ORGS[n-1];return`<div class="box no" style="margin-top:12px"><b class="l">${esc(o.name)} · Evítalo como primera opción</b>${esc(o.evita)}</div>`}).join('')}${dd.map(d=>`<div class="box tip"><b class="l">Si dudas entre ${esc(d.titulo.toLowerCase())}</b>${Object.entries(d.opciones).map(([k,v])=>`<p><b>${esc(OYID[k]?OYID[k].nombre:k)}:</b> ${esc(v)}</p>`).join('')}</div>`).join('')}`;setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),60)}
@@ -2790,31 +2901,29 @@ function openOrg(n){const o=ORGS[n-1];if(!o)return home();SV={st:'',err:false};S
  if(st&&Array.isArray(st.P)){S.P=st.P;S.C=st.C||[];S.meta=st.meta||{};S.form=st.form||null}else{const b=buildForm(o,0,false);S.P=b.P;S.C=b.C;S.meta={};S.form='A';setTimeout(()=>toast('Este es un ejemplo terminado. En «Construye» empezarás el tuyo.',4200),400)}
  S.mom=S.meta.mom??0;S.et=S.meta.et??0;S.ri=0;
  const fc=COL[FAM[o.fam].c],x=OY[o.n];
- $('#app').innerHTML=`<div class="bld" style="--c:${fc}"><header class="bh"><a class="tb" href="${S.back||'#'}">← Volver</a><span class="nb">${pad(o.n)}</span><div class="bt"><b>${o.name}</b><small>${FAM[o.fam].n.toUpperCase()} · ${o.cat}${x&&!GEN?` · se introduce en ${x.grado}.º`:''}</small></div><span style="flex:1"></span>${SCH?`<button class="tb sm ctxb" data-z="ctxdlg" title="Grupo con el que se trabaja">👥 ${ctxTxt()}</button>`:''}${GEN||CTX?'':`<label class="hide-s" style="font-weight:bold">Grado <select class="gsel" id="gsel" aria-label="Grado">${[1,2,3,4,5,6].map(g=>`<option value="${g}" ${g===GR?'selected':''}>${g}.º</option>`).join('')}</select></label><button class="tb sm hide-s ${DOC?'on':''}" data-docm="1" title="Notas para el docente">Docente</button>`}${GEN?temaBtns():''}<button class="tb sm" data-z="decir" title="Leer en voz alta el panel" aria-label="Leer en voz alta">🔊</button>${SCH?'<button class="tb sm hide-s" data-z="sorteo" title="Sorteo de número de lista" aria-label="Sorteo">🎲</button><button class="tb sm hide-s" data-z="proy" title="Modo proyector (letra grande, pantalla completa)" aria-label="Modo proyector">📽</button>':''}<button class="tb" id="tgl" title="Muestra u oculta el panel para tener más tablero">Ocultar panel</button></header>
+ $('#app').innerHTML=`<div class="bld" style="--c:${fc}"><header class="bh"><a class="tb" href="${S.back||'#'}" aria-label="Volver">←<span class="hide-s"> Volver</span></a><span class="nb">${pad(o.n)}</span><div class="bt"><b>${o.name}</b><small>${FAM[o.fam].n.toUpperCase()} · ${o.cat}${x&&!GEN?` · se introduce en ${x.grado}.º`:''}</small></div><span style="flex:1"></span>${SCH?`<button class="tb sm ctxb" data-z="ctxdlg" title="Grupo con el que se trabaja">👥 ${ctxTxt()}</button>`:''}${GEN||CTX?'':`<label class="hide-s" style="font-weight:bold">Grado <select class="gsel" id="gsel" aria-label="Grado">${[1,2,3,4,5,6].map(g=>`<option value="${g}" ${g===GR?'selected':''}>${g}.º</option>`).join('')}</select></label><button class="tb sm hide-s ${DOC?'on':''}" data-docm="1" title="Notas para el docente">Docente</button>`}${GEN?temaBtns():''}<button class="tb sm" data-z="decir" title="Leer en voz alta el panel" aria-label="Leer en voz alta">🔊</button>${SCH?'<button class="tb sm hide-s" data-z="sorteo" title="Sorteo de número de lista" aria-label="Sorteo">🎲</button><button class="tb sm hide-s" data-z="proy" title="Modo proyector (letra grande, pantalla completa)" aria-label="Modo proyector">📽</button>':''}<button class="tb only-m" data-z="bhmas" aria-label="Más opciones" title="Más opciones">⋯</button><button class="tb" id="tgl" title="Muestra u oculta el panel para tener más tablero">Ocultar panel</button></header>
  <aside class="side" id="side"><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}</nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
- <main class="work"><div class="tools"><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><span class="sp"></span><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red hide-s" id="clr">Vaciar</button></div>
+ <main class="work"><div class="tools"><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas9"><summary class="tb">Más ▾</summary><span class="mas9m"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
  <div class="hint" id="hint"></div><div class="wrap" id="wrap"><svg id="bd" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"></svg></div><div class="selbar" id="selbar" hidden></div></main></div>`;
  setWF();bindBoard();setMom(S.mom,S.et);fitZoom();render()}
-function setMom(i,e){S.mom=i;if(e!=null)S.et=e;S.meta.mom=i;S.meta.et=S.et;S.meta.momv=S.meta.momv||[];if(!S.meta.momv.includes(i))S.meta.momv.push(i);if(i===2){S.meta.etv=S.meta.etv||[];if(!S.meta.etv.includes(S.et))S.meta.etv.push(S.et)}save();
+function setMomV8(i,e){S.mom=i;if(e!=null)S.et=e;S.meta.mom=i;S.meta.et=S.et;S.meta.momv=S.meta.momv||[];if(!S.meta.momv.includes(i))S.meta.momv.push(i);if(i===2){S.meta.etv=S.meta.etv||[];if(!S.meta.etv.includes(S.et))S.meta.etv.push(S.et)}save();
  document.querySelectorAll('.moms button').forEach(b=>b.classList.toggle('on',+b.dataset.mo===i));
  const ep=$('#etps');ep.hidden=i!==2;if(i===2)ep.innerHTML=ETAPAS.map((t,k)=>`<button data-et="${k}" class="${k===S.et?'on':''} ${(S.meta.etv||[]).includes(k)?'vis':''}" title="${k+1}. ${t}">${k+1}<span class="en">. ${t}</span></button>`).join('');
- const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);pn.scrollTop=0;$('#side').classList.remove('closed');const bl=$('.bld');if(bl&&bl.classList.contains('nop')){bl.classList.remove('nop');setTimeout(fitZoom,50)}const t=$('#tgl');if(t)t.textContent='Ocultar panel'}
+ const o=S.org,pn=$('#pane');pn.innerHTML=i===0?paneReconocer(o):i===1?paneComprender(o):i===2?paneConstruir(o):paneElegir(o);pn.scrollTop=0;$('#side').classList.remove('closed');const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop');setTimeout(fitZoom,50)}const t=$('#tgl');if(t)t.textContent='Ocultar panel'}
 const setTab=()=>setMom(S.mom,S.et);
 function quiz(q,tag){if(!q)return'';return`<div class="quiz"><b>${esc(q.texto)}</b>${q.opciones.map((p,i)=>`<button class="opt" data-qz="${tag}:${i}">${esc(p.t)}</button>`).join('')}<div id="qf-${tag}"></div></div>`}
 function nextBtns(prev,next){return`<div class="nav2">${prev?`<button class="tb" data-${prev[0]}="${prev[1]}" ${prev[3]?`data-et="${prev[3]}"`:''}>← ${prev[2]}</button>`:'<span></span>'}${next?`<button class="tb pri" data-${next[0]}="${next[1]}">${next[2]} →</button>`:'<span></span>'}</div>`}
 function recupera(x){const L=(x.recupera||[]).map(id=>OYID[id]).filter(Boolean);if(!L.length)return'';return`<div class="recu"><b>Recuerda lo que ya conoces:</b> ${L.map(p=>`<a href="#org-${pad(p.num)}">${esc(p.nombre)}</a> (sirve para ${esc(p.usalo)})`).join(', ')}. ¿En qué se parece a este organizador? ¿En qué es diferente?</div>`}
-function paneReconocer(o){const x=OY[o.n];if(!x)return`<h3>¿Qué es?</h3><p>${o.que}</p>`;const r=x.reconocer;return`${recupera(x)}
- <h3>¿Qué es?</h3>${sayRow(tx(r.queEs))}
+function paneReconocer(o){const x=OY[o.n];if(!x)return`<h3>¿Qué es?</h3><p>${o.que}</p>`;const r=x.reconocer;return`<h3>¿Qué es?</h3>${sayRow(tx(r.queEs))}
  <h3>¿Para qué sirve?</h3>${sayRow(tx(r.paraQue))}
- <p><b>También se conoce como:</b> ${esc(o.alias)}.</p>${LECT[o.n]?`<p style="font-size:15px">📖 Hay una lectura de ejemplo para practicar en <b>Construye › 3. Preparo</b>.</p>`:''}
- <div class="box" style="--c:var(--K)"><b class="l">Un ejemplo terminado</b>Míralo en el tablero. ${GR<=2?'¿Qué ves en él?':'¿Qué observas? ¿Cómo está acomodada la información?'}<div class="row" style="margin-top:8px"><button class="tb" data-loadex="0">Volver a ver el ejemplo</button></div></div>
- ${quiz(r.pregunta,'r')}${nd(x.docente&&x.docente.reconocer)}${nextBtns(null,['mo',1,'Comprende'])}`}
+ <div class="box ej9" style="--c:var(--K)"><b class="l">Un ejemplo terminado</b>Míralo en el tablero. ${GR<=2?'¿Qué ves en él?':'¿Cómo está acomodada la información?'}<div class="row" style="margin-top:6px"><button class="tb sm" data-loadex="0">Volver a ver el ejemplo</button><button class="tb sm" data-z="bdgrande">🔍 Verlo en grande</button></div></div>
+ ${quiz(r.pregunta,'r')}<details class="vm9"><summary>Ver más</summary>${recupera(x)}<p><b>También se conoce como:</b> ${esc(o.alias)}.</p>${LECT[o.n]?`<p>📖 Hay una lectura de ejemplo para practicar en <b>Construye › 3. Preparo</b>.</p>`:''}</details>${nd(x.docente&&x.docente.reconocer)}${nextBtns(null,['mo',1,'Comprende'])}`}
 function paneComprender(o){const x=OY[o.n];const c=x&&x.comprender;return`${sayRow(GR<=2?'Toca cada parte para saber qué es.':'Toca cada parte para descubrir para qué sirve. Después, búscala en el ejemplo del tablero.')}
  ${c?c.partes.map(p=>`<details class="parte"><summary data-say="${esc(p.nombre+'. '+p.desc)}">${esc(p.nombre)}</summary><p>${esc(p.desc)}</p></details>`).join(''):''}
  ${quiz(c&&c.pregunta,'c')}
- <h3>Lo que dice la guía</h3><p>${o.que}</p>
+ <details class="vm9"><summary>Ver más: la guía, un ejemplo resuelto y otras formas</summary><h3>Lo que dice la guía</h3><p>${o.que}</p>
  <h3>Ejemplo resuelto</h3><div class="ex">${esc(o.ej)}</div>
- <h3>Otras formas del mismo organizador</h3><p>Un mismo organizador puede dibujarse de varias maneras. Toca «Ver en el tablero» y compara sus partes.</p>${o.forms.map((f,i)=>`<div class="form"><div class="fh">FORMA ${'ABC'[i]} · ${f.t.toUpperCase()}</div><div class="fth">${thumb(o,i)}</div><div class="fbd"><b>Ejemplo: «${f.ex}»</b><div class="row" style="margin-top:6px"><button class="tb" data-form="${i}" data-blank="0">Ver en el tablero</button></div></div></div>`).join('')}
+ <h3>Otras formas del mismo organizador</h3><p>Un mismo organizador puede dibujarse de varias maneras. Toca «Ver en el tablero» y compara sus partes.</p>${o.forms.map((f,i)=>`<div class="form"><div class="fh">FORMA ${'ABC'[i]} · ${f.t.toUpperCase()}</div><div class="fth">${thumb(o,i)}</div><div class="fbd"><b>Ejemplo: «${f.ex}»</b><div class="row" style="margin-top:6px"><button class="tb" data-form="${i}" data-blank="0">Ver en el tablero</button></div></div></div>`).join('')}</details>
  ${nd(x&&x.docente&&x.docente.comprender)}${nextBtns(['mo',0,'Reconoce'],['mo',2,'Construye'])}`}
 function paneConstruir(o){const x=OY[o.n],e=S.et,m=S.meta;let h='';
  if(e===0){h=`<h3>1. Comprendo</h3>${x?sayRow(tx(x.reconocer.queEs)+' '+tx(x.reconocer.paraQue)):''}${x?`<p><b>Sus partes:</b> ${x.comprender.partes.map(p=>esc(p.nombre)).join(' · ')}</p>`:''}<h3>Cómo construirlo, paso a paso</h3><ul class="steps">${o.pasos.map((p,i)=>`<li><input type="checkbox" data-step="${i}" ${(m.steps||[])[i]?'checked':''} aria-label="Paso ${i+1} hecho"><span><b>${i+1}.</b> ${p}</span></li>`).join('')}</ul>`}
@@ -2825,7 +2934,7 @@ function paneConstruir(o){const x=OY[o.n],e=S.et,m=S.meta;let h='';
  else if(e===5){const Q=((x&&x.construir.explico)||[]).concat(['¿Cómo nos ayudó este organizador a entender la información?']);h=`<h3>6. Explico</h3>${sayRow(GR<=2?'Platica con el grupo y escribe lo que dicen.':'Responde con tus propias palabras.')}<button class="tb" id="read2">Así se lee mi organizador</button>${Q.map((q,i)=>`<label style="display:block;font-weight:bold;margin:10px 0 4px">${esc(q)}</label><textarea class="big" data-oexp="${i}" rows="2">${esc((m.oexp||[])[i]||'')}</textarea>`).join('')}${GR>=3?`<label style="display:block;font-weight:bold;margin:10px 0 4px">¿Otro organizador lo habría mostrado mejor? ¿Qué se perdería o qué se ganaría?</label><textarea class="big" data-oexp="alt" rows="2">${esc((m.oexp||{}).alt||'')}</textarea>`:''}
  <h3>Explica tu elección</h3>${['Elegí este organizador porque…','La información más importante es…','Lo cambiaría si…'].map((t,i)=>`<label style="display:block;font-weight:bold;margin:8px 0 4px">${t}</label><textarea class="big" data-exp="${i}" rows="2">${esc((m.exp||[])[i]||'')}</textarea>`).join('')}
  <h3>¿Cómo voy? (autoevaluación)</h3>${RUB.map((r,ri)=>`<p style="margin:8px 0 2px"><b>${r[0]}</b></p><div class="lv">${NIV.map((n,ni)=>`<button class="chip ${(m.rub||{})[ri]===ni?'on':''}" data-rub="${ri}:${ni}" title="${esc(r[ni+1])}" style="--c:var(--G)">${n}</button>`).join('')}</div><p style="font-size:15px;margin:0" id="rubd${ri}">${(m.rub||{})[ri]!=null&&r[(m.rub||{})[ri]+1]?esc(r[(m.rub||{})[ri]+1]):''}</p>`).join('')}<p style="margin-top:12px;font-size:15px"><i>Se valora el pensamiento y la explicación, no el dibujo ni los colores.</i></p>${(()=>{const a=autoEval(o,{P:S.P,C:S.C,meta:S.meta});return`<div class="aeval"><b>Evaluación automática</b><div class="row" style="margin:6px 0">${RUB.map((r,i)=>`<span>${r[0]}: ${lvPill(a.lv[i])}</span>`).join(' ')}</div>${a.obs.length?`<ul>${a.obs.slice(0,5).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:''}<a class="tb sm" href="#evaluador">Ver en «${GEN?'Evaluación':'Evaluador'}»</a></div>`})()}`}
- else{h=`<h3>7. Conservo</h3><p>Tu trabajo se guarda solo en esta computadora mientras lo haces${S.meta.f1?` (empezado el <b>${fFecha(S.meta.f1)}</b>)`:''} y aparece evaluado en <a href="#evaluador">«${GEN?'Evaluación':'Evaluador'}»</a>. También puedes conservarlo así:</p><div class="row" style="flex-direction:column;align-items:stretch"><button class="tb pri" id="img2">Guardar como imagen</button><button class="tb" data-phalf="1">🖨 Imprimir en media carta (lectura + organizador)</button><button class="tb" id="prn">Imprimir solo el tablero</button><button class="tb" id="jsave">Guardar copia en archivo</button><button class="tb" id="jopen">Abrir copia guardada</button><button class="tb red" id="fresh">Empezar uno nuevo</button></div><input type="file" id="jfile" accept=".json,application/json" hidden><p style="font-size:15px;margin-top:10px">La copia en archivo sirve para seguir otro día, en otra computadora, o para guardar el trabajo de cada grupo.</p>`}
+ else{h=`<h3>7. Conservo</h3><p>Tu trabajo se guarda solo en esta computadora mientras lo haces${S.meta.f1?` (empezado el <b>${fFecha(S.meta.f1)}</b>)`:''} y aparece evaluado en <a href="#evaluador">«${GEN?'Evaluación':'Evaluador'}»</a>. También puedes conservarlo así:</p><div class="row" style="flex-direction:column;align-items:stretch"><button class="tb pri" id="img2">Guardar como imagen</button><button class="tb" data-phalf="1">🖨 Imprimir en media carta (lectura + organizador)</button><button class="tb" id="prn">Imprimir solo el tablero</button><button class="tb" id="jsave">Guardar copia en archivo</button><button class="tb" id="jopen">Abrir copia guardada</button><button class="tb red" id="fresh">Empezar uno nuevo</button></div><input type="file" id="jfile" accept=".json,application/json" hidden><p style="font-size:15px;margin-top:10px">La copia en archivo sirve para seguir otro día, en otra computadora, o para guardar ${GEN?'tus trabajos':'el trabajo de cada grupo'}.</p>`}
  const pv=e>0?['et',e-1,ETAPAS[e-1]]:['mo',1,'Comprende'],nx=e<6?['et',e+1,ETAPAS[e+1]]:['mo',3,'Elige'];
  return h+nd(x&&x.docente&&x.docente.construir)+nextBtns(pv,nx)}
 function paneElegir(o){const x=OY[o.n];const dd=DUDAS.filter(d=>d[0].includes(o.n));let L=[],todas=false;if(x){todas=!conocido(x);L=D.situaciones.filter(s=>s.opciones.includes(x.id)&&sitOpts(s,todas).length>=2);L.sort((a,b)=>(b.mejor.includes(x.id)?1:0)-(a.mejor.includes(x.id)?1:0))}S.rL=L;S.rT=todas;S.ri=Math.min(S.ri||0,Math.max(0,L.length-1));
@@ -2845,7 +2954,7 @@ function updCounts(){if(!document.querySelector('.pal'))return;const K=Object.as
 function render(){RORG=S.org;const bd=$('#bd');if(!bd)return;bd.innerHTML=boardInner(S.P,S.C,false,false);selbar();updCounts();hint()}
 function quickConns(){const l=$('#lyC');if(l)l.innerHTML=connsSVG(S.P,S.C,false,false)}
 function hint(){const h=$('#hint');if(!h)return;if(S.link){h.innerHTML=`<span>${S.from?'Ahora toca la pieza de <b>llegada</b>.':'Toca la pieza de <b>salida</b> de la flecha.'}</span><button class="tb" id="lnkoff">Terminar</button>`;h.classList.add('show')}else h.classList.remove('show');$('#lnk').classList.toggle('on',S.link)}
-function fitZoom(){const w=$('#wrap');if(!w)return;const fw=(w.clientWidth-14)/W,fh=(w.clientHeight-14)/H;S.z=Math.max(0.25,innerWidth<900?Math.max(fw,Math.min(fh,0.8)):Math.min(fw,fh));applyZoom();w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0}
+function fitZoom(){const w=$('#wrap');if(!w)return;const fw=(w.clientWidth-14)/W,fh=(w.clientHeight-14)/H;S.z=Math.max(0.12,Math.min(fw,fh));applyZoom();w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0}
 function applyZoom(){const bd=$('#bd');bd.style.width=(W*S.z)+'px';bd.style.height=(H*S.z)+'px'}
 function zoomBy(f){const w=$('#wrap'),cx=(w.scrollLeft+w.clientWidth/2)/S.z,cy=(w.scrollTop+w.clientHeight/2)/S.z;S.z=Math.max(0.25,Math.min(2.5,S.z*f));applyZoom();w.scrollLeft=cx*S.z-w.clientWidth/2;w.scrollTop=cy*S.z-w.clientHeight/2}
 
@@ -2858,7 +2967,7 @@ function selbar(){const b=$('#selbar');if(!b)return;const p=S.P.find(q=>q.id===S
  if(K.shape==='fish')x=`<button class="tb" data-sa="f+">+ Espinas</button><button class="tb" data-sa="f-">− Espinas</button>`;
  if(K.shape==='chart')x=[['bar','Barras'],['hbar','Acostadas'],['line','Líneas'],['pie','Circular']].map(([t,l])=>`<button class="tb ${(p.ch||{}).type===t?'on':''}" data-cht="${t}">${l}</button>`).join('');
  if(K.shape==='panel'||K.shape==='icon')x=`<button class="tb" data-sa="edit">${K.shape==='panel'?'Dibujar / ícono':'Cambiar ícono'}</button>`;
- b.innerHTML=`<span class="lbl">${esc(K.l)}:</span>${['brace','axis'].includes(K.shape)?'':`<button class="tb pri" data-sa="edit">Escribir</button>`}${x}<button class="tb" data-sa="from">→ Unir desde aquí</button><button class="tb" data-sa="color">Color</button>${['brace','axis'].includes(K.shape)?'':'<button class="tb" data-sa="font">Letra</button>'}<button class="tb ${p.hl?'on':''}" data-sa="hl">★ Resaltar</button><button class="tb" data-sa="dup">Duplicar</button><button class="tb" data-sa="front">Al frente</button><button class="tb" data-sa="back">Atrás</button><button class="tb red" data-sa="del">− Quitar</button><button class="tb" data-sa="desel">✕</button><div id="swr" class="row" style="width:100%" hidden>${CKEYS.map(c=>`<button class="sw" data-col="${c}" style="background:${COL[c]}" aria-label="Color"></button>`).join('')}</div><div id="fwr" class="row" style="width:100%" hidden>${FONTS.map((f,i)=>`<button class="tb sm ${fontOf(p)===f?'on':''}" data-fo="${i}" style="font-family:${f[1]}">${f[0]}</button>`).join('')}</div>`}
+ b.innerHTML=`<span class="lbl">${esc(K.l)}:</span><button class="tb" data-z="pzver">🔍 Ver grande</button>${['brace','axis'].includes(K.shape)?'':`<button class="tb pri" data-sa="edit">Escribir</button>`}${x}<button class="tb" data-sa="from">→ Unir desde aquí</button><button class="tb" data-sa="color">Color</button>${['brace','axis'].includes(K.shape)?'':'<button class="tb" data-sa="font">Letra</button>'}<button class="tb ${p.hl?'on':''}" data-sa="hl">★ Resaltar</button><button class="tb" data-sa="dup">Duplicar</button><button class="tb" data-sa="front">Al frente</button><button class="tb" data-sa="back">Atrás</button><button class="tb red" data-sa="del">− Quitar</button><button class="tb" data-sa="desel">✕</button><div id="swr" class="row" style="width:100%" hidden>${CKEYS.map(c=>`<button class="sw" data-col="${c}" style="background:${COL[c]}" aria-label="Color"></button>`).join('')}</div><div id="fwr" class="row" style="width:100%" hidden>${FONTS.map((f,i)=>`<button class="tb sm ${fontOf(p)===f?'on':''}" data-fo="${i}" style="font-family:${f[1]}">${f[0]}</button>`).join('')}</div>`}
 function selAct(a){const p=S.P.find(q=>q.id===S.sel),c=S.C.find(q=>q.id===S.selC);
  if(a==='desel'){S.sel=S.selC=null;S.cell=null;render();return}
  if(c){if(a==='cedit')return editConn(c);if(a==='flip')return mut(()=>{[c.a,c.b]=[c.b,c.a]});if(a==='cdel')return mut(()=>{S.C=S.C.filter(q=>q!==c);S.selC=null});return}
@@ -3154,7 +3263,7 @@ function lecEditDlg(id,after){const L0=id?LECS().find(l=>l.id===id):null,L=L0||{
   const nw={id:L0?L0.id:'u'+Date.now().toString(36),titulo:t,fuente:mm.querySelector('#lf').value.trim(),quien:SCH?((mm.querySelector('input[name=lq]:checked')||{}).value||'otro'):'',grados:[...mm.querySelectorAll('.lg:checked')].map(c=>+c.value),texto:x,orgs:[...mm.querySelectorAll('.lo:checked')].map(c=>+c.value),consigna:mm.querySelector('#lc').value.trim(),nivel:(mm.querySelector('input[name=lnv]:checked')||{}).value||'medio',img:IMG||undefined,f:hoy()};
   const A=LECS().filter(l=>l.id!==nw.id);A.push(nw);saveLECS(A);toast('Lectura guardada.');setTimeout(()=>after&&after(nw),30)},{nosel:true});
  m.querySelector('.dlg').classList.add('wide7');const pv=()=>{m.querySelector('#lphv').innerHTML=IMG?`<img class="limg" src="${IMG}" alt="Foto de la lectura"><button class="tb sm red" id="lphq">Quitar la foto</button>`:'';const q=m.querySelector('#lphq');if(q)q.onclick=ev=>{ev.preventDefault();IMG='';pv()}};pv();m.querySelector('#lph').addEventListener('change',ev=>{const f=ev.target.files[0];if(!f)return;toast('Preparando la foto…');fotoLec(f).then(u=>{IMG=u;pv()}).catch(()=>toast('No se pudo leer esa imagen.'))});return m}
-function lecVerDlg(id,enOrg){const L=lecById(id);if(!L)return;const m=$('#modal');m.style.setProperty('--c',S.org?COL[FAM[S.org.fam].c]:'#1565C0');
+function lecVerDlgV8(id,enOrg){const L=lecById(id);if(!L)return;const m=$('#modal');m.style.setProperty('--c',S.org?COL[FAM[S.org.fam].c]:'#1565C0');
  m.innerHTML=`<div class="dlg wide7" role="dialog" aria-modal="true"><p style="margin:0;font-weight:bold;color:var(--c)">${L.ej?'Lectura de ejemplo':SCH?'Lectura · '+esc(QUIEN[L.quien]||''):'Mi lectura'}${L.fuente&&!L.ej?' · '+esc(L.fuente):''}</p><h3>${esc(L.titulo)}</h3><div class="lect">${lecHTML(L)}</div>${L.consigna?`<div class="box tip"><b class="l">Qué hacer con el organizador</b>${esc(L.consigna)}</div>`:''}
  <div class="acts"><button class="tb" data-say="${esc(L.titulo+'. '+String(L.texto).replace(/\n/g,' '))}">▶ Escuchar</button>${enOrg&&S.org?`<button class="tb pri" data-z="uselec" data-v="${L.id}">Usar esta lectura</button>`:''}<button class="tb" data-z="plec" data-v="${L.id}">🖨 Imprimir para el cuaderno</button>${!L.ej&&LECS().some(l=>l.id===L.id)?`<button class="tb" data-z="editlec" data-v="${L.id}">Editar</button>`:''}<button class="tb" data-lecx="1">Cerrar</button></div></div>`;m.classList.add('show')}
 function lecPropiasBox(o){const L=LECS().filter(l=>(l.orgs||[]).includes(o.n));const cur=S.meta.lecId;
@@ -3214,7 +3323,7 @@ let sesTick=0;
 function sesBar(){let b=$('#sesbar');document.body.classList.toggle('conses',!!SES);if(!SES){if(b)b.remove();clearInterval(sesTick);return}
  if(!b){b=document.createElement('div');b.id='sesbar';b.setAttribute('role','region');b.setAttribute('aria-label','Sesión en curso');document.body.appendChild(b)}
  const P=sesPasos(),i=SES.paso,p=P[i],o=ORGS[SES.n-1],mi=sesMin(),over=mi>p[1];
- b.innerHTML=`<span class="sb7t">${SES.tipo} min${SCH&&SES.ctx?' · '+ctxTxt(SES.ctx):''}<small>${esc(o.name)}${SES.n2?' + '+esc(ORGS[SES.n2-1].name):''}</small></span><button class="tb sm" data-z="sprev" ${i?'':'disabled'} aria-label="Paso anterior">◀</button><button class="sb7p" data-z="slist" title="Ver todos los pasos"><b>${i+1}/${P.length} · ${esc(p[2])}</b><small>${p[0]}–${p[1]} min · ${esc(p[3])}</small></button><button class="tb sm pri" data-z="snext" ${i<P.length-1?'':'disabled'} aria-label="Paso siguiente">▶</button><span class="sb7c ${over?'over':''}" title="Tiempo de la sesión">⏱ ${Math.floor(mi)}:${pad(Math.floor((mi%1)*60))}</span><button class="tb sm" data-z="sdecir" title="Leer el paso en voz alta" aria-label="Leer el paso en voz alta">🔊</button>${SCH?'<button class="tb sm" data-z="sorteo" title="Sortear quién participa" aria-label="Sortear quién participa">🎲</button><button class="tb sm" data-z="proy" title="Modo proyector" aria-label="Modo proyector">📽</button>':''}<button class="tb sm" data-z="spausa">${SES.pausa?'▶ Seguir':'Pausa'}</button>${SES.n2?`<button class="tb sm" data-z="sotro">Ver ${S.org&&S.org.n===SES.n2?'el 1.º':'el 2.º'}</button>`:''}<button class="tb sm red" data-z="sfin">Terminar</button>`;
+ b.innerHTML=`<span class="sb7t">${SES.tipo} min${SCH&&SES.ctx?' · '+ctxTxt(SES.ctx):''}<small>${esc(o.name)}${SES.n2?' + '+esc(ORGS[SES.n2-1].name):''}</small></span><button class="tb sm" data-z="sprev" ${i?'':'disabled'} aria-label="Paso anterior">◀</button><button class="sb7p" data-z="slist" title="Ver todos los pasos"><b>${i+1}/${P.length} · ${esc(p[2])}</b><small>${p[0]}–${p[1]} min · ${esc(p[3])}</small></button><button class="tb sm pri" data-z="snext" ${i<P.length-1?'':'disabled'} aria-label="Paso siguiente">▶</button><span class="sb7c ${over?'over':''}" title="Tiempo de la sesión">⏱ ${Math.floor(mi)}:${pad(Math.floor((mi%1)*60))}</span><button class="tb sm" data-z="sdecir" title="Leer el paso en voz alta" aria-label="Leer el paso en voz alta">🔊</button>${SCH?'<button class="tb sm" data-z="sorteo" title="Sortear quién participa" aria-label="Sortear quién participa">🎲</button><button class="tb sm" data-z="proy" title="Modo proyector" aria-label="Modo proyector">📽</button>':''}<button class="tb sm" data-z="spausa">${SES.pausa?'▶ Seguir':'Pausa'}</button>${SES.n2?`<button class="tb sm" data-z="sotro">Ver ${S.org&&S.org.n===SES.n2?'el 1.º':'el 2.º'}</button>`:''}<button class="tb sm red" data-z="sfin">Terminar</button><button class="tb sm sb9m" data-z="sbmas" aria-label="Más opciones de la sesión" title="Más opciones">⋯</button>`;
  clearInterval(sesTick);sesTick=setInterval(()=>{const c=b.querySelector('.sb7c');if(!c||!SES)return;const m=sesMin();c.textContent='⏱ '+Math.floor(m)+':'+pad(Math.floor((m%1)*60));c.classList.toggle('over',m>sesPasos()[SES.paso][1])},1000)}
 function sesListDlg(){const P=sesPasos();dialog(`Sesión de ${SES.tipo} minutos`,`<ol class="sl7">${P.map((p,k)=>`<li class="${k===SES.paso?'on':''} ${k<SES.max?'vis':''}"><button data-z="sgo" data-v="${k}"><b>${p[0]}–${p[1]} min · ${esc(p[2])}</b><span>${esc(p[3])}</span></button></li>`).join('')}</ol><p style="font-size:14px;color:var(--mut)">Los tiempos son de referencia: ${GEN?'avanza a tu ritmo':'adapte el ritmo al grupo'}. No es necesario terminar en una sola sesión.</p>`,null,{ok:false})}
 
@@ -5837,6 +5946,62 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-z]');if(!t
  if(z==='instalar'&&INSTP){INSTP.prompt();INSTP.userChoice.finally(()=>{INSTP=null;const b=$('#instb');if(b)b.remove()});return}
 });
 proyAplica();
+
+/* =====================================================================
+   v9 · Tablero ajustado a la pantalla: lectura al lado del tablero,
+   ver en grande, barra de sesión compacta, proyector enfocado.
+   ===================================================================== */
+function lecDock(){const m=$('#modal'),d=m.querySelector('.dlg'),side=$('#side');if(!S.org||!side||!d||!$('#bd'))return;
+ let k=$('#lecd');if(!k){k=document.createElement('div');k.id='lecd';side.appendChild(k)}k.classList.remove('min');LECT0=Date.now();lecTop();
+ k.style.setProperty('--c',m.style.getPropertyValue('--c')||'var(--c)');
+ const acts=d.querySelector('.acts');if(acts)acts.remove();
+ k.innerHTML=`<div class="lecdh"><b>📖 Lectura</b><span class="sp"></span><button class="tb sm" data-z="lecmin" aria-label="Minimizar la lectura">▾ Minimizar</button><button class="tb sm" data-z="lecx" aria-label="Cerrar la lectura">✕</button></div><div class="lecdb">${d.innerHTML}${acts?`<div class="acts lecda">${acts.innerHTML}</div>`:''}</div>`;
+ k.querySelectorAll('[data-lecx]').forEach(b=>b.remove());
+ m.classList.remove('show');m.innerHTML='';side.classList.remove('closed');side.classList.add('conlec');
+ const bl=$('.bld');if(bl&&bl.classList.contains('nop')&&!document.body.classList.contains('proy')){bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel';setTimeout(fitZoom,50)}}
+let LECT0=0;
+function lecTop(){const k=$('#lecd'),pn=$('#pane');if(k&&pn&&!k.classList.contains('min'))k.style.top=pn.offsetTop+'px';else if(k)k.style.top=''}
+function setMom(i,e){setMomV8(i,e);const k=$('#lecd');if(k&&Date.now()-LECT0>800&&!k.classList.contains('min')){k.classList.add('min');const b=k.querySelector('[data-z="lecmin"]');if(b)b.textContent='▴ Abrir'}lecTop()}
+function lecDockX(){const k=$('#lecd');if(k)k.remove();const s=$('#side');if(s)s.classList.remove('conlec')}
+function lecturaDlg(n,enOrg){lecDockX();lecturaDlgV8(n,enOrg);if(S.org&&$('#bd'))lecDock()}
+function lecVerDlg(id,enOrg){lecDockX();lecVerDlgV8(id,enOrg);if(S.org&&$('#bd'))lecDock()}
+
+/* ---------- ver en grande ---------- */
+function bdGrande(){const bd=$('#bd');if(!bd)return;let z=Math.max(0.55,Math.min(1,(innerWidth-40)/W*1.6));
+ dialog('Ver en grande',`<p class="vg9t">Desliza para recorrerlo. Usa − y + para cambiar el tamaño. Toca una pieza en el tablero y luego «🔍 Ver grande» para leerla sola.</p><div class="vg9" id="vg9"></div>`,null,{ok:false,focus:false,extra:'<button class="tb" data-z="vgm" aria-label="Más pequeño">−</button><button class="tb" data-z="vgp" aria-label="Más grande">+</button>'});
+ const dl=$('#modal .dlg');dl.classList.add('big9');const c=bd.cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));const box=$('#vg9');box.appendChild(c);
+ const ap=()=>{c.style.width=(W*z)+'px';c.style.height=(H*z)+'px'};ap();bdGrande.z=f=>{z=Math.max(0.3,Math.min(2,z*f));ap()}}
+function txtPieza(p){if(!p)return'';let t=p.text||'';if(p.t&&p.t.cells){t=`<table class="pz9t">${p.t.cells.map((r,i)=>`<tr>${r.map(c=>i===0&&p.t.keep?`<th>${esc(c)}</th>`:`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table>${p.t.ft?`<p><b>Resumen:</b> ${esc(p.t.ft)}</p>`:''}`;return t}return esc(t).replace(/\n/g,'<br>')}
+function pzVer(){const p=S.P.find(q=>q.id===S.sel);if(!p)return;const h=txtPieza(p);const pl=(p.text||'')+' '+(p.t&&p.t.cells?p.t.cells.map(r=>r.join(', ')).join('. '):'');
+ dialog(esc((kd(p)||{}).l||'Pieza'),`<div class="pz9">${h||'<i>(vacía)</i>'}</div>`,null,{ok:false,extra:pl.trim()?`<button class="tb" data-say="${esc(pl.trim())}">▶ Escuchar</button>`:''})}
+
+/* ---------- proyector enfocado ---------- */
+let proyPrev='';
+function proyPaso(){if(!SES&&!S.org)return'';if(SES){const p=sesPasos()[SES.paso];return`<b>${SES.paso+1}/${sesPasos().length} · ${esc(p[2])}</b><span>${esc(p[3])}</span>`}
+ const mo=MOMS[S.mom]?MOMS[S.mom][0]:'';const et=S.mom===2?' · '+(S.et+1)+'. '+ETAPAS[S.et]:'';const sr=$('#pane .sayrow p');return`<b>${esc(mo+et)}</b>${sr?`<span>${esc(sr.textContent)}</span>`:''}`}
+setInterval(()=>{const on=document.body.classList.contains('proy'),bl=$('.bld'),w=$('#wrap');let b=$('#proyb');
+ if(!on||!bl||!w){if(b){b.remove();if(bl)setTimeout(fitZoom,30)}if(bl&&bl.dataset.pn){delete bl.dataset.pn;bl.classList.remove('nop');const t=$('#tgl');if(t)t.textContent='Ocultar panel';setTimeout(fitZoom,30)}return}
+ if(!bl.classList.contains('nop')){bl.classList.add('nop');bl.dataset.pn='1';const t=$('#tgl');if(t)t.textContent='Ver panel';setTimeout(fitZoom,30)}
+ if(!b){b=document.createElement('div');b.id='proyb';w.parentNode.insertBefore(b,w);proyPrev='';setTimeout(fitZoom,30)}
+ const h=proyPaso();if(h!==proyPrev){b.innerHTML=h;proyPrev=h}},400);
+
+/* ---------- eventos ---------- */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-z]');if(!t||t.disabled)return;const z=t.dataset.z;
+ if(z==='lecx')return lecDockX();
+ if(z==='lecmin'){const k=$('#lecd');if(!k)return;k.classList.toggle('min');t.textContent=k.classList.contains('min')?'▴ Abrir':'▾ Minimizar';lecTop();return}
+ if(z==='bdgrande')return bdGrande();if(z==='vgm')return bdGrande.z&&bdGrande.z(1/1.25);if(z==='vgp')return bdGrande.z&&bdGrande.z(1.25);
+ if(z==='pzver')return pzVer();
+ if(z==='bhmas'){const h=$('.bh');if(h)h.classList.toggle('mas9');return}
+ if(z==='sbmas'){const b=$('#sesbar');if(b)b.classList.toggle('abierto');return}
+});
+document.addEventListener('toggle',e=>{const d=e.target;if(d.classList&&d.classList.contains('mas9')){const t=d.closest('.tools');if(t)t.classList.toggle('mas9o',d.open)}},true);
+/* la barra de sesión vuelve a pintarse: conservar si estaba abierta */
+new MutationObserver(()=>{const b=$('#sesbar');document.body.classList.toggle('conses9',!!b)}).observe(document.body,{childList:true});
+
+/* ---------- NoteKiebres: lenguaje para quien estudia solo ---------- */
+if(GEN){const RP=[[/todas las ideas que el grupo conoce o se le ocurren/g,'todas las ideas que conoces o se te ocurren'],[/recuperar lo que el grupo sabe/g,'recuperar lo que ya sabes'],[/y el grupo necesita investigarlas/g,'y necesitas investigarlas'],[/todo lo que el grupo ya sabe/g,'todo lo que ya sabes'],[/Comparte tu resumen con un compañero/g,'Explica tu resumen en voz alta, como si se lo contaras a alguien']];
+ const vis=new Set();const fx=o=>{if(!o||typeof o!=='object'||vis.has(o))return;vis.add(o);for(const k of Object.keys(o)){const v=o[k];if(typeof v==='string'){let w=v;RP.forEach(([a,b])=>{w=w.replace(a,b)});if(w!==v)o[k]=w}else if(v&&typeof v==='object')fx(v)}};
+ try{fx(ORGS);fx(OY);fx(D)}catch(e){}}
 
 window.__TPV={MODO,LECT,ORGS,S,buildForm,review,outline,D,oir,VZ,finDictado};
 prefs();route();vzBar();
