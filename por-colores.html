@@ -3755,7 +3755,16 @@ function usar60(v){const L=lecById(v);if(!L)return;const n=(L.orgs||[])[0];const
 function lecturasView(){page('Lecturas · Organizatones para Preguntones',`<section class="ghead gl" style="--g:var(--P)"><span class="tn">${ico('libro',60)}</span><div><h1>${GEN?'Mis lecturas':'Banco de lecturas'}</h1><p>${GEN?'Las lecturas de ejemplo y las que tú agregues. Elige una y úsala para practicar un organizador.':'Las lecturas de ejemplo y las que agregue el docente de biblioteca o el titular, por grado y nivel. Elija una y úsela en la sesión de 60 minutos.'}</p><p><a class="tb" href="#clases">← ${GEN?'Volver a Mi plan':'Volver a Clases'}</a></p></div></section>${bancoHTML()}`);bancoBind()}
 /* ---------- horario de la biblioteca y «Clase de hoy» ---------- */
 const DIAS10=['','Lunes','Martes','Miércoles','Jueves','Viernes'];
-function horario(){try{const h=JSON.parse(lsGet('oya:horario')||'[]');return Array.isArray(h)?h:[]}catch(e){return[]}}
+/* Horario oficial de la biblioteca (actualizado 2026-11-27). Clases de 60 min y lecturas de 20 min.
+   Se carga una sola vez por versión (oya:horario-v); después el docente puede ajustarlo en 🗓 Horario. */
+const HOR_V='2026-11-27',HOR_ESC=[
+ {d:1,h:'09:00',gr:6,gp:'A',t:20},{d:1,h:'10:00',gr:4,gp:'A',t:20},{d:1,h:'11:30',gr:1,gp:'A',t:20},
+ {d:2,h:'09:00',gr:3,gp:'A',t:20},{d:2,h:'11:30',gr:2,gp:'A',t:60},
+ {d:3,h:'08:00',gr:5,gp:'A',t:60},{d:3,h:'09:00',gr:1,gp:'A',t:60},{d:3,h:'11:30',gr:4,gp:'A',t:60},
+ {d:4,h:'12:30',gr:3,gp:'A',t:60},{d:4,h:'13:30',gr:6,gp:'A',t:60},
+ {d:5,h:'10:00',gr:5,gp:'A',t:20},{d:5,h:'11:30',gr:2,gp:'A',t:20}];
+function horario(){if(SCH&&lsGet('oya:horario-v')!==HOR_V){lsSet('oya:horario',JSON.stringify(HOR_ESC));lsSet('oya:horario-v',HOR_V)}
+ try{const h=JSON.parse(lsGet('oya:horario')||'[]');return Array.isArray(h)?h:[]}catch(e){return[]}}
 const hMin=h=>{const m=String(h||'').match(/^(\d\d?):(\d\d)/);return m?+m[1]*60+ +m[2]:-1};
 function claseHoy(){const H=horario(),d=new Date(),dd=d.getDay(),now=d.getHours()*60+d.getMinutes();
  if(!H.length)return`<p class="clase-hoy">🗓 Si registra el horario de la biblioteca, aquí aparecerá qué grupo toca. <button class="tb sm" data-z="hor">Registrar horario</button></p>`;
