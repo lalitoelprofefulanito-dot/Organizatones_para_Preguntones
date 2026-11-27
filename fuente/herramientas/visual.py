@@ -11,6 +11,7 @@ RUTAS = ['', '#organizadores', '#familia-comparar', '#clases', '#lecturas', '#cu
 FIJO = '2026-11-27T10:05:00-06:00'
 SEMILLA = r"""
 localStorage.setItem('oya:horario',JSON.stringify([{d:5,h:'10:00',gr:4,gp:'A',t:60}]));
+localStorage.setItem('oya:horario-v','2026-11-27');
 """
 
 
