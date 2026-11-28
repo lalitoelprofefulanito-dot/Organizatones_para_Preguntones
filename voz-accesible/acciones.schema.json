@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Acciones de Voz Accesible 2.1",
+  "description": "Lo que una IA puede pedirle al motor Voz Accesible con VozAccesible.ejecutar(). Se responde con una acción, una lista de acciones o null.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/accion"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/accion"
+      }
+    },
+    {
+      "type": "null"
+    }
+  ],
+  "$defs": {
+    "accion": {
+      "type": "object",
+      "required": [
+        "accion"
+      ],
+      "properties": {
+        "accion": {
+          "type": "string",
+          "enum": [
+            "clic",
+            "abrir",
+            "seleccionar",
+            "escribir",
+            "borrar",
+            "dictar",
+            "desplazar",
+            "navegar",
+            "atras",
+            "decir",
+            "leer",
+            "orden",
+            "ayuda",
+            "apagar"
+          ],
+          "description": "Qué hacer."
+        },
+        "objetivo": {
+          "type": "string",
+          "description": "Nombre del control, selector o campo tal como aparece en describirPantalla() (clic, abrir, seleccionar, escribir, borrar, dictar)."
+        },
+        "indice": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Opcional. Si hay varios controles repetidos con el mismo nombre, indica cuál elegir (1, 2, 3...)."
+        },
+        "texto": {
+          "type": "string",
+          "description": "Texto para escribir, opción a elegir en «seleccionar», decir, leer o procesar como orden. En «orden», la frase pasa por el intérprete completo (comandos propios incluidos)."
+        },
+        "agregar": {
+          "type": "boolean",
+          "description": "En «escribir»: true añade al final en vez de reemplazar."
+        },
+        "forzar": {
+          "type": "boolean",
+          "description": "En «clic»: true omite la confirmación de seguridad en acciones críticas."
+        },
+        "direccion": {
+          "type": "string",
+          "enum": [
+            "arriba",
+            "abajo",
+            "inicio",
+            "final"
+          ],
+          "description": "En «desplazar»."
+        },
+        "url": {
+          "type": "string",
+          "description": "En «navegar»: solo direcciones http(s) del mismo sitio (por seguridad no se aceptan javascript: ni otros sitios)."
+        },
+        "voz": {
+          "type": "boolean",
+          "description": "En «decir»: false muestra el aviso sin leerlo en voz alta."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

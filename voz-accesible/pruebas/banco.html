@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>banco</title></head><body>
+<header><a href="#">Inicio</a></header>
+<main>
+<label for="nombre">Nombre</label><input id="nombre" type="text">
+<label for="pais">País</label><select id="pais"><option value="">Elige…</option><option value="mx">México</option><option value="es">España</option></select>
+<label for="com">Comentarios</label><textarea id="com"></textarea>
+<p><label><input type="checkbox" id="acepto"> Acepto las reglas</label></p>
+<p><button id="abre1">Abrir ventana 1</button> <button id="abre2">Abrir ventana 2</button> <button id="gua">Guardar</button></p>
+<div role="button" tabindex="0" id="tarjeta"><button id="interno">Ver ficha</button></div>
+<p id="estado"></p>
+</main>
+<dialog id="d1"><p>Ventana 1</p><button onclick="estado.textContent='EXPORTÓ'">Exportar</button> <button onclick="d1.close();estado.textContent='canceló'">Cancelar</button></dialog>
+<dialog id="d2"><p>Ventana 2</p><button onclick="estado.textContent='CERRÓ SESIÓN'">Cerrar sesión</button> <button onclick="d2.close();estado.textContent='aceptó'">Aceptar</button></dialog>
+<script>abre1.onclick=()=>d1.showModal();abre2.onclick=()=>d2.showModal();interno.onclick=()=>estado.textContent='ficha'</script>
+<script src="MOTOR"></script><script>VozAccesible.iniciar({tiempoDictado:1500})</script>
+</body></html>

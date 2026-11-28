@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ejemplo · Voz Accesible 2.1</title>
+<style>
+ body{font:17px/1.5 system-ui,Arial,sans-serif;margin:0;background:#F4F6FA;color:#151515}
+ header{background:#1565C0;color:#fff;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+ header h1{font-size:20px;margin:0;flex:1}
+ header a,button{font:inherit;border:2px solid #151515;background:#fff;color:#151515;border-radius:10px;padding:6px 12px;cursor:pointer;text-decoration:none}
+ header a{border-color:#fff}
+ main{max-width:740px;margin:0 auto;padding:16px 16px 120px}
+ section{background:#fff;border-radius:14px;padding:14px 16px;margin:14px 0;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+ label{display:block;margin:10px 0 4px;font-weight:bold}
+ input[type=text],textarea,select{width:100%;box-sizing:border-box;font:inherit;padding:8px;border:2px solid #90A4AE;border-radius:8px;background:#fff;color:#151515}
+ table{width:100%;border-collapse:collapse;margin-top:8px}
+ th,td{border-bottom:1px solid #CFD8DC;padding:8px;text-align:left}
+ button.peligro{border-color:#C62828;color:#C62828}
+ dialog{border:4px solid #1565C0;border-radius:14px;max-width:420px}
+ body.oscuro{background:#0E1630;color:#E6EBF7} body.oscuro section{background:#16213F}
+ .rel{height:700px;background:repeating-linear-gradient(#fff 0 40px,#EEF3FB 40px 80px);border-radius:14px;padding:16px;color:#151515}
+</style>
+</head>
+<body>
+<header>
+ <h1>Mi aplicación de ejemplo (v2.1)</h1>
+ <a href="#">Inicio</a><a href="#ajustes">Ajustes</a>
+</header>
+<main>
+ <section>
+  <p>Toca el micrófono (abajo a la derecha) o presiona <b>Alt+M</b> y prueba: «escribe Ana López en nombre», «elige México en país», «escribe en comentarios» (di «coma», «punto» y «terminar dictado»), «toca guardar», «marca acepto», «pon el micrófono a la izquierda».</p>
+  <label for="nombre">Nombre</label><input id="nombre" type="text" placeholder="Tu nombre">
+  <label for="pais">País</label>
+  <select id="pais">
+    <option value="">Selecciona un país…</option>
+    <option value="mx">México</option>
+    <option value="es">España</option>
+    <option value="ar">Argentina</option>
+    <option value="co">Colombia</option>
+  </select>
+  <label for="coment">Comentarios</label><textarea id="coment" rows="3"></textarea>
+  <p><label style="display:inline;font-weight:normal"><input type="checkbox" id="acepto"> Acepto las reglas</label></p>
+  <p><button id="guardar">Guardar</button> <button id="abrirv">Ver mensaje</button></p>
+  <p id="estado" aria-live="polite"></p>
+ </section>
+
+ <section>
+  <h2>Prueba de botones repetidos y confirmación segura</h2>
+  <p>Di «toca editar» para ver los números <b>[1]</b> y <b>[2]</b> y luego di «el dos». Di «toca eliminar» para probar la confirmación por voz.</p>
+  <table>
+    <thead><tr><th>Registro</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr><td>Documento A</td><td><button onclick="avisarAccion('Editando Documento A')">Editar</button> <button class="peligro" onclick="avisarAccion('Eliminado Documento A')">Eliminar</button></td></tr>
+      <tr><td>Documento B</td><td><button onclick="avisarAccion('Editando Documento B')">Editar</button> <button class="peligro" onclick="avisarAccion('Eliminado Documento B')">Eliminar</button></td></tr>
+    </tbody>
+  </table>
+ </section>
+
+ <section>
+  <details><summary>Detalles</summary><p>Este apartado se abre con «abre detalles» y se cierra con «cierra detalles».</p></details>
+  <p>¿Cuál es tu color favorito?</p>
+  <label style="font-weight:normal"><input type="radio" name="c"> Rojo</label>
+  <label style="font-weight:normal"><input type="radio" name="c"> Verde</label>
+  <label style="font-weight:normal"><input type="radio" name="c"> Azul</label>
+ </section>
+ <div class="rel">Contenido largo para probar «baja la pantalla», «sube la pantalla», «hasta abajo» y «hasta arriba».</div>
+</main>
+<dialog id="dlg"><p>Hola. Di «entendido» para cerrar esta ventana.</p><button id="okdlg">Entendido</button></dialog>
+
+<script src="voz-accesible.js"></script>
+<script>
+ function avisarAccion(txt){ document.getElementById('estado').textContent = txt; }
+ document.getElementById('guardar').onclick=()=>{document.getElementById('estado').textContent='Guardado: '+document.getElementById('nombre').value+' ('+document.getElementById('pais').value+')'};
+ document.getElementById('abrirv').onclick=()=>document.getElementById('dlg').showModal();
+ document.getElementById('okdlg').onclick=()=>document.getElementById('dlg').close();
+
+ VozAccesible.iniciar({
+  idioma:'es-MX',
+  tiempoDictado: 8500,
+  confirmarPeligrosos: true,
+  // Comandos propios de esta aplicación (se revisan antes que los generales)
+  posicion: 'abajo-derecha',
+  comandos:[
+   {nombre:'Lugar del micrófono', patron:/^pon el microfono (a la )?(izquierda|derecha)$/, ejemplos:['pon el micrófono a la izquierda'],
+    hacer:(m)=>VozAccesible.configurar({posicion:'abajo-'+m[2]})},
+   {nombre:'Saludar', patron:/^(di|dime) (.+)$/, ejemplos:['di hola'],
+    hacer:(m)=>VozAccesible.ejecutar({accion:'decir',texto:m[2]})},
+   {nombre:'Modo oscuro', patron:/^(modo|tema) (oscuro|noche|claro|dia)$/, ejemplos:['modo oscuro','modo claro'],
+    hacer:(m)=>document.body.classList.toggle('oscuro',/oscuro|noche/.test(m[2]))}
+  ],
+  // Ejemplo de conexión simulada con IA para frases libres
+  ia: async (texto, pantalla) => {
+    if (/llena el formulario de prueba/i.test(texto)) {
+      return [
+        { accion: 'escribir', objetivo: 'Nombre', texto: 'Eduardo Kantún' },
+        { accion: 'seleccionar', objetivo: 'País', texto: 'México' },
+        { accion: 'clic', objetivo: 'Guardar' }
+      ];
+    }
+    return null;
+  }
+ });
+</script>
+</body>
+</html>
