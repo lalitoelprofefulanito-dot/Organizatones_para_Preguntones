@@ -21,6 +21,11 @@ La computadora de la biblioteca sube sola lo trabajado en clase a la carpeta `da
 - El nivel de la rúbrica que calcula la aplicación es un **indicador de avance**. Revisa cuatro cosas que se pueden contar: si el propósito marcado corresponde al organizador, cuántos espacios tienen texto y si hay frases demasiado largas, si faltan piezas o conexiones, y cuántas respuestas tiene la explicación. No puede leer si lo escrito es correcto: el docente confirma o ajusta el nivel.
 - Si el navegador se llena, la aplicación descarga un respaldo completo **antes** de hacer espacio y avisa qué hizo.
 
+Al pie de cada página (y en «Evaluador», apartado Respaldo) hay dos botones:
+
+- **🗑 Borrar datos…** pregunta qué borrar, con casillas separadas: tableros (todos o solo de los grupos elegidos), bitácora e historial, lecturas (o solo sus fotos), grupos y horario, sesión en curso, preferencias, conexión con GitHub y respaldo automático. Muestra cuántos registros se irán, pide escribir BORRAR y **descarga un respaldo antes de borrar**. También se abre por voz: «borra mis datos».
+- **☁ Respaldo automático** envía de lunes a viernes, dentro de las fechas del ciclo y fuera de vacaciones, una copia a Google Drive y, si se quiere, al correo. Usa un puente propio de Google Apps Script (`fuente/puente-respaldos.gs`; la ventana trae el código con la clave ya puesta y los pasos para instalarlo). La página solo puede enviar mientras está abierta: envía a la hora elegida o, si ese día no se abrió, al abrirse el siguiente día hábil. La copia no incluye el token de GitHub.
+
 ## Cómo se construye
 
 Las tres aplicaciones (`index.html`, `por-colores.html` y NoteKiebres) salen de **un solo motor**: `fuente/motor.html`. Los cambios se hacen ahí y después se corre:

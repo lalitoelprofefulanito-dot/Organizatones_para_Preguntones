@@ -902,7 +902,6 @@ html[data-tema="oscuro"] .aviso-espacio{background:#3A1418;color:#FFD9DC}
 .plg>.box,.plg>.quiz{border:0;margin:0;background:transparent}
 .plg>.box>b.l:first-child{display:none}
 .moms .momtg{display:none}
-/* v15: en celular, herramientas y momentos se contraen solos */
 .tlb15,.mtg15{display:none}
 .pl15{display:inline-block;margin-left:4px;padding:1px 7px;border-radius:9px;background:#ECEFF1;color:#37474F;font-size:12.5px;font-weight:bold}
 html[data-tema="oscuro"] .pl15{background:#26324F;color:#E6EBF7}
@@ -933,6 +932,19 @@ html[data-tema="oscuro"] .plg{background:#16213F;border-color:#3A4A72}
  .plg{border:0}
  .plg>summary{display:none}
 }
+/* borrar datos y respaldo automático */
+.pie-datos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.borrar-lista{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.borrar-op{align-items:flex-start}
+.borrar-op span{display:flex;flex-direction:column}
+.borrar-op small{color:var(--mut);font-size:14px}
+.borrar-sub{margin-left:28px}
+.borrar-grupos{border:2px solid #D5DBE7;border-radius:10px;padding:6px 10px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.borrar-grupos legend{font-weight:bold;padding:0 4px}
+.respaldo-estado{font-size:15px;margin:4px 0 8px}
+.ab-pasos{margin-top:10px}
+.ab-pasos summary{cursor:pointer;font-weight:bold}
+.ab-pasos li{margin:4px 0}
 </style>
 </head>
 <body>
@@ -2986,7 +2998,7 @@ function pieAutoria(){
  if(MODO==='grado')return`<div class="bv-pie-autoria"><div class="renglon"><strong>Eduardo Kantún Martínez</strong> · Promotor de Lecturas · Esc. Prim. "Molino de Rosas" (CCT: 09DPR1858N)</div><div class="renglon">Última actualización: ${ACTUALIZADO} · Programación con apoyo de IA (Claude), revisada por el autor</div></div>`;
  if(GEN)return`<div class="bv-pie-autoria"><div class="renglon"><strong>NoteKiebres</strong> · Autor: <strong>Eduardo Kantún Martínez</strong> · Diseño educativo y contenido</div><div class="renglon">Desarrollado con apoyo de Claude (Anthropic, Claude Opus 5.5), bajo la dirección y revisión del autor · Última actualización: ${ACTUALIZADO}</div></div>`;
  return`<div class="bv-pie-autoria"><div class="renglon"><strong>Profr. Eduardo Kantún Martínez</strong> · Autor · Diseño educativo, contenido y decisiones finales</div><div class="renglon">Programación con apoyo de Claude (Anthropic, Claude Opus 5.5), siempre bajo su dirección y revisión · Última actualización: ${ACTUALIZADO}</div></div>`}
-function page(title,inner){document.title=GEN?title.replace('Organizatones para Preguntones','NoteKiebres'):title;S.org=null;$('#app').innerHTML=topbar()+`<div class="wrapw">${avisoEspacio()}${inner}<footer>Basado en la <b>Guía práctica de organizadores gráficos de información</b> y en el kit <b>Libreta del Pensador Visual</b>. Funciona sin internet (el micrófono sí la necesita). Cada organizador se guarda solo en este navegador y queda registrado en «${GEN?'Mi avance':'Evaluador'}»; en «7. Conservo» puedes guardar una copia en archivo.</footer>${pieAutoria()}</div>`;document.querySelectorAll('.mosaic a.mt').forEach(a=>a.classList.toggle('aqui',a.getAttribute('href')===(location.hash==='#docente'?'#evaluador':GEN&&/^#familia-/.test(location.hash)?'#organizadores':location.hash==='#lecturas'?'#clases':location.hash||'#')));setWF();scrollTo(0,0)}
+function page(title,inner){document.title=GEN?title.replace('Organizatones para Preguntones','NoteKiebres'):title;S.org=null;$('#app').innerHTML=topbar()+`<div class="wrapw">${avisoEspacio()}${inner}<footer>Basado en la <b>Guía práctica de organizadores gráficos de información</b> y en el kit <b>Libreta del Pensador Visual</b>. Funciona sin internet (el micrófono sí la necesita). Cada organizador se guarda solo en este navegador y queda registrado en «${GEN?'Mi avance':'Evaluador'}»; en «7. Conservo» puedes guardar una copia en archivo.<div class="pie-datos noprint"><button class="tb sm" data-z="autobk">☁ Respaldo automático</button><button class="tb sm red" data-z="borrar">🗑 Borrar datos…</button></div></footer>${pieAutoria()}</div>`;document.querySelectorAll('.mosaic a.mt').forEach(a=>a.classList.toggle('aqui',a.getAttribute('href')===(location.hash==='#docente'?'#evaluador':GEN&&/^#familia-/.test(location.hash)?'#organizadores':location.hash==='#lecturas'?'#clases':location.hash||'#')));setWF();scrollTo(0,0)}
 function rutaBloque(filtro){return D.familias.map(f=>{const fi=FAMI[f.id],c=COL[FAM[fi].c],R=D.ruta.filter(r=>r.familia===f.id&&(!filtro||filtro(r)));return R.length?`<div style="--c:${c}"><div class="rfam"><span class="pill">${FAM[fi].n.toUpperCase()}</span>${esc(f.nombre)}</div><div class="rgrid">${R.map(r=>`<button class="rq" data-rq="${r.id}"><span class="ri" aria-hidden="true">${r.icono}</span><span>${esc(r.pregunta)}</span></button>`).join('')}</div></div>`:''}).join('')+`<div class="res" id="rres"></div>`}
 /* ---------- ÍCONOS BLANCOS PARA BOTONES ---------- */
 const IC={
@@ -3543,6 +3555,7 @@ function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#b
  if(/^(otra vez|de nuevo|repite|repitelo|repite eso|lo mismo)$/.test(nrm(t))||(v==='repite'&&!R.length)){if(VZ.ultOrden){oirLimpia(VZ.ultOrden,true)}return true}
  if(/^(deshaz|deshacer)|^(regresa|devuelve|quita) (lo ultimo|eso|el ultimo cambio)$|^(me equivoque|ups|eso no|asi no|control z)$/.test(s)){if(enTablero)undo();toast('Deshecho');return true}
  if(nlMenu(s))return true;
+ if(!S.org&&/^quita (los |mis |todos los |todo |toda la )?(datos|trabajos|informacion|registros|todo)$/.test(s))return borrarDlg(),true;
  if(nlResponde(s))return true;
  if(nlSesion(s))return true;
  if(/^(sortea|haz un sorteo|un sorteo|sorteo|saca un numero|elige un numero|quien sigue|quien participa|otro numero|otro alumno)$/.test(s)||(v==='sortea')){if(!$('#sorn'))sorteoDlg();setTimeout(sortear,250);return true}
@@ -3581,6 +3594,100 @@ function oirLimpia(t,repetida){const c=nlLimpia(t);if(!c.R.length&&!c.v)return o
  const verbo={pon:/^(otra|otro|una|un) /.test(nlTxt(c.R))?'agrega':'escribe',sube:'mueve',baja:'mueve'}[c.v]||c.v;
  /* una sola palabra («sí», «cerrar», «anterior») pasa tal cual; si hubo verbo y algo más, pasa ya normalizada */
  oirUna(t,c.v&&c.R.length?verbo+' '+nlTxt(c.R):c.raw||nrm(t))}
+
+/* =====================================================================
+   BORRAR DATOS: primero se elige qué, después se confirma escribiendo BORRAR.
+   Antes de borrar se descarga un respaldo completo.
+   ===================================================================== */
+function lsClaves(){const K=[];try{for(let i=0;i<localStorage.length;i++)K.push(localStorage.key(i))}catch(e){}return K}
+const kb=K=>Math.max(1,Math.round(K.reduce((a,k)=>a+(lsGet(k)||'').length,0)/1024))+' KB';
+/* grupos que tienen algo guardado: g4A -> «4.º A» */
+function borrarGrupos(){const G=new Set();lsClaves().forEach(k=>{const m=k.match(/^ogp:v1:g(\d)([^:]+):\d+$/);if(m)G.add('g'+m[1]+m[2])});Object.values(bitAll()).forEach(e=>{if(/^g\d/.test(e.ctx||''))G.add(e.ctx)});return[...G].sort()}
+const nomGrupo=g=>g.replace(/^g(\d)(.+)$/,'$1.º $2');
+function borrarCats(){const K=lsClaves(),tab=K.filter(k=>k.startsWith('ogp:v1:')),B=Object.keys(bitAll()).length,L=LECS(),fotos=L.filter(l=>l.img).length,ten=k=>K.filter(x=>x===k);
+ return[
+  {id:'tab',t:GEN?'Mis organizadores: lo que construí en los tableros':'Trabajos en los organizadores (tableros)',n:tab.length+' '+pl(tab.length,'trabajo','trabajos'),K:tab,grupo:true},
+  {id:'bit',t:GEN?'Mi avance: el historial de lo trabajado':'Registro de clases y del Evaluador',n:B+' '+pl(B,'registro','registros'),K:ten('oya:bit').concat(ten('oya:hist')),grupo:true},
+  {id:'lec',t:'Lecturas agregadas',n:L.length+' '+pl(L.length,'lectura','lecturas')+(fotos?', '+fotos+' con foto':''),K:ten('oya:lecs'),fotos},
+  SCH&&{id:'grp',t:'Grupos registrados y horario de la biblioteca',n:'',K:['oya:grupos','oya:horario','oya:ctx'].filter(k=>K.includes(k))},
+  {id:'ses',t:'Sesión que quedó a medias',n:SES?'1 sesión':'',K:ten('oya:ses')},
+  {id:'pref',t:'Preferencias: tamaño de letra, tema, recuadros abiertos, opciones de impresión',n:'',K:K.filter(k=>/^(oya:(letra|grado|docente|popt|proy|pista-tablero|plg)|nk:tema|ogp:name)/.test(k))},
+  SCH&&{id:'gh',t:'Conexión con GitHub (llave y pendientes de subir)',n:'',K:['oya:gh','oya:dirty','oya:syncat'].filter(k=>K.includes(k))},
+  {id:'auto',t:'Configuración del respaldo automático',n:'',K:ten('oya:auto')}
+ ].filter(c=>c&&c.K.length)}
+function borrarDlg(){const C=borrarCats(),G=SCH?borrarGrupos():[];if(!C.length)return dialog('Borrar datos','<p>En este navegador no hay nada guardado que borrar.</p>',null,{ok:false});
+ dialog('¿Qué quieres borrar?',`<p>Marca solo lo que quieras borrar de <b>este navegador</b>. Lo que no marques se queda como está.</p>
+ ${G.length?`<fieldset class="borrar-grupos"><legend>¿De qué grupos? (trabajos y registro de clases)</legend><label class="marca-op"><input type="checkbox" id="brgall" checked> Todos los grupos</label>${G.map(g=>`<label class="marca-op"><input type="checkbox" class="brg" value="${esc(g)}" checked> ${esc(nomGrupo(g))}</label>`).join('')}</fieldset>`:''}
+ <div class="borrar-lista">${C.map(c=>`<label class="marca-op borrar-op"><input type="checkbox" class="brc" value="${c.id}"> <span><b>${esc(c.t)}</b><small>${c.n?esc(c.n)+' · ':''}${kb(c.K)}</small></span></label>${c.fotos?`<label class="marca-op borrar-sub" hidden><input type="checkbox" id="brsolofotos"> Solo quitar las fotos (se quedan los títulos y textos)</label>`:''}`).join('')}</div>`,null,
+  {ok:false,extra:'<button class="tb pri" id="brsig" disabled>Continuar →</button>'});
+ const m=$('#modal'),sig=$('#brsig'),all=$('#brgall');
+ const marca=()=>{sig.disabled=!m.querySelector('.brc:checked');const lec=m.querySelector('.brc[value="lec"]'),sub=m.querySelector('.borrar-sub');if(sub)sub.hidden=!(lec&&lec.checked)};
+ m.addEventListener('change',e=>{if(e.target===all)m.querySelectorAll('.brg').forEach(x=>x.checked=all.checked);else if(e.target.classList.contains('brg')&&all)all.checked=[...m.querySelectorAll('.brg')].every(x=>x.checked);marca()});
+ sig.onclick=()=>{const sel=[...m.querySelectorAll('.brc:checked')].map(x=>x.value),grupos=G.length?[...m.querySelectorAll('.brg:checked')].map(x=>x.value):null;if(G.length&&!grupos.length)return toast('Marca al menos un grupo.');borrarConfirma(sel,grupos&&grupos.length<G.length?grupos:null,!!($('#brsolofotos')||{}).checked)}}
+function borrarPlan(sel,grupos,soloFotos){const C=borrarCats(),P=[];const deG=k=>{const m=k.match(/^ogp:v1:(g\d[^:]+):\d+$/);return!grupos||(m&&grupos.includes(m[1]))};
+ sel.forEach(id=>{const c=C.find(x=>x.id===id);if(!c)return;
+  if(id==='tab'){const K=c.K.filter(deG);P.push({t:c.t+(grupos?' de '+grupos.map(nomGrupo).join(', '):''),n:K.length+' '+pl(K.length,'trabajo','trabajos'),hacer:()=>K.forEach(k=>localStorage.removeItem(k))})}
+  else if(id==='bit'&&grupos){const B=bitAll(),ids=Object.keys(B).filter(i=>grupos.includes(B[i].ctx));P.push({t:c.t+' de '+grupos.map(nomGrupo).join(', '),n:ids.length+' '+pl(ids.length,'registro','registros'),hacer:()=>{const B2=bitAll();ids.forEach(i=>delete B2[i]);lsSet(BITK,JSON.stringify(B2))}})}
+  else if(id==='lec'&&soloFotos){P.push({t:'Fotos de las lecturas agregadas',n:c.fotos+' '+pl(c.fotos,'foto','fotos'),hacer:()=>lsSet('oya:lecs',JSON.stringify(LECS().map(l=>{const x=Object.assign({},l);delete x.img;return x})))})}
+  else P.push({t:c.t,n:c.n,hacer:()=>c.K.forEach(k=>localStorage.removeItem(k))})});return P}
+function borrarConfirma(sel,grupos,soloFotos){const P=borrarPlan(sel,grupos,soloFotos),gh=SCH&&ghCfg().token&&(sel.includes('lec')||sel.includes('grp'));
+ dialog('Confirma qué se borra',`<p>Se borrará de este navegador:</p><ul>${P.map(p=>`<li><b>${esc(p.t)}</b>${p.n?' ('+esc(p.n)+')':''}</li>`).join('')}</ul>
+ <p class="aviso-nota">Esto <b>no se puede deshacer</b>. Antes de borrar se descargará un <b>respaldo completo</b> (archivo <i>respaldo-….json</i>): con «Abrir respaldo» se puede recuperar.${SCH?' Lo que ya se publicó en GitHub para las familias no se borra desde aquí.':''}${gh?' Como esta computadora está conectada a GitHub, las lecturas y grupos publicados pueden volver a bajar en la siguiente sincronización.':''}</p>
+ <label for="brtxt">Para confirmar, escribe <b>BORRAR</b></label><input class="big" id="brtxt" autocomplete="off" spellcheck="false">`,null,{ok:false,extra:'<button class="tb red" id="brgo" disabled>🗑 Borrar ahora</button>'});
+ const t=$('#brtxt'),go=$('#brgo');t.addEventListener('input',()=>{go.disabled=nrm(t.value)!=='borrar'});t.focus();
+ go.onclick=()=>{respaldo();setTimeout(()=>{P.forEach(p=>p.hacer());try{sessionStorage.setItem('oya:aviso','Listo: se borró '+P.map(p=>p.t.toLowerCase()).join('; ')+'. El respaldo quedó en Descargas.')}catch(e){}location.reload()},700)}}
+
+/* =====================================================================
+   RESPALDO AUTOMÁTICO: lunes a viernes, dentro del ciclo escolar y fuera
+   de vacaciones, la app envía el respaldo completo a un «puente» de Google
+   Apps Script que lo guarda en Google Drive y, si se indica, lo manda por correo.
+   Como toda página web, solo puede enviarlo mientras la app está abierta en
+   este equipo: a la hora elegida, o al abrirla si algún día hábil quedó sin respaldo.
+   ===================================================================== */
+const AB_DEF={on:false,url:'',clave:'',correo:'',equipo:'',desde:'2026-08-31',hasta:'2027-07-09',hora:'14:00',vac:[['2026-12-21','2027-01-05'],['2027-03-22','2027-04-04']],ult:'',ultHora:'',ultRes:''};
+const PUENTE_GS="/* Puente de respaldos · Organizatones para Preguntones y NoteKiebres\n   Recibe el respaldo diario que envía la aplicación, lo guarda en Google Drive\n   y, si hay correo, lo manda también por correo.\n   Se pega en script.new y se implementa como «Aplicación web»\n   (Ejecutar como: Yo · Quién tiene acceso: Cualquier usuario). */\n\nconst CLAVE = '@@CLAVE@@';      // la escribe la aplicación; debe coincidir con la de la app\nconst CORREO = '@@CORREO@@';    // déjalo vacío ('') si no quieres recibir correo\nconst CARPETA = 'Respaldos Organizatones y NoteKiebres';\nconst LIMITE_ADJUNTO = 20 * 1024 * 1024; // más grande que esto, el correo lleva el enlace en vez del archivo\n\nfunction doPost(e) {\n  try {\n    const d = JSON.parse(e.postData.contents);\n    if (d.clave !== CLAVE) return responder({ ok: false, error: 'clave incorrecta' });\n    const carpeta = subcarpeta(d.app || 'Aplicación');\n    const nombre = (d.equipo ? d.equipo + ' - ' : '') + (d.motivo === 'prueba' ? 'PRUEBA - ' : '') + d.nombre;\n    const blob = Utilities.newBlob(JSON.stringify(d.respaldo), 'application/json', nombre);\n    const archivo = carpeta.createFile(blob);\n    if (CORREO) {\n      const cuando = Utilities.formatDate(new Date(), 'America/Mexico_City', 'dd/MM/yyyy HH:mm');\n      const asunto = 'Respaldo ' + d.app + ' · ' + cuando + (d.motivo === 'prueba' ? ' (prueba)' : '');\n      const cuerpo = 'Respaldo automático de ' + d.app + (d.equipo ? ' (' + d.equipo + ')' : '') + '.\\n' +\n        'También quedó guardado en Google Drive, carpeta «' + CARPETA + '»: ' + archivo.getUrl() + '\\n\\n' +\n        'Para recuperarlo: en la aplicación, Evaluador › Respaldo › Abrir respaldo, y elige este archivo.';\n      const opciones = blob.getBytes().length < LIMITE_ADJUNTO ? { attachments: [blob] } : {};\n      MailApp.sendEmail(CORREO, asunto, cuerpo, opciones);\n    }\n    return responder({ ok: true, archivo: archivo.getName() });\n  } catch (err) {\n    return responder({ ok: false, error: String(err) });\n  }\n}\n\nfunction doGet() {\n  return responder({ ok: true, mensaje: 'El puente de respaldos está activo.' });\n}\n\nfunction subcarpeta(nombre) {\n  return buscarOCrear(buscarOCrear(DriveApp, CARPETA), nombre);\n}\n\nfunction buscarOCrear(padre, nombre) {\n  const it = padre.getFoldersByName(nombre);\n  return it.hasNext() ? it.next() : padre.createFolder(nombre);\n}\n\nfunction responder(o) {\n  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);\n}\n";
+function abCfg(){let A={};try{A=JSON.parse(lsGet('oya:auto')||'{}')||{}}catch(e){}A=Object.assign({},AB_DEF,A);if(!A.clave){const b=new Uint8Array(12);crypto.getRandomValues(b);A.clave=[...b].map(x=>x.toString(36).padStart(2,'0')).join('').slice(0,20);lsSet('oya:auto',JSON.stringify(A))}return A}
+const abGuarda=A=>lsSet('oya:auto',JSON.stringify(A));
+const abDia=d=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function abHabil(f,A){const w=new Date(f+'T12:00').getDay();return w>=1&&w<=5&&f>=A.desde&&f<=A.hasta&&!(A.vac||[]).some(([a,b])=>f>=a&&f<=b)}
+/* ¿qué día hábil falta respaldar? hoy, si ya pasó la hora; o uno anterior que quedó sin envío */
+function abPendiente(A,now){const hoyF=abDia(now);if(A.ult===hoyF)return null;
+ if(abHabil(hoyF,A)&&now.getHours()*60+now.getMinutes()>=hMin(A.hora))return hoyF;
+ if(!A.ult)return null;for(let i=1;i<=10;i++){const d=new Date(now);d.setDate(d.getDate()-i);const f=abDia(d);if(f<=A.ult)break;if(abHabil(f,A))return f}return null}
+let ABENV=false;
+async function abEnviar(cubre,motivo){const A=abCfg();if(!A.url)return{ok:false,msg:'falta la dirección del puente'};
+ const body=JSON.stringify({clave:A.clave,app:GEN?'NoteKiebres':'Organizatones para Preguntones',equipo:A.equipo,motivo,cubre,nombre:nomRespaldo(),respaldo:respaldoDatos()});
+ let ok=false,msg='';try{const r=await fetch(A.url,{method:'POST',body,headers:{'Content-Type':'text/plain;charset=utf-8'}});const j=await r.json();ok=!!j.ok;msg=j.ok?'guardado en Drive'+(A.correo?' y enviado al correo':''):'Google respondió: '+(j.error||r.status)}
+ catch(e){msg=navigator.onLine?'Google no respondió (revisa la dirección y que el puente esté implementado para «Cualquier usuario»)':'sin internet'}
+ const B=abCfg();B.ultHora=new Date().toISOString();B.ultRes=(ok?'✓ ':'✗ ')+msg;if(ok&&cubre)B.ult=cubre>(B.ult||'')?cubre:B.ult;abGuarda(B);return{ok,msg}}
+function abRevisa(){const A=abCfg();if(!A.on||!A.url||ABENV)return;const f=abPendiente(A,new Date());if(!f)return;ABENV=true;abEnviar(f,f===abDia()?'diario':'atrasado').then(r=>{abPinta();if(!r.ok)toast('No se pudo enviar el respaldo automático: '+r.msg,4000)}).finally(()=>{ABENV=false})}
+const abPinta=()=>document.querySelectorAll('.respaldo-estado').forEach(e=>{e.outerHTML=abEstado()});
+function abEstado(){const A=abCfg();return`<p class="respaldo-estado">☁ Respaldo automático: <b>${A.on&&A.url?'activado':'apagado'}</b>${A.ultHora?` · último intento ${fFecha(A.ultHora)} ${new Date(A.ultHora).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}: ${esc(A.ultRes)}`:''}</p>`}
+const abCodigo=A=>PUENTE_GS.replace('@@CLAVE@@',A.clave).replace('@@CORREO@@',(A.correo||'').replace(/'/g,''));
+function abDlg(){const A=abCfg();const vacTxt=(A.vac||[]).map(v=>v.join(' al ')).join('\n');
+ dialog('Respaldo automático',`${abEstado()}<p>De <b>lunes a viernes</b>, dentro de las fechas del ciclo escolar y fuera de vacaciones, la aplicación envía el respaldo completo a tu <b>Google Drive</b> y, si escribes un correo, también te llega por correo.</p>
+ <p class="aviso-nota">Como toda página web, solo puede enviarlo <b>mientras está abierta en este equipo</b>: a la hora que elijas, o la siguiente vez que se abra si algún día hábil quedó sin respaldo. Los días en que no se abre no hay cambios que respaldar.</p>
+ <label class="marca-op"><input type="checkbox" id="abon" ${A.on?'checked':''}> Activar el respaldo automático en este equipo</label>
+ <div class="form-fila"><label>Nombre de este equipo <input id="abeq" value="${esc(A.equipo)}" placeholder="Computadora de la biblioteca"></label><label>Hora de envío <input id="abho" type="time" value="${esc(A.hora)}"></label></div>
+ <div class="form-fila"><label>Desde <input id="abde" type="date" value="${esc(A.desde)}"></label><label>Hasta <input id="abha" type="date" value="${esc(A.hasta)}"></label></div>
+ <label for="abva">Vacaciones (sin respaldo), una por renglón</label><textarea id="abva" rows="2">${esc(vacTxt)}</textarea>
+ <label for="abco">Correo para recibir copia (opcional)</label><input class="big" id="abco" type="email" value="${esc(A.correo)}" placeholder="nombre@gmail.com">
+ <label for="abur">Dirección del puente de Google (termina en /exec)</label><input class="big" id="abur" value="${esc(A.url)}" placeholder="https://script.google.com/macros/s/…/exec">
+ <details class="ab-pasos"><summary>Cómo crear el puente de Google (una sola vez, 5 minutos)</summary><ol>
+ <li>Escribe el correo de arriba (si lo quieres) y toca <b>📋 Copiar el código</b>.</li>
+ <li>En la computadora, con la cuenta de Google donde quieres los respaldos, abre <b>script.new</b> en la barra de direcciones.</li>
+ <li>Borra lo que aparece en el editor, pega el código y toca el ícono del disco (<b>Guardar</b>).</li>
+ <li>Arriba a la derecha toca <b>Implementar</b> → <b>Nueva implementación</b>. En «Seleccionar tipo» (el engrane) elige <b>Aplicación web</b>.</li>
+ <li>En «Ejecutar como» deja <b>Yo</b>; en «Quién tiene acceso» elige <b>Cualquier usuario</b>. Toca <b>Implementar</b>.</li>
+ <li>Toca <b>Autorizar acceso</b>, elige tu cuenta; si aparece «Google no verificó esta app», toca <b>Configuración avanzada</b> → <b>Ir a … (no seguro)</b> → <b>Permitir</b>. Es tu propio código, en tu cuenta.</li>
+ <li>Copia la <b>URL de la aplicación web</b> (termina en /exec), pégala arriba y toca <b>Probar envío</b>. En tu Drive aparecerá la carpeta «Respaldos Organizatones y NoteKiebres».</li></ol>
+ <p>La clave que va dentro del código evita que alguien más guarde archivos en tu Drive con esa dirección. No compartas el código ni la dirección.</p></details>`,null,
+ {ok:false,extra:'<button class="tb" id="abcp">📋 Copiar el código</button><button class="tb" id="abpr">Probar envío</button><button class="tb pri" id="abok">Guardar</button>'});
+ const lee=()=>{const B=abCfg();B.on=$('#abon').checked;B.equipo=$('#abeq').value.trim();B.hora=$('#abho').value||'14:00';B.desde=$('#abde').value||AB_DEF.desde;B.hasta=$('#abha').value||AB_DEF.hasta;B.correo=$('#abco').value.trim();B.url=$('#abur').value.trim();
+  B.vac=$('#abva').value.split('\n').map(l=>l.match(/(\d{4}-\d{2}-\d{2})\D+(\d{4}-\d{2}-\d{2})/)).filter(Boolean).map(m=>[m[1],m[2]]);abGuarda(B);return B};
+ $('#abcp').onclick=()=>{const c=abCodigo(lee());(navigator.clipboard?navigator.clipboard.writeText(c):Promise.reject()).then(()=>toast('Código copiado. Pégalo en script.new.',3500),()=>dialog('Código del puente',`<p>Selecciónalo todo y cópialo:</p><textarea rows="14" style="width:100%;font-family:monospace;font-size:12px" readonly>${esc(c)}</textarea>`,null,{ok:false}))};
+ $('#abpr').onclick=async()=>{const B=lee();if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(B.url))return toast('Pega primero la dirección del puente (https://script.google.com/…/exec).',4000);toast('Enviando respaldo de prueba…');const r=await abEnviar('','prueba');toast(r.ok?'Listo: el respaldo de prueba quedó '+r.msg+'.':'No se pudo: '+r.msg,5000);abPinta()};
+ $('#abok').onclick=()=>{const B=lee();if(B.on&&!B.url)return toast('Falta la dirección del puente de Google.');$('#modal').classList.remove('show');toast(B.on?'Respaldo automático activado de lunes a viernes a las '+B.hora+'.':'Respaldo automático apagado.',3500);abRevisa();if(location.hash==='#evaluador')route()}}
 
 /* ---------- RUTAS ---------- */
 function route(){document.body.classList.remove('peval');const h=location.hash.slice(1),m=h.match(/^org-(\d\d)$/);TAMANO.disconnect();$('#modal').classList.remove('show');let g;
@@ -3861,7 +3968,7 @@ function evalView(){if(EVF.gr==null)EVF.gr=SCH?(CTX?CTX.gr:0):0;const all=Object
  <div class="row noprint" style="margin-top:8px"><button class="tb pri" data-evp="1" style="--c:${MCOL.eval}">🖨 Imprimir el historial</button><button class="tb" data-z="evcsv">Descargar tabla (Excel)</button></div>`:`<p style="font-size:18px">${all.length?'No hay trabajos con esos filtros.':GEN?'Todavía no hay trabajos. Empieza en «Mi plan» o abre cualquier organizador y ve a «3. Construye».':'Todavía no hay trabajos registrados. Elija un grupo en «Clases» y empiece una sesión: el historial se llenará solo.'}</p>`}
  ${true?`<p style="font-size:14.5px;color:var(--mut)" class="noprint">Para ajustar a mano el nivel del trabajo actual de ${GEN?'un organizador':ctxTxt()}: ${trabajos().map(({o})=>`<button class="tb sm" data-evd="${o.n}">${pad(o.n)}</button>`).join(' ')||'—'}</p>`:''}</section>
  <section class="sec noprint" style="--c:var(--G)"><h2>Cómo se calcula el indicador</h2><div class="scroll"><table class="t"><tr><th>Criterio</th>${NIV.map(n=>`<th>${n}</th>`).join('')}<th>Qué revisa la aplicación</th></tr>${RUB.map((r,i)=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td style="font-size:14px">${['Propósito marcado en «2. Identifico» y explicación de la elección en «6. Explico».','Cuántos espacios del tablero tienen texto y si hay frases demasiado largas.','La revisión automática: piezas sin conectar, flechas sin palabra de enlace, partes que faltan.','Cuántas preguntas de «6. Explico» se respondieron con palabras propias.'][i]}</td></tr>`).join('')}</table></div><p style="font-size:15px"><i>No se califica la decoración, la cantidad de colores ni el dibujo: se valora si la información es correcta, pertinente, está bien organizada y se puede explicar.</i></p></section>
- <section class="sec noprint" style="--c:var(--K)"><h2>${GEN?'Respaldo':'Respaldo y publicación'}</h2><p>${GEN?'Todo se guarda en este navegador. Guarda un respaldo en archivo para no perderlo o para seguir en otra computadora.':'Todo se guarda en esta computadora y, si está conectada, se publica solo en GitHub para que las familias lo vean.'}</p><div class="row"><button class="tb" data-z="bkp">💾 Guardar respaldo completo</button><button class="tb" data-z="bkpo">Abrir respaldo</button>${SCH?'<button class="tb" data-z="grupos">Grupos por grado</button>':''}</div><input type="file" id="bkpf" accept=".json,application/json" hidden>
+ <section class="sec noprint" style="--c:var(--K)"><h2>${GEN?'Respaldo':'Respaldo y publicación'}</h2><p>${GEN?'Todo se guarda en este navegador. Guarda un respaldo en archivo para no perderlo o para seguir en otra computadora.':'Todo se guarda en esta computadora y, si está conectada, se publica solo en GitHub para que las familias lo vean.'}</p>${abEstado()}<div class="row"><button class="tb" data-z="bkp">💾 Guardar respaldo completo</button><button class="tb" data-z="bkpo">Abrir respaldo</button><button class="tb" data-z="autobk">☁ Respaldo automático</button><button class="tb red" data-z="borrar">🗑 Borrar datos…</button>${SCH?'<button class="tb" data-z="grupos">Grupos por grado</button>':''}</div><input type="file" id="bkpf" accept=".json,application/json" hidden>
  ${SCH?ghPanel():''}</section>
  ${SCH?paraConsultar():''}`);
  const upd=()=>{EVF.mes=($('#evmes')||{}).value||EVF.mes||'';EVF.gp=($('#evgp')||{}).value||'';EVF.n=+($('#evn')||{}).value||0;EVF.de=($('#evde')||{}).value||'';EVF.a=($('#eva')||{}).value||'';EVF.q=($('#evq')||{}).value||'';const y=scrollY;evalView();scrollTo(0,y);const d=$('details.doc');if(d)d.open=true};
@@ -3870,7 +3977,10 @@ function evalView(){if(EVF.gr==null)EVF.gr=SCH?(CTX?CTX.gr:0):0;const all=Object
 function evalCSV(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';const all=Object.values(bitAll()).filter(e=>GEN?e.ctx==='yo':e.ctx!=='yo').sort((a,b)=>String(a.d).localeCompare(String(b.d)));const rows=[(SCH?['Fecha','Grado','Grupo']:['Fecha']).concat(['Número','Organizador','Lectura o tema','Pasos trabajados'],RUB.map(r=>r[0]),['Nivel general'])];all.forEach(e=>{const o=ORGS[e.n-1],lv=e.lv||[0,0,0,0];rows.push((SCH?[e.d,e.gr,e.gp]:[e.d]).concat([e.n,o.name,e.lec?e.lec.titulo:e.tema,avance(e).join(' / ')],lv.map(v=>NIV[v]),[NIV[promedio(lv)]]))});const csv='\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n');saveFile('historial-organizadores.csv','data:text/csv;base64,'+b64e(csv))}
 
 /* ---------- respaldo completo ---------- */
-function respaldo(){const D2={app:'organiza-y-aprende',tipo:'respaldo',version:7,fecha:hoy(),datos:{}};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(ogp:|oya:|nk:)/.test(k)&&k!=='oya:gh')D2.datos[k]=localStorage.getItem(k)}}catch(e){}saveFile('respaldo-'+(GEN?'notekiebres':'organizatones')+'-'+dia()+'.json','data:application/json;base64,'+b64e(JSON.stringify(D2)))}
+/* todo lo guardado en este navegador, sin llaves ni claves (GitHub, respaldo automático) */
+function respaldoDatos(){const D2={app:'organiza-y-aprende',tipo:'respaldo',version:7,fecha:hoy(),datos:{}};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(ogp:|oya:|nk:)/.test(k)&&k!=='oya:gh'&&k!=='oya:auto')D2.datos[k]=localStorage.getItem(k)}}catch(e){}return D2}
+const nomRespaldo=()=>'respaldo-'+(GEN?'notekiebres':'organizatones')+'-'+dia()+'.json';
+function respaldo(){saveFile(nomRespaldo(),'data:application/json;base64,'+b64e(JSON.stringify(respaldoDatos())))}
 function abrirRespaldo(inp){const f=inp.files[0];inp.value='';if(!f)return;f.text().then(t=>{let d;try{d=JSON.parse(t)}catch(e){return toast('Ese archivo no se pudo leer.')}if(!d||d.tipo!=='respaldo'||!d.datos)return toast('Ese archivo no es un respaldo de esta aplicación.');dialog('Abrir respaldo',`<p>Respaldo del ${fFecha(d.fecha)}. Se agregará a lo que ya hay en este navegador; los trabajos de la bitácora se combinan y, si hay dos versiones de un mismo trabajo, se conserva la más reciente.</p>`,()=>{Object.entries(d.datos).forEach(([k,v])=>{if(k===BITK){const B=bitAll();let R={};try{R=JSON.parse(v)}catch(e){}Object.values(R).forEach(e=>{if(!B[e.id]||String(e.t)>String(B[e.id].t))B[e.id]=e});bitSave(B)}else if(k==='oya:lecs'){let R=[];try{R=JSON.parse(v)}catch(e){}lsSet(k,JSON.stringify(mezclaLec(LECS(),R)))}else if(/^ogp:v1:/.test(k)){const cur=lsGet(k);let a=null,b=null;try{a=JSON.parse(cur);b=JSON.parse(v)}catch(e){}if(!a||!a.meta||!b||!b.meta||String(b.meta.f2||'')>=String(a.meta.f2||''))lsSet(k,v)}else if(lsGet(k)==null)lsSet(k,v)});toast('Respaldo abierto.');markDirty('todo');setTimeout(route,30)})})}
 
 /* ---------- GitHub: publicación y sincronización ---------- */
@@ -3908,7 +4018,7 @@ async function ghSave(){const c=ghCfg(),t=$('#ght').value.trim();const n={owner:
 
 addEventListener('online',()=>{SYNC.err=false;schedSync(3000)});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&DIRTY.size)syncNow()});
-setTimeout(()=>{sesBar();if(SCH&&ghCfg().token){ghPull().then(()=>{if(/^#?(cuaderno|evaluador|clases)?$/.test(location.hash.slice(1)))rerender()});schedSync(5000)}},400);
+setTimeout(()=>{sesBar();if(SCH&&ghCfg().token){ghPull().then(()=>{if(/^#?(cuaderno|evaluador|clases)?$/.test(location.hash.slice(1))&&!$('#modal').classList.contains('show'))rerender()});schedSync(5000)}},400);
 
 function printHalf(){if(S.org)printDlg([itemActual()])}
 
@@ -6472,7 +6582,9 @@ function accion(e){const t=e.target.closest('[data-z]');if(!t||t.disabled)return
  if(z==='qrtodos'){const G=grupos(),L=[];for(let g=1;g<=6;g++)G[g].forEach(gp=>L.push([g,gp]));return qrHoja(L)}
  if(z==='resprint'){const r=$('#resmes');if(r)imprimirHTML([`<div class="resumen-mes-imp"><h1>Resumen mensual</h1>${r.querySelector('.rm8w').innerHTML}</div>`]);return}
  if(z==='instalar'&&INSTP){INSTP.prompt();INSTP.userChoice.finally(()=>{INSTP=null;const b=$('#instb');if(b)b.remove()});return}
- if(z==='panel')return panelOculto(!$('#side').classList.contains('closed'));
+ if(z==='borrar')return borrarDlg();
+if(z==='autobk')return abDlg();
+if(z==='panel')return panelOculto(!$('#side').classList.contains('closed'));
  if(z==='tlb15')return tlsSet($('.tools').classList.contains('rec15'));
  if(z==='mtg15')return momSet(true);
 if(z==='lecx')return lecDockX();
@@ -6487,7 +6599,13 @@ document.addEventListener('keydown',e=>{teclasTablero(e);teclasPaso(e)});
 document.addEventListener('toggle',plgCambio,true);
 document.addEventListener('toggle',e=>{const d=e.target;if(d.classList&&d.classList.contains('mas-opciones')){const t=d.closest('.tools');if(t)t.classList.toggle('mas-opciones-abierto',d.open)}},true);
 
+/* respaldo automático: al abrir, al volver a la app y cada 10 minutos mientras está abierta */
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)abRevisa()});
+setInterval(abRevisa,600000);
+
 prefs();route();vzBar();
+try{const a=sessionStorage.getItem('oya:aviso');if(a){sessionStorage.removeItem('oya:aviso');setTimeout(()=>toast(a,5000),400)}}catch(e){}
+setTimeout(abRevisa,3000);
 }
 </script>
 </body>
