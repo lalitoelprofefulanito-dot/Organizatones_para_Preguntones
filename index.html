@@ -927,13 +927,44 @@ html[data-tema="oscuro"] .plg{background:#16213F;border-color:#3A4A72}
  .moms{grid-template-columns:repeat(4,minmax(0,1fr)) 46px}
  .moms .momtg{display:block;border:0;background:#fff;font-size:22px;font-weight:bold;color:var(--c)}
  html[data-tema="oscuro"] .moms .momtg{background:#16213F}
- body:has(#side.closed) .micf{bottom:66px!important}
  #zf{min-width:5.9em}
 }
 @media print{
  .plg{border:0}
  .plg>summary{display:none}
 }
+/* v17: celular, barras mínimas para que el organizador quepa completo, y voz que no tapa */
+@media (max-width:899px){
+ .tools.rec15{position:absolute;top:6px;left:6px;z-index:6;padding:0;gap:4px;background:transparent;border:0;flex-wrap:nowrap;overflow:visible;align-items:center}
+ .tools.rec15 .tlb15{min-height:34px;padding:2px 10px;font-size:15px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+ .tools.rec15 .svst{font-size:12px;background:rgba(255,255,255,.85);border-radius:8px;padding:1px 6px}
+ .tools.rec15~.wrap{padding-top:44px}
+ .side.closed~.work .wrap{padding-bottom:54px}
+ .side.closed{border-top:0}
+ .side.closed.rec15{position:fixed;left:8px;bottom:8px;z-index:65;width:auto;max-width:calc(100vw - 80px);background:transparent;border:0}
+ .side.closed.rec15 .mtg15{width:auto;border:2px solid var(--ink);border-radius:20px;padding:4px 12px 4px 6px;box-shadow:0 2px 6px rgba(0,0,0,.18);font-size:14px;min-height:38px}
+ .side.closed.rec15 .mtg15 .sp{flex:0 0 2px}
+ .side.closed.rec15 .mtg15 .cb15{font-size:0}
+ .side.closed.rec15 .mtg15 .cb15::after{content:"▾";font-size:15px}
+ .side.closed:not(.rec15){position:fixed;left:0;right:0;bottom:0;z-index:65;border-top:3px solid var(--ink);box-shadow:0 -4px 10px rgba(0,0,0,.15)}
+ body.vzon .side.closed.rec15{bottom:62px}
+ .micf{bottom:8px!important}
+}
+@media (max-width:700px){
+ .vzbar{left:8px;right:62px!important;bottom:8px;max-width:none;flex-wrap:nowrap;gap:6px;padding:4px 6px 4px 8px;border-width:2px;border-radius:14px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+ .vzbar>span:nth-child(2) small{display:none}
+ .vzbar>span:nth-child(2){font-size:14px;white-space:nowrap}
+ .vzbar .vzt{font-size:14px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:1.4em}
+ .vzbar .tb.sm{min-height:32px;padding:2px 8px;font-size:14px}
+ .vzdot{width:12px;height:12px}
+ .modal{z-index:72;padding:8px 8px 66px}
+ .modal .dlg{max-height:100%;padding:12px 14px 0;font-size:15.5px}
+ .modal .dlg h3{font-size:20px;margin:0 0 6px}
+ .modal .dlg ul{padding-left:18px;margin:6px 0}
+ .modal .dlg .acts{position:sticky;bottom:0;background:inherit;margin:10px -14px 0;padding:8px 14px 12px;border-top:1px solid #D5DBE7}
+}
+html[data-tema="oscuro"] .tools.rec15 .tlb15{background:#16213F}
+html[data-tema="oscuro"] .tools.rec15 .svst{background:rgba(22,33,63,.85)}
 </style>
 </head>
 <body>
@@ -3126,7 +3157,7 @@ function openOrg(n){const o=ORGS[n-1];if(!o)return home();SV={st:'',err:false};S
  const fc=COL[FAM[o.fam].c],x=OY[o.n];
  $('#app').innerHTML=`<div class="bld" style="--c:${fc}"><header class="bh"><a class="tb" href="${S.back||'#'}" aria-label="Volver">←<span class="hide-s"> Volver</span></a><span class="nb">${pad(o.n)}</span><div class="bt"><b>${o.name}</b><small>${FAM[o.fam].n.toUpperCase()} · ${o.cat}${x&&!GEN?` · se introduce en ${x.grado}.º`:''}</small></div><span style="flex:1"></span>${SCH?`<button class="tb sm ctxb" data-z="ctxdlg" title="Grupo con el que se trabaja">👥 ${ctxTxt()}</button>`:''}${GEN||CTX?'':`<label class="hide-s" style="font-weight:bold">Grado <select class="gsel" id="gsel" aria-label="Grado">${[1,2,3,4,5,6].map(g=>`<option value="${g}" ${g===GR?'selected':''}>${g}.º</option>`).join('')}</select></label><button class="tb sm hide-s ${DOC?'on':''}" data-docm="1" title="Notas para el docente">Docente</button>`}${GEN?temaBtns():''}<button class="tb sm" data-z="decir" title="Leer en voz alta el panel" aria-label="Leer en voz alta">🔊</button>${SCH?'<button class="tb sm hide-s" data-z="sorteo" title="Sorteo de número de lista" aria-label="Sorteo">🎲</button><button class="tb sm hide-s" data-z="proy" title="Modo proyector (letra grande, pantalla completa)" aria-label="Modo proyector">📽</button>':''}<button class="tb only-m" data-z="bhmas" aria-label="Más opciones" title="Más opciones">⋯</button><button class="tb" id="tgl" title="Muestra u oculta el panel para tener más tablero">Ocultar panel</button></header>
  <aside class="side" id="side"><button class="mtg15" data-z="mtg15" aria-expanded="false" aria-label="Ver los momentos"></button><nav class="moms" role="tablist" aria-label="Momentos">${MOMS.map((m,i)=>`<button role="tab" data-mo="${i}"><span class="mn">${i+1}</span><span>${m[0]}</span><small>${m[1]}</small></button>`).join('')}<button class="momtg" id="momtg" data-z="panel" aria-expanded="true" aria-label="Ocultar las explicaciones para ver más tablero" title="Ocultar las explicaciones">▾</button></nav><div class="etps" id="etps" hidden></div><div class="pane" id="pane"></div></aside>
- <main class="work"><div class="tools"><button class="tb tlb15" data-z="tlb15" aria-expanded="false">🛠 Herramientas ▸</button><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas-opciones"><summary class="tb">Más ▾</summary><span class="mas-opciones-lista"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
+ <main class="work"><div class="tools"><button class="tb tlb15" data-z="tlb15" aria-expanded="false" aria-label="Herramientas" title="Herramientas">🛠 ▸</button><button class="tb" id="undo" disabled>↶ Deshacer</button><button class="tb" id="lnk">→ Unir con flecha</button><button class="tb" id="zo" aria-label="Alejar">−</button><button class="tb" id="zf">Ajustar</button><button class="tb" id="zi" aria-label="Acercar">+</button><span class="svst" id="svst" aria-live="polite"></span><button class="tb" data-z="bdgrande">🔍 En grande</button><span class="sp"></span><details class="mas-opciones"><summary class="tb">Más ▾</summary><span class="mas-opciones-lista"><label class="fsel" title="Tipo de letra del organizador">Letra <select id="fontsel" aria-label="Tipo de letra">${FONTS.map((f,i)=>`<option value="${i}" ${(S.meta.font||0)===i?'selected':''} style="font-family:${f[1]}">${f[0]}</option>`).join('')}</select></label><button class="tb" id="read">Leer</button><button class="tb" id="img">Imagen</button><button class="tb red" id="clr">Vaciar</button></span></details></div>
  <div class="hint" id="hint"></div><div class="wrap" id="wrap"><svg id="bd" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"></svg></div><div class="selbar" id="selbar" hidden></div></main></div>`;
  setWF();bindBoard();setMom(S.mom,S.et);fitZoom();render()}
 function setMom(i,e){S.mom=i;if(e!=null)S.et=e;S.meta.mom=i;S.meta.et=S.et;S.meta.momv=S.meta.momv||[];if(!S.meta.momv.includes(i))S.meta.momv.push(i);if(i===2){S.meta.etv=S.meta.etv||[];if(!S.meta.etv.includes(S.et))S.meta.etv.push(S.et)}save();
@@ -3178,9 +3209,17 @@ function updCounts(){if(!document.querySelector('.pal'))return;const K=Object.as
 function render(){RORG=S.org;const bd=$('#bd');if(!bd)return;bd.innerHTML=boardInner(S.P,S.C,false,false);selbar();updCounts();hint()}
 function quickConns(){const l=$('#lyC');if(l)l.innerHTML=connsSVG(S.P,S.C,false,false)}
 function hint(){const h=$('#hint');if(!h)return;if(S.link){h.innerHTML=`<span>${S.from?'Ahora toca la pieza de <b>llegada</b>.':'Toca la pieza de <b>salida</b> de la flecha.'}</span><button class="tb" id="lnkoff">Terminar</button>`;h.classList.add('show')}else h.classList.remove('show');$('#lnk').classList.toggle('on',S.link)}
-function fitZoom(){const w=$('#wrap');if(!w)return;const fw=(w.clientWidth-14)/W,fh=(w.clientHeight-14)/H,cel=esCel(),
+function fitZoom(){const w=$('#wrap');if(!w)return;const cel=esCel(),cs=getComputedStyle(w),pt=parseFloat(cs.paddingTop)||0,pb=parseFloat(cs.paddingBottom)||0,
+ cw=w.clientWidth,ch=w.clientHeight-pt-pb,fw=(cw-14)/W,fh=(ch-14)/H,
  /* la decisión usa la altura total (con o sin barra de desplazamiento) para que no oscile */
- alto=(w.offsetHeight-30)/H,llenar=cel&&!S.todo&&alto>fw*1.15;S.z=Math.max(0.12,llenar?alto:Math.min(fw,fh));applyZoom();w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0;
+ alto=(w.offsetHeight-pt-pb-30)/H,llenar=cel&&S.amp&&!S.todo&&alto>fw*1.15;
+ /* v17: en celular el organizador se ve completo: se ajusta a lo que hay dibujado, no a toda la hoja */
+ let caja=null;if(cel&&!llenar&&!S.todo){const bd=$('#bd');let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  if(bd)bd.querySelectorAll(':scope>g').forEach(g=>{try{const b=g.getBBox();if(b.width>0&&b.height>0){x0=Math.min(x0,b.x);y0=Math.min(y0,b.y);x1=Math.max(x1,b.x+b.width);y1=Math.max(y1,b.y+b.height)}}catch(e){}});
+  if(x1>x0+40&&y1>y0+40){const m=24;x0=Math.max(0,x0-m);y0=Math.max(0,y0-m);x1=Math.min(W,x1+m);y1=Math.min(H,y1+m);caja=[x0,y0,x1-x0,y1-y0]}}
+ S.z=Math.max(0.12,llenar?alto:caja?Math.min((cw-8)/caja[2],(ch-8)/caja[3],1.6):Math.min(fw,fh));applyZoom();
+ const bdv=$('#bd');if(bdv)bdv.style.marginTop=caja&&H*S.z<ch?Math.max(10,(ch-caja[3]*S.z)/2-caja[1]*S.z)+'px':'';if(bdv)bdv.style.marginLeft=caja&&W*S.z<cw?Math.max(0,(cw-caja[2]*S.z)/2-caja[0]*S.z)+'px':'';
+ if(caja){const R=w.getBoundingClientRect(),B=bdv.getBoundingClientRect(),ox=B.left-R.left+w.scrollLeft,oy=B.top-R.top+w.scrollTop;w.scrollLeft=ox+caja[0]*S.z-(cw-caja[2]*S.z)/2;w.scrollTop=oy+caja[1]*S.z-pt-(ch-caja[3]*S.z)/2}else{w.scrollLeft=(w.scrollWidth-w.clientWidth)/2;w.scrollTop=0}
  const b=$('#zf');if(b)b.textContent=!cel?'Ajustar':llenar?'Completo':'Ampliar';
  if(llenar&&!lsGet('oya:pista-tablero')){lsSet('oya:pista-tablero','1');setTimeout(()=>toast('Desliza el tablero con el dedo para recorrerlo. «Completo» lo muestra entero.',2600,1),600)}}
 function applyZoom(){const bd=$('#bd');bd.style.width=(W*S.z)+'px';bd.style.height=(H*S.z)+'px'}
@@ -3350,7 +3389,7 @@ document.addEventListener('click',e=>{const sl=e.target.closest('a[href^="#"]');
  if(t.id==='tgl'){const s=$('#side');if(esCel()){panelOculto(!s.classList.contains('closed'))}else{const b=$('.bld');b.classList.toggle('nop');t.textContent=b.classList.contains('nop')?'Ver panel':'Ocultar panel'}return}
  if(t.id==='undo')return undo();
  if(t.id==='lnk'||t.id==='lnkoff'){S.link=t.id==='lnk'?!S.link:false;S.from=null;if(S.link){S.sel=S.selC=null}render();return}
- if(t.id==='zi')return zoomBy(1.2);if(t.id==='zo')return zoomBy(1/1.2);if(t.id==='zf'){if(esCel())S.todo=!S.todo;return fitZoom()}
+ if(t.id==='zi')return zoomBy(1.2);if(t.id==='zo')return zoomBy(1/1.2);if(t.id==='zf'){if(esCel()){S.amp=!S.amp;S.todo=false}return fitZoom()}
  if(t.id==='read')return readOut();if(t.id==='img')return exportImg();
  if(t.id==='clr')return dialog('¿Vaciar el tablero?','<p>Se quitarán todas las piezas. Puedes recuperarlas con «Deshacer».</p>',()=>{mut(()=>{S.P=[];S.C=[];S.sel=S.selC=null})});
  if(t.id==='rev'){const R=review();$('#revout').innerHTML=R.map(([k2,m])=>`<li style="color:${k2===2?'var(--G)':k2===1?'var(--Y)':'var(--R)'};font-weight:bold">${k2===2?'✔':k2===1?'●':'!'} ${esc(m)}</li>`).join('');return}
@@ -3378,7 +3417,7 @@ const toks=s=>nrm(s).split(' ').filter(w=>w&&!RELL.has(w));
 function numIn(s){const m=nrm(s).match(/\b(\d+)\b/);if(m)return+m[1];for(const w of nrm(s).split(' '))if(NUMS[w])return NUMS[w];return 0}
 function score(q,cands){const Q=toks(q).filter(w=>!NUMS[w]&&!/^\d+$/.test(w));if(!Q.length)return 0;const C=toks(cands);let n=0;for(const w of Q){if(C.includes(w))n+=2;else if(C.some(c=>c.length>3&&w.length>3&&(c.startsWith(w.slice(0,4))||w.startsWith(c.slice(0,4)))))n+=1}return n/Q.length}
 function micF(){let f=$('#micf');if(!f){f=document.createElement('button');f.id='micf';f.className='micf gl';f.dataset.mic='1';f.title='Micrófono: órdenes de voz y dictado';f.setAttribute('aria-label','Micrófono: órdenes de voz y dictado');f.innerHTML=ico('mic',32);document.body.appendChild(f)}f.classList.toggle('mic-on',VZ.on);f.setAttribute('aria-pressed',VZ.on?'true':'false')}
-function vzBar(){micF();let b=$('#vzbar');if(!b){b=document.createElement('div');b.id='vzbar';b.className='vzbar';b.setAttribute('role','status');document.body.appendChild(b)}b.hidden=!VZ.on;if(!VZ.on)return;b.innerHTML=VZ.modo==='dictado'?`<span class="vzdot dic"></span><span><b>Dictando en: ${esc(VZ.destN)}</b><br><small>Habla. Di «listo» al terminar o guarda silencio.</small></span><span class="vzt" id="vzt">${esc(VZ.txt)}</span><button class="tb sm" data-vz="listo">Listo</button>`:`<span class="vzdot"></span><span><b>Te escucho</b><br><small>Di una orden. Di «ayuda» para ver ejemplos.</small></span><span class="vzt" id="vzt">${esc(VZ.txt)}</span><button class="tb sm" data-vz="ayuda">Ayuda</button><button class="tb sm red" data-vz="off">Apagar</button>`;document.querySelectorAll('[data-mic]').forEach(x=>x.classList.toggle('mic-on',VZ.on))}
+function vzBar(){micF();let b=$('#vzbar');if(!b){b=document.createElement('div');b.id='vzbar';b.className='vzbar';b.setAttribute('role','status');document.body.appendChild(b)}b.hidden=!VZ.on;document.body.classList.toggle('vzon',VZ.on);if(!VZ.on)return;b.innerHTML=VZ.modo==='dictado'?`<span class="vzdot dic"></span><span><b>Dictando en: ${esc(VZ.destN)}</b><br><small>Habla. Di «listo» al terminar o guarda silencio.</small></span><span class="vzt" id="vzt">${esc(VZ.txt)}</span><button class="tb sm" data-vz="listo">Listo</button>`:`<span class="vzdot"></span><span><b>Te escucho</b><br><small>Di una orden. Di «ayuda» para ver ejemplos.</small></span><span class="vzt" id="vzt">${esc(VZ.txt)}</span><button class="tb sm" data-vz="ayuda">Ayuda</button><button class="tb sm red" data-vz="off">Apagar</button>`;document.querySelectorAll('[data-mic]').forEach(x=>x.classList.toggle('mic-on',VZ.on))}
 function micToggle(){if(VZ.on)return micOff();if(!SR)return dialogG('El micrófono no funciona en este navegador','<p>Las órdenes de voz usan el reconocimiento de voz del navegador. Abre la aplicación en <b>Google Chrome</b> o <b>Microsoft Edge</b>, con internet, y permite el uso del micrófono cuando el navegador lo pregunte.</p>');
  let r;try{r=new SR()}catch(e){return toast('No se pudo encender el micrófono.')}r.lang='es-MX';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
  r.onresult=ev=>{let fin='',tmp='';for(let i=ev.resultIndex;i<ev.results.length;i++){const t=ev.results[i][0].transcript;if(ev.results[i].isFinal)fin+=t;else tmp+=t}const e=$('#vzt');if(e)e.textContent=(VZ.modo==='dictado'?VZ.txt+' ':'')+(fin||tmp);if(fin.trim())oir(fin.trim());else if(VZ.modo==='dictado'&&tmp)clearTimeout(VZ.tm)};
@@ -3388,7 +3427,7 @@ function micToggle(){if(VZ.on)return micOff();if(!SR)return dialogG('El micrófo
 function micOff(){VZ.on=false;clearTimeout(VZ.tm);if(VZ.modo==='dictado')finDictado();try{VZ.rec&&VZ.rec.stop()}catch(e){}VZ.rec=null;VZ.modo='orden';vzBar()}
 function dialogG(t,b){const m=$('#modal');m.style.setProperty('--c',COL.P);m.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><h3>${esc(t)}</h3>${b}<div class="acts"><button class="tb pri" data-vz="cerrar">Entendido</button></div></div>`;m.classList.add('show')}
 function vzAyuda(){const g=(t,L)=>`<li><b>${t}:</b> ${L.map(x=>`«${x}»`).join(', ')}.</li>`;dialogG('Órdenes de voz',`<p>Toca 🎤 y habla como le hablarías a una persona. Puedes decir «por favor», encadenar órdenes con «y luego» y usar «lo» o «la» para lo que está seleccionado.</p><ul style="line-height:1.55">
- ${g('Moverte',['abre cuarto grado y luego clases','muéstrame las familias','llévame al inicio','regresa','baja'])}
+ ${g('Moverte',GEN?['abre la telaraña','muéstrame las familias','llévame al inicio','sal al menú','regresa','baja']:['abre cuarto grado y luego clases','muéstrame las familias','llévame al inicio','sal al menú','regresa','baja'])}
  ${g('Escribir',['escribe en el tema los animales del mar','escribe Los peces en la idea 2','cambia el criterio por ¿qué comen?','escribe en la fila 2 columna 1 manzana'])}
  <li><b>Dictar largo:</b> «escribe en el tema», habla con calma y di «listo» al terminar.</li>
  ${g('Piezas',['agrega otra idea','quita la idea 2','duplica el tema','resalta la idea 3','pinta el tema de azul','la idea 2 en rojo','mueve el tema a la derecha','sube un poco la idea 1'])}
@@ -3397,8 +3436,11 @@ function vzAyuda(){const g=(t,L)=>`<li><b>${t}:</b> ${L.map(x=>`«${x}»`).join(
  ${g('Letra',['letra más grande','letra normal','ponle letra escolar'])}
  ${g('Responder',['la respuesta es la segunda','elijo la b','creo que es separa las cosas en grupos'])}
  ${SCH?g('En clase',['empieza la sesión','siguiente paso','pausa','termina la sesión','haz un sorteo','otro número']):g('Tu plan',['empieza la sesión','siguiente paso','termina la sesión'])}
+ ${g('Desplazar la pantalla',['baja la pantalla','sube la pantalla','scroll down','scroll up','baja un poco','hasta abajo','hasta arriba'])}
  ${g('Tablero',['acerca','aleja','ver todo','oculta el panel','muestra el panel','reconoce','etapa 4'])}
- ${g('Cualquier botón por su nombre',['toca registrar horario','abre Familias','Evaluador'])}
+ ${g('Cualquier botón por su nombre',GEN?['toca Mi plan','abre Mi cuaderno','guarda copia en archivo']:['toca registrar horario','abre Familias','Evaluador'])}
+ ${GEN?g('Pantalla',['modo oscuro','modo claro']):''}
+ ${g('Guardar',['guarda','guarda copia en archivo'])}
  ${g('Corregir',['deshaz','me equivoqué','otra vez','apaga el micrófono'])}</ul><p style="font-size:15px">Usa el reconocimiento de voz del navegador (Chrome o Edge): necesita internet y permiso para el micrófono.</p>`)}
 function visibles(sel){return[...document.querySelectorAll(sel)].filter(e=>{if(e.closest('[hidden]'))return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0})}
 function piezaYPuntaje(q){if(!S.org)return null;const n=numIn(q);let best=null,bs=0;const grupos={};S.P.forEach(p=>{const K=kd(p);(grupos[p.k]=grupos[p.k]||[]).push(p);const sc=Math.max(score(q,K.l+' '+(K.tag||'')+' '+p.k),score(q,p.text||'')*0.9);if(sc>bs){bs=sc;best=p}});if(!best||bs<0.5)return null;const L=grupos[best.k];if(n&&L.length>1){L.sort((a,b)=>a.num&&b.num?a.num-b.num:(a.y-b.y)||(a.x-b.x));return{p:L[Math.min(n,L.length)-1],sc:bs}}return{p:best,sc:bs}}
@@ -3572,7 +3614,7 @@ function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#b
   if(/^(deselecciona|suelta|sueltalo|ninguno|nada seleccionado|quita la seleccion)$/.test(s)){S.sel=S.selC=null;S.cell=null;render();return true}
   if(/^(acerca|acercar|zoom|mas cerca|agranda el tablero|tablero mas grande)$/.test(s))return $('#zi').click(),true;
   if(/^(aleja|alejar|mas lejos|achica el tablero|tablero mas chico|tablero mas pequeno)$/.test(s))return $('#zo').click(),true;
-  if(/^(ver todo|todo el tablero|ver completo|completo|ajusta|ajustar|que se vea todo)$/.test(s)){S.todo=true;fitZoom();return true}}
+  if(/^(ver todo|todo el tablero|ver completo|completo|ajusta|ajustar|que se vea todo)$/.test(s)){S.amp=false;S.todo=false;fitZoom();return true}}
  if(['escribe','pon','cambia'].includes(v)&&R.length&&!/^(otra|otro|una|un) /.test(tx)&&nlEscribir(c))return true;
  if(['mueve','sube','baja'].includes(v)&&nlMover(c))return true;
  if(/^(regresa|vuelve|volver|atras)$/.test(s)&&!visibles('.nav2 .tb:not(.pri)').length&&!SES){history.back();return true}
@@ -3581,7 +3623,23 @@ function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#b
 function oir(t){if(VZ.modo==='dictado')return oirUna(t);
  const partes=String(t).split(/\s+(?:y luego|y después|y despues|luego|después|despues|y también|y tambien|además|ademas|y enseguida|enseguida)\s+/i).filter(x=>x.trim());
  partes.forEach((p,i)=>setTimeout(()=>oirLimpia(p),i*450))}
-function oirLimpia(t,repetida){const c=nlLimpia(t);if(!c.R.length&&!c.v)return oirUna(t);if(!repetida&&!/^(otra vez|de nuevo|repite)/.test(nrm(t)))VZ.ultOrden=t;
+/* v17: desplazar la pantalla por voz («baja la pantalla», «sube», «scroll down», «hasta abajo») */
+function zonaScroll(){const m=$('#modal');if(m&&m.classList.contains('show')){const d=m.querySelector('.dlg');if(d)return d}
+ if(S.org){const pn=$('#pane'),sd=$('#side');if(pn&&pn.offsetHeight>40&&pn.scrollHeight>pn.clientHeight+4&&!(sd&&sd.classList.contains('closed')))return pn;const w=$('#wrap');if(w)return w}
+ return document.scrollingElement||document.documentElement}
+function vozScroll(t){const s=nrm(t).replace(/\b(por favor|porfa|porfavor)\b/g,'').trim();if(!s)return false;
+ const pant=/\b(pantalla|pagina|hoja|vista|texto|lista|scroll|scrol|escrol|desplaza|desplazate|desplazar)\b/.test(s);
+ const corto=s.split(' ').length<=4;
+ const abajo=/\b(scroll down|scrolldown|scroll abajo|baja|bajale|bajar|bajala|abajo|desciende|descender|avanza|avanzale|siguiente pantalla|down)\b/.test(s);
+ const arriba=/\b(scroll up|scrollup|scroll arriba|sube|subele|subir|subela|arriba|asciende|regresa arriba|up)\b/.test(s);
+ const finA=/\b(hasta abajo|hasta el final|al final|del todo abajo|hasta el fondo|al fondo|todo abajo)\b/.test(s),finR=/\b(hasta arriba|al principio|al inicio de la pagina|del todo arriba|todo arriba|hasta el inicio)\b/.test(s);
+ if(!(abajo||arriba||finA||finR))return false;
+ if(!pant&&!(corto&&/^(mas abajo|mas arriba|sigue bajando|sigue subiendo|baja mas|sube mas|scroll|scroll down|scroll up|hasta abajo|hasta arriba|ve hasta abajo|ve hasta arriba|al final|al principio|pagina abajo|pagina arriba)$/.test(s)))return false;
+ const z=zonaScroll(),alto=z===document.scrollingElement||z===document.documentElement?innerHeight:z.clientHeight;
+ if(finA||finR){z.scrollTo({top:finA?z.scrollHeight:0,behavior:'smooth'});toast(finA?'Hasta abajo':'Hasta arriba',1200);return true}
+ const f=/\b(un poco|poquito|poquitito|tantito|ligeramente)\b/.test(s)?0.3:/\b(mucho|bastante|harto)\b/.test(s)?1:0.7;
+ z.scrollBy({top:(abajo&&!arriba?1:-1)*alto*f,behavior:'smooth'});return true}
+function oirLimpia(t,repetida){if(VZ.modo!=='dictado'&&vozScroll(t)){VZ.txt=t;vzBar();return}const c=nlLimpia(t);if(!c.R.length&&!c.v)return oirUna(t);if(!repetida&&!/^(otra vez|de nuevo|repite)/.test(nrm(t)))VZ.ultOrden=t;
  VZ.txt=t;vzBar();if(natural(c,t))return;
  const verbo={pon:/^(otra|otro|una|un) /.test(nlTxt(c.R))?'agrega':'escribe',sube:'mueve',baja:'mueve'}[c.v]||c.v;
  /* una sola palabra («sí», «cerrar», «anterior») pasa tal cual; si hubo verbo y algo más, pasa ya normalizada */
@@ -3757,7 +3815,16 @@ function usar60(v){const L=lecById(v);if(!L)return;const n=(L.orgs||[])[0];const
 function lecturasView(){page('Lecturas · Organizatones para Preguntones',`<section class="ghead gl" style="--g:var(--P)"><span class="tn">${ico('libro',60)}</span><div><h1>${GEN?'Mis lecturas':'Banco de lecturas'}</h1><p>${GEN?'Las lecturas de ejemplo y las que tú agregues. Elige una y úsala para practicar un organizador.':'Las lecturas de ejemplo y las que agregue el docente de biblioteca o el titular, por grado y nivel. Elija una y úsela en la sesión de 60 minutos.'}</p><p><a class="tb" href="#clases">← ${GEN?'Volver a Mi plan':'Volver a Clases'}</a></p></div></section>${bancoHTML()}`);bancoBind()}
 /* ---------- horario de la biblioteca y «Clase de hoy» ---------- */
 const DIAS10=['','Lunes','Martes','Miércoles','Jueves','Viernes'];
-function horario(){try{const h=JSON.parse(lsGet('oya:horario')||'[]');return Array.isArray(h)?h:[]}catch(e){return[]}}
+/* Horario oficial de la biblioteca (actualizado 2026-11-27). Clases de 60 min y lecturas de 20 min.
+   Se carga una sola vez por versión (oya:horario-v); después el docente puede ajustarlo en 🗓 Horario. */
+const HOR_V='2026-11-27',HOR_ESC=[
+ {d:1,h:'09:00',gr:6,gp:'A',t:20},{d:1,h:'10:00',gr:4,gp:'A',t:20},{d:1,h:'11:30',gr:1,gp:'A',t:20},
+ {d:2,h:'09:00',gr:3,gp:'A',t:20},{d:2,h:'11:30',gr:2,gp:'A',t:60},
+ {d:3,h:'08:00',gr:5,gp:'A',t:60},{d:3,h:'09:00',gr:1,gp:'A',t:60},{d:3,h:'11:30',gr:4,gp:'A',t:60},
+ {d:4,h:'12:30',gr:3,gp:'A',t:60},{d:4,h:'13:30',gr:6,gp:'A',t:60},
+ {d:5,h:'10:00',gr:5,gp:'A',t:20},{d:5,h:'11:30',gr:2,gp:'A',t:20}];
+function horario(){if(SCH&&lsGet('oya:horario-v')!==HOR_V){lsSet('oya:horario',JSON.stringify(HOR_ESC));lsSet('oya:horario-v',HOR_V)}
+ try{const h=JSON.parse(lsGet('oya:horario')||'[]');return Array.isArray(h)?h:[]}catch(e){return[]}}
 const hMin=h=>{const m=String(h||'').match(/^(\d\d?):(\d\d)/);return m?+m[1]*60+ +m[2]:-1};
 function claseHoy(){const H=horario(),d=new Date(),dd=d.getDay(),now=d.getHours()*60+d.getMinutes();
  if(!H.length)return`<p class="clase-hoy">🗓 Si registra el horario de la biblioteca, aquí aparecerá qué grupo toca. <button class="tb sm" data-z="hor">Registrar horario</button></p>`;
@@ -6343,7 +6410,7 @@ const PLGK=()=>'oya:plg15-'+(esCel()?'m':'d');
 /* ---------- v15: celular, barras que se contraen solas a los 5 segundos ---------- */
 const T15={};
 function rec15(k,fn){clearTimeout(T15[k]);T15[k]=setTimeout(fn,5000)}
-function tlsSet(abre){const t=$('.tools');if(!t)return;t.classList.toggle('rec15',!abre);const b=t.querySelector('.tlb15');if(b){b.textContent=abre?'🛠 Ocultar ◂':'🛠 Herramientas ▸';b.setAttribute('aria-expanded',String(abre))}
+function tlsSet(abre){const t=$('.tools');if(!t)return;t.classList.toggle('rec15',!abre);const b=t.querySelector('.tlb15');if(b){b.textContent=abre?'🛠 Ocultar ◂':(esCel()?'🛠 ▸':'🛠 Herramientas ▸');b.setAttribute('aria-expanded',String(abre))}
  if(!abre){const dm=t.querySelector('details.mas-opciones');if(dm&&dm.open)dm.open=false}
  if(abre)rec15('tls',()=>tlsSet(false));else clearTimeout(T15.tls);setTimeout(()=>{try{lecTop()}catch(e){}},30)}
 function momSet(abre){const sd=$('#side');if(!sd)return;sd.classList.toggle('rec15',!abre);const b=sd.querySelector('.mtg15');if(b)b.setAttribute('aria-expanded',String(abre));
@@ -6363,11 +6430,13 @@ const MENU15=[[/^(explorar|explorar ideas|explorar y describir|explorar ideas y 
  [/^(clases|clase|la clase|mi plan|estudio|plan de estudio)$/,'#clases'],[/^(familias|cuaderno|cuaderno de (las )?familias|cuaderno en vivo|mi cuaderno)$/,'#cuaderno'],[/^(metodo|el metodo|metodo de 5 pasos|metodo de cinco pasos)$/,'#metodo'],
  [/^(elegir|elige|cual uso|que organizador uso)$/,'#elegir'],[/^(juego|jugar|el juego|a jugar)$/,'#juego'],[/^(retos|reto)$/,'#retos'],[/^(evaluador|evaluacion|mi avance|avance|rubrica)$/,'#evaluador'],[/^(organizadores|todos los organizadores|los organizadores|lista de organizadores)$/,'#organizadores'],[/^(banco de lecturas|lecturas)$/,'#lecturas']];
 function nlMenu(s){
+ if(S.org&&/^(guarda|guardar|guardame|descarga|descargar|haz|hazme|saca)( una| la)? copia( de (mi|el|este) (trabajo|organizador|tablero))?( en (un |el )?archivo)?( por favor)?$/.test(s)){saveJSON();toast('Guardando una copia en archivo…',2200);return true}
+ if(/^(guarda|guardar|guardalo|guardala|salva|salvar|graba|grabar)( (el|mi|este|todo el) (trabajo|organizador|tablero|avance))?( por favor)?$/.test(s)){if(S.org){try{save()}catch(e){}toast('Guardado ✓ Tu trabajo se guarda solo en este aparato. Para llevarlo a otro, di «guarda copia en archivo».',3800)}else toast('Todo está guardado ✓',2200);return true}
  if(/\b(menu|inicio|principal|portada|pantalla principal)\b/.test(s)&&(/^(sal|salir|salte|salgamos|regresa|regresar|regresame|vuelve|volver|ve|vete|ir|vamos|llevame|lleva me|abre|muestra|muestrame|quiero|pasa|cambia|cierra y)\b/.test(s)||/^(al |el |a )?(menu|inicio|portada)( principal| de inicio)?$/.test(s))){location.hash='#';toast('Menú de inicio');return true}
  const conVerbo=NAV15.test(s);if(S.org&&!conVerbo)return false;
  const r=s.replace(NAV15,'').trim().replace(/^(el|la|los|las|al|a la|a|mi|mis)\s+/,'').replace(/^(boton|seccion|pagina|apartado)( de| del)?\s+/,'').replace(/^(el|la|los|las)\s+/,'').trim();
  if(!r)return false;
- for(const[re,h]of MENU15)if(re.test(r)){if(h==='#lecturas'&&!SCH)continue;if(h==='#elegir'&&S.org&&/^eli/.test(r))return false;if(location.hash!==h)location.hash=h;else route();return true}
+ for(const[re,h]of MENU15)if(re.test(r)){if(h==='#lecturas'&&!SCH)continue;if(h==='#cuaderno'&&GEN&&/^familias$/.test(r)){if(location.hash!=='#organizadores')location.hash='#organizadores';else route();return true}if(h==='#elegir'&&S.org&&/^eli/.test(r))return false;if(location.hash!==h)location.hash=h;else route();return true}
  return false}
 
 /* ---------- v15: orden común; todos los grados ven el mismo organizador la misma semana ----------
