@@ -3434,6 +3434,7 @@ function vzAyuda(){const g=(t,L)=>`<li><b>${t}:</b> ${L.map(x=>`«${x}»`).join(
  ${g('Letra',['letra más grande','letra normal','ponle letra escolar'])}
  ${g('Responder',['la respuesta es la segunda','elijo la b','creo que es separa las cosas en grupos'])}
  ${SCH?g('En clase',['empieza la sesión','siguiente paso','pausa','termina la sesión','haz un sorteo','otro número']):g('Tu plan',['empieza la sesión','siguiente paso','termina la sesión'])}
+ ${g('Desplazar la pantalla',['baja la pantalla','sube la pantalla','scroll down','scroll up','baja un poco','hasta abajo','hasta arriba'])}
  ${g('Tablero',['acerca','aleja','ver todo','oculta el panel','muestra el panel','reconoce','etapa 4'])}
  ${g('Cualquier botón por su nombre',GEN?['toca Mi plan','abre Mi cuaderno','guarda copia en archivo']:['toca registrar horario','abre Familias','Evaluador'])}
  ${GEN?g('Pantalla',['modo oscuro','modo claro']):''}
@@ -3620,7 +3621,23 @@ function natural(c,t){const s=c.s,v=c.v,R=c.R,tx=nlTxt(R),enTablero=S.org&&$('#b
 function oir(t){if(VZ.modo==='dictado')return oirUna(t);
  const partes=String(t).split(/\s+(?:y luego|y después|y despues|luego|después|despues|y también|y tambien|además|ademas|y enseguida|enseguida)\s+/i).filter(x=>x.trim());
  partes.forEach((p,i)=>setTimeout(()=>oirLimpia(p),i*450))}
-function oirLimpia(t,repetida){const c=nlLimpia(t);if(!c.R.length&&!c.v)return oirUna(t);if(!repetida&&!/^(otra vez|de nuevo|repite)/.test(nrm(t)))VZ.ultOrden=t;
+/* v17: desplazar la pantalla por voz («baja la pantalla», «sube», «scroll down», «hasta abajo») */
+function zonaScroll(){const m=$('#modal');if(m&&m.classList.contains('show')){const d=m.querySelector('.dlg');if(d)return d}
+ if(S.org){const pn=$('#pane'),sd=$('#side');if(pn&&pn.offsetHeight>40&&pn.scrollHeight>pn.clientHeight+4&&!(sd&&sd.classList.contains('closed')))return pn;const w=$('#wrap');if(w)return w}
+ return document.scrollingElement||document.documentElement}
+function vozScroll(t){const s=nrm(t).replace(/\b(por favor|porfa|porfavor)\b/g,'').trim();if(!s)return false;
+ const pant=/\b(pantalla|pagina|hoja|vista|texto|lista|scroll|scrol|escrol|desplaza|desplazate|desplazar)\b/.test(s);
+ const corto=s.split(' ').length<=4;
+ const abajo=/\b(scroll down|scrolldown|scroll abajo|baja|bajale|bajar|bajala|abajo|desciende|descender|avanza|avanzale|siguiente pantalla|down)\b/.test(s);
+ const arriba=/\b(scroll up|scrollup|scroll arriba|sube|subele|subir|subela|arriba|asciende|regresa arriba|up)\b/.test(s);
+ const finA=/\b(hasta abajo|hasta el final|al final|del todo abajo|hasta el fondo|al fondo|todo abajo)\b/.test(s),finR=/\b(hasta arriba|al principio|al inicio de la pagina|del todo arriba|todo arriba|hasta el inicio)\b/.test(s);
+ if(!(abajo||arriba||finA||finR))return false;
+ if(!pant&&!(corto&&/^(mas abajo|mas arriba|sigue bajando|sigue subiendo|baja mas|sube mas|scroll|scroll down|scroll up|hasta abajo|hasta arriba|ve hasta abajo|ve hasta arriba|al final|al principio|pagina abajo|pagina arriba)$/.test(s)))return false;
+ const z=zonaScroll(),alto=z===document.scrollingElement||z===document.documentElement?innerHeight:z.clientHeight;
+ if(finA||finR){z.scrollTo({top:finA?z.scrollHeight:0,behavior:'smooth'});toast(finA?'Hasta abajo':'Hasta arriba',1200);return true}
+ const f=/\b(un poco|poquito|poquitito|tantito|ligeramente)\b/.test(s)?0.3:/\b(mucho|bastante|harto)\b/.test(s)?1:0.7;
+ z.scrollBy({top:(abajo&&!arriba?1:-1)*alto*f,behavior:'smooth'});return true}
+function oirLimpia(t,repetida){if(VZ.modo!=='dictado'&&vozScroll(t)){VZ.txt=t;vzBar();return}const c=nlLimpia(t);if(!c.R.length&&!c.v)return oirUna(t);if(!repetida&&!/^(otra vez|de nuevo|repite)/.test(nrm(t)))VZ.ultOrden=t;
  VZ.txt=t;vzBar();if(natural(c,t))return;
  const verbo={pon:/^(otra|otro|una|un) /.test(nlTxt(c.R))?'agrega':'escribe',sube:'mueve',baja:'mueve'}[c.v]||c.v;
  /* una sola palabra («sí», «cerrar», «anterior») pasa tal cual; si hubo verbo y algo más, pasa ya normalizada */
